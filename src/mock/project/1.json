@@ -1,0 +1,38 @@
+{
+  "errNo": 0,
+  "errMsg": "success",
+  "data": {
+    "id": 1,
+    "title": "demo",
+    "images": {
+      "byId": {
+        "31457c3a701d": {
+          "id": "31457c3a701d",
+          "name": "xx",
+          "layers": ["31457c3a701f"]
+        }
+      },
+      "allIds": ["31457c3a701d"]
+    },
+    "layers": {
+      "byId": {
+        "31457c3a701f": {
+          "id": "31457c3a701f",
+          "type": "IMG",
+          "editable": true,
+          "deletable": true,
+          "properties": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 20,
+            "color": "black",
+            "opacity": 1,
+            "src": "https://static.xhxly.cn/fc357090-5a22-11ea-82db-91c6358ad7fc.png"
+          }
+        }
+      },
+      "allIds": ["31457c3a701f"]
+    }
+  }
+}

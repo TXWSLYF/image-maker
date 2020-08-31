@@ -1,0 +1,34 @@
+.topBar {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.undoRedo {
+  margin-left: 16px;
+}
+
+.layerList {
+  display: flex;
+  align-items: center;
+}
+
+.layerItem {
+  text-align: center;
+  cursor: pointer;
+
+  &:not(:first-child) {
+    margin-left: 16px;
+  }
+}
+
+.layerItemName {
+
+}
+
+.operations {
+  margin-right: 16px;
+}
+

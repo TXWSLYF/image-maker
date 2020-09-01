@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store'
 
-const initialState: EditorState = {
-  curImageId: '1',
+const initialState: IEditorState = {
+  curImageId: '',
   curLayerIds: [],
 };
 
@@ -26,5 +27,7 @@ export const editorSlice = createSlice({
 });
 
 export const { setCurImage, setCurLayers } = editorSlice.actions;
+
+export const selectCurImageId = (state: RootState) => state.editor.curImageId;
 
 export default editorSlice.reducer;

@@ -4,15 +4,24 @@
   "data": {
     "id": 1,
     "title": "demo",
+    "canvas": {
+      "width": 600,
+      "height": 800
+    },
     "images": {
       "byId": {
         "31457c3a701d": {
           "id": "31457c3a701d",
           "name": "xx",
           "layers": ["31457c3a701f"]
+        },
+        "31457c3a701v": {
+          "id": "31457c3a701v",
+          "name": "xxaa",
+          "layers": []
         }
       },
-      "allIds": ["31457c3a701d"]
+      "allIds": ["31457c3a701d", "31457c3a701v"]
     },
     "layers": {
       "byId": {
@@ -22,10 +31,10 @@
           "editable": true,
           "deletable": true,
           "properties": {
-            "x": 0,
-            "y": 0,
-            "width": 100,
-            "height": 20,
+            "x": 100,
+            "y": 100,
+            "width": 200,
+            "height": 100,
             "color": "black",
             "opacity": 1,
             "src": "https://static.xhxly.cn/fc357090-5a22-11ea-82db-91c6358ad7fc.png"

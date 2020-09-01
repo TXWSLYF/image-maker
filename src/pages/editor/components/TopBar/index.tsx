@@ -1,10 +1,11 @@
 import React from 'react';
 import { FileTextOutlined, FileImageOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@material-ui/core';
-import { textLayer, imgLayer } from '../../../../layer';
 import styles from './index.module.scss';
+import { textLayer, imgLayer } from '../../../../layer';
 import { addLayer } from '../../../../features/project/projectSlice';
+import { selectCurImageId } from '../../../../features/editor/editorSlice';
 
 const layerList = [
   {
@@ -21,6 +22,7 @@ const layerList = [
 
 function TopBar() {
   const dispatch = useDispatch();
+  const curImageId = useSelector(selectCurImageId);
 
   return (
     <header className={styles.topBar}>
@@ -42,7 +44,9 @@ function TopBar() {
               className={styles.layerItem}
               key={name}
               onClick={() => {
-                dispatch(addLayer(initialClass()));
+                dispatch(
+                  addLayer({ imageId: curImageId, layer: initialClass() })
+                );
               }}
             >
               <Icon style={{ fontSize: 35 }} />

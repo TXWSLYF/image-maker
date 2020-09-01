@@ -1,4 +1,4 @@
-const textLayer = (): TextLayer => ({
+const textLayer = (): ITextLayer => ({
   id: 'INIT',
   type: 'TEXT',
   editable: true,
@@ -11,6 +11,7 @@ const textLayer = (): TextLayer => ({
     color: 'black',
     opacity: 1,
 
+    text: 'hello',
     fontSize: 20,
     fontFamily: 'sans-serif',
     textAlign: 'left',

@@ -1,5 +1,5 @@
 // 基础properties定义
-interface BaseProperties {
+interface IBaseProperties {
   // 横坐标
   x: number;
 
@@ -21,18 +21,19 @@ interface BaseProperties {
   // zIndex?: number;
 }
 
-interface TextProperties extends BaseProperties {
+interface ITextProperties extends IBaseProperties {
+  text: string;
   fontSize: number;
   fontFamily: string;
   lineHeight: number;
   textAlign: 'left' | 'center' | 'right';
 }
 
-interface ImgProperties extends BaseProperties {
+interface IImgProperties extends IBaseProperties {
   src: string;
 }
 
-interface BaseLayer<T = BaseProperties> {
+interface IBaseLayer<T = IBaseProperties> {
   // id
   id: string;
 
@@ -49,20 +50,28 @@ interface BaseLayer<T = BaseProperties> {
   properties: T;
 }
 
-interface TextLayer extends BaseLayer<TextProperties> {
+interface ITextLayer extends IBaseLayer<ITextProperties> {
   type: 'TEXT';
 }
 
-interface ImgLayer extends BaseLayer<ImgProperties> {
+interface IImgLayer extends IBaseLayer<IImgProperties> {
   type: 'IMG';
 }
 
-interface ProjectState {
+type ILayer = ITextLayer | IImgLayer;
+
+interface IProjectState {
   // 项目 id
   id: number;
 
   // 项目标题
   title: string;
+
+  // 画布相关
+  canvas: {
+    width: number;
+    height: number;
+  };
 
   // 图片 map
   images: {
@@ -75,7 +84,7 @@ interface ProjectState {
         name: string;
 
         // 图片包含的图层 id
-        layerIds: string[];
+        layers: string[];
       };
     };
     allIds: string[];
@@ -84,13 +93,13 @@ interface ProjectState {
   // 图层 map
   layers: {
     byId: {
-      [key: string]: BaseLayer;
+      [key: string]: ILayer;
     };
     allIds: string[];
   };
 }
 
-interface EditorState {
+interface IEditorState {
   // 当前图片 id
   curImageId: string;
 
@@ -98,7 +107,7 @@ interface EditorState {
   curLayerIds: string[];
 }
 
-interface RequestResponse<T> {
+interface IRequestResponse<T> {
   errNo: number;
   errMsg: string;
   data: T;

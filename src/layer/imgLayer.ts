@@ -1,4 +1,4 @@
-const imgLayer = (): ImgLayer => ({
+const imgLayer = (): IImgLayer => ({
   id: 'INIT',
   type: 'IMG',
   editable: true,

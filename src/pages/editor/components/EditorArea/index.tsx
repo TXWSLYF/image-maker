@@ -8,6 +8,7 @@ import {
 } from '../../../../features/project/projectSlice';
 import { selectCurImageId } from '../../../../features/editor/editorSlice';
 import { Layer } from '../../../../layer';
+import MoveableControlBox from '../MoveableControlBox';
 
 function EditorArea() {
   const canvas = useSelector(selectCanvas);
@@ -29,6 +30,7 @@ function EditorArea() {
               <Layer layer={layers.byId[id]} key={id} />
             ))
           : null}
+        <MoveableControlBox />
       </div>
     </div>
   );

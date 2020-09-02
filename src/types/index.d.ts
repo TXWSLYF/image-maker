@@ -18,6 +18,9 @@ interface IBaseProperties {
   // 透明度
   opacity: number;
 
+  // 旋转角度
+  rotation: number;
+
   // zIndex?: number;
 }
 
@@ -111,4 +114,9 @@ interface IRequestResponse<T> {
   errNo: number;
   errMsg: string;
   data: T;
+}
+
+interface ICoordinate {
+  x: number;
+  y: number;
 }

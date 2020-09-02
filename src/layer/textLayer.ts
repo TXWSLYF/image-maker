@@ -10,6 +10,7 @@ const textLayer = (): ITextLayer => ({
     height: 20,
     color: 'black',
     opacity: 1,
+    rotation: 0,
 
     text: 'hello',
     fontSize: 20,

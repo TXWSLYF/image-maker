@@ -10,6 +10,7 @@ const imgLayer = (): IImgLayer => ({
     height: 20,
     color: 'black',
     opacity: 1,
+    rotation: 0,
 
     src: 'https://static.xhxly.cn/fc357090-5a22-11ea-82db-91c6358ad7fc.png'
   },

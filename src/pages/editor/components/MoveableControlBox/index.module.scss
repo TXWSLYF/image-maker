@@ -1,2 +1,10 @@
 .moveableControlBox {
+  position: absolute;
+}
+
+.point {
+  position: absolute;
+  background-color: #4af;
+  border-radius: 50%;
+  border: 2px solid #fff;
 }

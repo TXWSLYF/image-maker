@@ -10,7 +10,10 @@ import {
   selectProjectPastLength,
   selectProjectFutureLength,
 } from '../../../../features/project/projectSlice';
-import { selectCurImageId } from '../../../../features/editor/editorSlice';
+import {
+  selectCurImageId,
+  setCurLayers,
+} from '../../../../features/editor/editorSlice';
 
 const layerList = [
   {
@@ -39,6 +42,7 @@ function TopBar() {
           color="primary"
           variant="outlined"
           onClick={() => {
+            dispatch(setCurLayers([]));
             dispatch(ActionCreators.undo());
           }}
           disabled={projectPastLength === 0}
@@ -50,6 +54,7 @@ function TopBar() {
           variant="outlined"
           style={{ marginLeft: 10 }}
           onClick={() => {
+            dispatch(setCurLayers([]));
             dispatch(ActionCreators.redo());
           }}
           disabled={projectFutureLength === 0}

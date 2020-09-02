@@ -33,10 +33,11 @@
           "properties": {
             "x": 100,
             "y": 100,
-            "width": 200,
+            "width": 100,
             "height": 100,
             "color": "black",
             "opacity": 1,
+            "rotation": 90,
             "src": "https://static.xhxly.cn/fc357090-5a22-11ea-82db-91c6358ad7fc.png"
           }
         }

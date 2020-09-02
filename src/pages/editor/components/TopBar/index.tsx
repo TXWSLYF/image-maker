@@ -1,10 +1,15 @@
 import React from 'react';
 import { FileTextOutlined, FileImageOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
+import { ActionCreators } from 'redux-undo';
 import { Button } from '@material-ui/core';
 import styles from './index.module.scss';
 import { textLayer, imgLayer } from '../../../../layer';
-import { addLayer } from '../../../../features/project/projectSlice';
+import {
+  addLayer,
+  selectProjectPastLength,
+  selectProjectFutureLength,
+} from '../../../../features/project/projectSlice';
 import { selectCurImageId } from '../../../../features/editor/editorSlice';
 
 const layerList = [
@@ -23,15 +28,32 @@ const layerList = [
 function TopBar() {
   const dispatch = useDispatch();
   const curImageId = useSelector(selectCurImageId);
+  const projectPastLength = useSelector(selectProjectPastLength);
+  const projectFutureLength = useSelector(selectProjectFutureLength);
 
   return (
     <header className={styles.topBar}>
       {/* 撤销重做按钮区 */}
       <div className={styles.undoRedo}>
-        <Button color="primary" variant="outlined">
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={() => {
+            dispatch(ActionCreators.undo());
+          }}
+          disabled={projectPastLength === 0}
+        >
           撤销
         </Button>
-        <Button color="primary" variant="outlined" style={{ marginLeft: 10 }}>
+        <Button
+          color="primary"
+          variant="outlined"
+          style={{ marginLeft: 10 }}
+          onClick={() => {
+            dispatch(ActionCreators.redo());
+          }}
+          disabled={projectFutureLength === 0}
+        >
           重做
         </Button>
       </div>

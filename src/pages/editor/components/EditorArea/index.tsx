@@ -24,7 +24,7 @@ function EditorArea() {
           height: canvas.height,
         }}
       >
-        {curImageId
+        {curImageId && images.byId[curImageId]
           ? images.byId[curImageId].layers.map((id) => (
               <Layer layer={layers.byId[id]} key={id} />
             ))

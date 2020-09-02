@@ -77,8 +77,11 @@ export const {
   addLayer,
 } = projectSlice.actions;
 
-export const selectImages = (state: RootState) => state.project.images;
-export const selectLayers = (state: RootState) => state.project.layers;
-export const selectCanvas = (state: RootState) => state.project.canvas;
+export const selectImages = (state: RootState) => state.project.present.images;
+export const selectLayers = (state: RootState) => state.project.present.layers;
+export const selectCanvas = (state: RootState) => state.project.present.canvas;
+export const selectProjectPastLength = (state: RootState) => state.project.past.length;
+export const selectProjectFutureLength = (state: RootState) => state.project.future.length;
+
 
 export default projectSlice.reducer;

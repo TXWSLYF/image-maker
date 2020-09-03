@@ -1,12 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './index.module.scss';
 import {
   selectCanvas,
   selectImages,
   selectLayers,
 } from '../../../../features/project/projectSlice';
-import { selectCurImageId } from '../../../../features/editor/editorSlice';
+import {
+  selectCurImageId,
+  setCurLayers,
+} from '../../../../features/editor/editorSlice';
 import { Layer } from '../../../../layer';
 import MoveableControlBox from '../MoveableControlBox';
 
@@ -15,9 +18,15 @@ function EditorArea() {
   const curImageId = useSelector(selectCurImageId);
   const images = useSelector(selectImages);
   const layers = useSelector(selectLayers);
+  const dispatch = useDispatch();
 
   return (
-    <div className={styles.editorArea}>
+    <div
+      className={styles.editorArea}
+      onMouseDown={(e) => {
+        dispatch(setCurLayers([]));
+      }}
+    >
       <div
         className={styles.canvas}
         style={{

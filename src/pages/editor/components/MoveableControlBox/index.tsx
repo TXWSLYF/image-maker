@@ -132,6 +132,7 @@ function MoveableControlBox() {
                 })
               )
             );
+            e.stopPropagation();
           }}
         ></div>
       </div>

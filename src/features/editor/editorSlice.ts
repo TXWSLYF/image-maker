@@ -4,6 +4,12 @@ import { RootState } from '../../app/store';
 const initialState: IEditorState = {
   curImageId: '',
   curLayerIds: [],
+  isDraging: false,
+  dragStartMouseCoordinate: {
+    x: 0,
+    y: 0,
+  },
+  dragStartLayersCoordinate: [],
 };
 
 export const editorSlice = createSlice({
@@ -42,12 +48,42 @@ export const editorSlice = createSlice({
         state.curLayerIds = payload;
       }
     },
+
+    setIsDraging: (state, action: PayloadAction<boolean>) => {
+      state.isDraging = action.payload;
+    },
+
+    setDragStartMouseCoordinate: (
+      state,
+      action: PayloadAction<ICoordinate>
+    ) => {
+      state.dragStartMouseCoordinate = action.payload;
+    },
+
+    setDragStartLayersCoordinate: (
+      state,
+      action: PayloadAction<IEditorState['dragStartLayersCoordinate']>
+    ) => {
+      state.dragStartLayersCoordinate = action.payload;
+    },
   },
 });
 
-export const { setCurImage, addCurLayers, setCurLayers } = editorSlice.actions;
+export const {
+  setCurImage,
+  addCurLayers,
+  setCurLayers,
+  setIsDraging,
+  setDragStartMouseCoordinate,
+  setDragStartLayersCoordinate,
+} = editorSlice.actions;
 
 export const selectCurImageId = (state: RootState) => state.editor.curImageId;
 export const selectCurLayerIds = (state: RootState) => state.editor.curLayerIds;
+export const selectIsDraging = (state: RootState) => state.editor.isDraging;
+export const selectDragStartMouseCoordinate = (state: RootState) =>
+  state.editor.dragStartMouseCoordinate;
+export const selectDragStartLayersCoordinate = (state: RootState) =>
+  state.editor.dragStartLayersCoordinate;
 
 export default editorSlice.reducer;

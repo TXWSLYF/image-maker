@@ -1,7 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './index.module.scss';
-import { selectCurLayerIds } from '../../../../features/editor/editorSlice';
+import {
+  selectCurLayerIds,
+  setIsDraging,
+  setDragStartMouseCoordinate,
+  setDragStartLayersCoordinate,
+} from '../../../../features/editor/editorSlice';
 import { selectLayers } from '../../../../features/project/projectSlice';
 
 function caculateRectRotateCoordinate({
@@ -72,6 +77,7 @@ function caculateRectRotateCoordinate({
 const moveableDirectionSize = 14;
 
 function MoveableControlBox() {
+  const dispatch = useDispatch();
   const curLayerIds = useSelector(selectCurLayerIds);
   const layers = useSelector(selectLayers);
 
@@ -79,12 +85,15 @@ function MoveableControlBox() {
     return layers.byId[id];
   });
 
-  return (
-    <div className={styles.moveableControlBox}>
-      {curLayers.map((layer) => {
-        const coordinates = caculateRectRotateCoordinate(layer.properties);
+  // 单一选中组件的情况
+  if (curLayers.length === 1) {
+    const [layer] = curLayers;
+    const coordinates = caculateRectRotateCoordinate(layer.properties);
+    const { x, y, width, height, rotation } = layer.properties;
 
-        return coordinates.map(({ x, y }, index) => {
+    return (
+      <div className={styles.moveableControlBox}>
+        {coordinates.map(({ x, y }, index) => {
           return (
             <div
               key={index}
@@ -98,10 +107,42 @@ function MoveableControlBox() {
               }}
             ></div>
           );
-        });
-      })}
-    </div>
-  );
+        })}
+        <div
+          className={styles.moveableArae}
+          style={{
+            width,
+            height,
+            transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`,
+          }}
+          onMouseDown={(e) => {
+            dispatch(setIsDraging(true));
+            dispatch(
+              setDragStartMouseCoordinate({ x: e.clientX, y: e.clientY })
+            );
+            dispatch(
+              setDragStartLayersCoordinate(
+                curLayers.map((layer) => {
+                  const {
+                    id,
+                    properties: { x, y },
+                  } = layer;
+
+                  return { id, x, y };
+                })
+              )
+            );
+          }}
+        ></div>
+      </div>
+    );
+  } else {
+    return (
+      <div className={styles.moveableControlBox}>
+        <div className={styles.moveableArae}></div>
+      </div>
+    );
+  }
 }
 
 export default MoveableControlBox;

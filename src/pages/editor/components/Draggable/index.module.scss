@@ -1,0 +1,10 @@
+$topBarHeight: 80px;
+
+.editorPageWrapper {
+  background-color: #fff;
+}
+
+.mainContainer {
+  height: calc(100vh - #{$topBarHeight});
+  display: flex;
+}

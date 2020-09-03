@@ -62,6 +62,7 @@ interface IImgLayer extends IBaseLayer<IImgProperties> {
 }
 
 type ILayer = ITextLayer | IImgLayer;
+type IProperties = IBaseProperties | ITextProperties | IImgProperties;
 
 interface IProjectState {
   // 项目 id
@@ -108,6 +109,15 @@ interface IEditorState {
 
   // 当前选中图层 id
   curLayerIds: string[];
+
+  // 是否处于拖拽状态
+  isDraging: boolean;
+
+  // 拖拽开始点鼠标坐标
+  dragStartMouseCoordinate: ICoordinate;
+
+  // 拖拽开始点被拖动图层初始坐标
+  dragStartLayersCoordinate: ({ id: string } & ICoordinate)[];
 }
 
 interface IRequestResponse<T> {

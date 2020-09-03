@@ -21,13 +21,7 @@ export const projectSlice = createSlice({
      * @description 初始化项目
      */
     initProject: (state, action: PayloadAction<IProjectState>) => {
-      const {
-        id,
-        title,
-        images,
-        layers,
-        canvas,
-      } = action.payload;
+      const { id, title, images, layers, canvas } = action.payload;
 
       state.id = id;
       state.title = title;
@@ -67,6 +61,22 @@ export const projectSlice = createSlice({
       state.layers.allIds.push(id);
       state.images.byId[imageId].layers.push(id);
     },
+
+    /**
+     * @description 设置图层坐标
+     */
+    setLayersCoordinate: (
+      state,
+      action: PayloadAction<({ id: string } & ICoordinate)[]>
+    ) => {
+      action.payload.forEach((coordinateWithId) => {
+        const { id, x, y } = coordinateWithId;
+        const { properties } = state.layers.byId[id];
+
+        properties.x = x;
+        properties.y = y;
+      });
+    },
   },
 });
 
@@ -75,13 +85,15 @@ export const {
   setProjectTitle,
   addImage,
   addLayer,
+  setLayersCoordinate,
 } = projectSlice.actions;
 
 export const selectImages = (state: RootState) => state.project.present.images;
 export const selectLayers = (state: RootState) => state.project.present.layers;
 export const selectCanvas = (state: RootState) => state.project.present.canvas;
-export const selectProjectPastLength = (state: RootState) => state.project.past.length;
-export const selectProjectFutureLength = (state: RootState) => state.project.future.length;
-
+export const selectProjectPastLength = (state: RootState) =>
+  state.project.past.length;
+export const selectProjectFutureLength = (state: RootState) =>
+  state.project.future.length;
 
 export default projectSlice.reducer;

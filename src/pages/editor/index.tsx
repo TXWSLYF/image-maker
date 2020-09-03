@@ -3,10 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getProjectInfo } from '../../api/project';
 import styles from './index.module.scss';
-import TopBar from './components/TopBar';
-import PageList from './components/PageList';
-import EditArea from './components/EditorArea';
-import PropertyPanel from './components/PropertyPanel';
+import Draggable from './components/Draggable';
 import { initProject } from '../../features/project/projectSlice';
 import { setCurImage } from '../../features/editor/editorSlice';
 
@@ -37,12 +34,7 @@ function EditorPage() {
 
   return (
     <div className={styles.editorPage}>
-      <TopBar />
-      <main className={styles.mainContainer}>
-        <PageList />
-        <EditArea />
-        <PropertyPanel />
-      </main>
+      <Draggable />
     </div>
   );
 }

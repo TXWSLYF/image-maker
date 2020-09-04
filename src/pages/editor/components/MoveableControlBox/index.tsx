@@ -6,8 +6,10 @@ import {
   setIsDraging,
   setDragStartMouseCoordinate,
   setDragStartLayersCoordinate,
+  setDragId,
 } from '../../../../features/editor/editorSlice';
 import { selectLayers } from '../../../../features/project/projectSlice';
+import { guid } from '../../../../utils/util';
 
 function caculateRectRotateCoordinate({
   x,
@@ -120,6 +122,7 @@ function MoveableControlBox() {
             dispatch(
               setDragStartMouseCoordinate({ x: e.clientX, y: e.clientY })
             );
+            dispatch(setDragId(guid()));
             dispatch(
               setDragStartLayersCoordinate(
                 curLayers.map((layer) => {

@@ -11,6 +11,7 @@ import {
   setIsDraging,
   selectDragStartMouseCoordinate,
   selectDragStartLayersCoordinate,
+  selectDragId,
 } from '../../../../features/editor/editorSlice';
 
 function Draggeble() {
@@ -20,6 +21,7 @@ function Draggeble() {
   const dragStartLayersCoordinate = useSelector(
     selectDragStartLayersCoordinate
   );
+  const dragId = useSelector(selectDragId);
 
   return (
     <div
@@ -30,12 +32,15 @@ function Draggeble() {
           const offsetY = e.clientY - y;
 
           dispatch(
-            setLayersCoordinate(
-              dragStartLayersCoordinate.map((idWithCoordinate) => {
-                const { id, x, y } = idWithCoordinate;
-                return { id, x: x + offsetX, y: y + offsetY };
-              })
-            )
+            setLayersCoordinate({
+              dragId,
+              idWithCoordinate: dragStartLayersCoordinate.map(
+                (idWithCoordinate) => {
+                  const { id, x, y } = idWithCoordinate;
+                  return { id, x: x + offsetX, y: y + offsetY };
+                }
+              ),
+            })
           );
         }
       }}

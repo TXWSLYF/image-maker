@@ -67,9 +67,12 @@ export const projectSlice = createSlice({
      */
     setLayersCoordinate: (
       state,
-      action: PayloadAction<({ id: string } & ICoordinate)[]>
+      action: PayloadAction<{
+        dragId: string;
+        idWithCoordinate: ({ id: string } & ICoordinate)[];
+      }>
     ) => {
-      action.payload.forEach((coordinateWithId) => {
+      action.payload.idWithCoordinate.forEach((coordinateWithId) => {
         const { id, x, y } = coordinateWithId;
         const { properties } = state.layers.byId[id];
 

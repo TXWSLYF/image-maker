@@ -113,6 +113,9 @@ interface IEditorState {
   // 是否处于拖拽状态
   isDraging: boolean;
 
+  // 唯一标识一次拖拽过程的 id
+  dragId: string;
+
   // 拖拽开始点鼠标坐标
   dragStartMouseCoordinate: ICoordinate;
 

@@ -6,7 +6,9 @@ import {
   setIsDraging,
   setDragStartMouseCoordinate,
   setDragStartLayersCoordinate,
+  setDragId,
 } from '../../features/editor/editorSlice';
+import { guid } from '../../utils/util';
 
 /**
  * @description HOC，所有图层的 wrapper
@@ -25,6 +27,7 @@ function LayerWrapper(props: { children: ReactElement; layer: ILayer }) {
         dispatch(setCurLayers([id]));
         dispatch(setIsDraging(true));
         dispatch(setDragStartMouseCoordinate({ x: e.clientX, y: e.clientY }));
+        dispatch(setDragId(guid()));
         dispatch(setDragStartLayersCoordinate([{ id, x, y }]));
         e.stopPropagation();
       }}

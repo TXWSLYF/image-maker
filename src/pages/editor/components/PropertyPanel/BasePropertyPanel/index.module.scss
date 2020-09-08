@@ -1,0 +1,20 @@
+.basePropertyPanel {
+  > header {
+    font-weight: 600;
+    padding: 14px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    border-top: 1px solid rgb(219, 219, 219);
+    transition: all 0.2s ease-in-out 0s;
+    cursor: pointer;
+  }
+}
+
+.title {
+  color: rgb(65, 80, 88);
+  font-weight: 600;
+  margin-bottom: 0;
+}

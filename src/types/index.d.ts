@@ -12,9 +12,6 @@ interface IBaseProperties {
   // 高度
   height: number;
 
-  // 颜色
-  color: string;
-
   // 透明度
   opacity: number;
 

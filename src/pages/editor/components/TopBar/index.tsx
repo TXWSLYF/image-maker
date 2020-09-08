@@ -2,7 +2,7 @@ import React from 'react';
 import { FileTextOutlined, FileImageOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from 'redux-undo';
-import { Button } from '@material-ui/core';
+import { Button } from 'antd';
 import styles from './index.module.scss';
 import { textLayer, imgLayer } from '../../../../layer';
 import {
@@ -39,8 +39,7 @@ function TopBar() {
       {/* 撤销重做按钮区 */}
       <div className={styles.undoRedo}>
         <Button
-          color="primary"
-          variant="outlined"
+          type="primary"
           onClick={() => {
             dispatch(setCurLayers([]));
             dispatch(ActionCreators.undo());
@@ -50,8 +49,7 @@ function TopBar() {
           撤销
         </Button>
         <Button
-          color="primary"
-          variant="outlined"
+          type="primary"
           style={{ marginLeft: 10 }}
           onClick={() => {
             dispatch(setCurLayers([]));
@@ -85,10 +83,8 @@ function TopBar() {
 
       {/* 操作区 */}
       <div className={styles.operations}>
-        <Button color="primary" variant="outlined">
-          保存
-        </Button>
-        <Button color="primary" variant="outlined" style={{ marginLeft: 10 }}>
+        <Button color="primary" type="primary">保存</Button>
+        <Button color="primary" style={{ marginLeft: 10 }} type="primary">
           导出
         </Button>
       </div>

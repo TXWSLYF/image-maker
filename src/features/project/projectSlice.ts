@@ -80,6 +80,22 @@ export const projectSlice = createSlice({
         properties.y = y;
       });
     },
+
+    /**
+     * @description 改变图层属性
+     */
+    setLayersProperties(
+      state,
+      action: PayloadAction<{ layerId: string; newProperties: any }>
+    ) {
+      const { layerId, newProperties } = action.payload;
+
+      for (const key in newProperties) {
+        state.layers.byId[layerId].properties[
+          key as keyof ILayer['properties']
+        ] = newProperties[key];
+      }
+    },
   },
 });
 
@@ -89,6 +105,7 @@ export const {
   addImage,
   addLayer,
   setLayersCoordinate,
+  setLayersProperties,
 } = projectSlice.actions;
 
 export const selectImages = (state: RootState) => state.project.present.images;

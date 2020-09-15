@@ -23,45 +23,114 @@ function BasePropertyPanel({
         style={{ border: 'none', background: '#fff' }}
       >
         <Panel header="基础" key="1">
-          <InputNumber
-            value={properties.x}
-            formatter={(value) => `X  ${value}`}
-            parser={(value) => (value ? value.replace('X', '') : '')}
-            onChange={(value) => {
-              dispatch(setLayersProperties({
-                layerId,
-                newProperties: {
-                  x: value
-                }
-              }))
-            }}
-          />
-          <InputNumber
-            value={properties.y}
-            formatter={(value) => `Y  ${value}`}
-            parser={(value) => (value ? value.replace('Y', '') : '')}
-            onChange={(value) => {
-              dispatch(setLayersProperties({
-                layerId,
-                newProperties: {
-                  y: value
-                }
-              }))
-            }}
-          />
-          <InputNumber
-            value={properties.rotation}
-            formatter={(value) => `${value} °`}
-            parser={(value) => (value ? value.replace('°', '') : '')}
-            onChange={(value) => {
-              dispatch(setLayersProperties({
-                layerId,
-                newProperties: {
-                  rotation: value
-                }
-              }))
-            }}
-          />
+          <div className={styles.propertyRow} style={{ marginBottom: 10 }}>
+            <div>
+              <label>横坐标：</label>
+              <InputNumber
+                style={{ width: 70 }}
+                value={properties.x}
+                onChange={(value) => {
+                  dispatch(
+                    setLayersProperties({
+                      layerId,
+                      newProperties: {
+                        x: value,
+                      },
+                    })
+                  );
+                }}
+              />
+            </div>
+            <div>
+              <label>纵坐标：</label>
+              <InputNumber
+                style={{ width: 70 }}
+                value={properties.y}
+                onChange={(value) => {
+                  dispatch(
+                    setLayersProperties({
+                      layerId,
+                      newProperties: {
+                        y: value,
+                      },
+                    })
+                  );
+                }}
+              />
+            </div>
+          </div>
+          <div className={styles.propertyRow} style={{ marginBottom: 10 }}>
+            <div>
+              <label>旋转角：</label>
+              <InputNumber
+                style={{ width: 70 }}
+                value={properties.rotation}
+                onChange={(value) => {
+                  dispatch(
+                    setLayersProperties({
+                      layerId,
+                      newProperties: {
+                        rotation: value,
+                      },
+                    })
+                  );
+                }}
+              />
+            </div>
+            <div>
+              <label>透明度：</label>
+              <InputNumber
+                style={{ width: 70 }}
+                value={properties.opacity}
+                onChange={(value) => {
+                  dispatch(
+                    setLayersProperties({
+                      layerId,
+                      newProperties: {
+                        opacity: value,
+                      },
+                    })
+                  );
+                }}
+              />
+            </div>
+          </div>
+          <div className={styles.propertyRow} >
+            <div>
+              <label>宽度：</label>
+              <InputNumber
+                style={{ width: 70 }}
+                value={properties.width}
+                onChange={(value) => {
+                  dispatch(
+                    setLayersProperties({
+                      layerId,
+                      newProperties: {
+                        width: value,
+                      },
+                    })
+                  );
+                }}
+              />
+            </div>
+            <div>
+              <label>高度：</label>
+              <InputNumber
+                style={{ width: 70 }}
+                value={properties.height}
+                onChange={(value) => {
+                  dispatch(
+                    setLayersProperties({
+                      layerId,
+                      newProperties: {
+                        height: value,
+                      },
+                    })
+                  );
+                }}
+              />
+            </div>
+          </div>
         </Panel>
       </Collapse>
     </div>

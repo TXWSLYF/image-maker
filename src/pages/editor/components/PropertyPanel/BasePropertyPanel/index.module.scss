@@ -11,10 +11,15 @@
     transition: all 0.2s ease-in-out 0s;
     cursor: pointer;
   }
-}
 
-.title {
-  color: rgb(65, 80, 88);
-  font-weight: 600;
-  margin-bottom: 0;
+  .propertyRow {
+    display: flex;
+    justify-content: space-between;
+
+    label {
+      display: inline-block;
+      width: 60px;
+      text-align: right;
+    }
+  }
 }

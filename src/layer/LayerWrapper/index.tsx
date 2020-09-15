@@ -18,7 +18,7 @@ function LayerWrapper(props: { children: ReactElement; layer: ILayer }) {
 
   const {
     id,
-    properties: { width, height, x, y, rotation },
+    properties: { width, height, x, y, rotation, opacity },
   } = props.layer;
 
   return (
@@ -36,6 +36,7 @@ function LayerWrapper(props: { children: ReactElement; layer: ILayer }) {
         width,
         height,
         transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`,
+        opacity,
       }}
     >
       {props.children}

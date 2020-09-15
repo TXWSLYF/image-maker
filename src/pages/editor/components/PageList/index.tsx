@@ -5,6 +5,7 @@ import { selectImages } from '../../../../features/project/projectSlice';
 import {
   selectCurImageId,
   setCurImage,
+  setCurLayers,
 } from '../../../../features/editor/editorSlice';
 
 function PageList() {
@@ -22,6 +23,7 @@ function PageList() {
           <div
             onClick={() => {
               dispatch(setCurImage(id));
+              dispatch(setCurLayers([]));
             }}
             className={styles.pageItem}
             style={{

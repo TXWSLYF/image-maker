@@ -4,6 +4,7 @@ import { RootState } from '../../app/store';
 const initialState: IEditorState = {
   curImageId: '',
   curLayerIds: [],
+  hoverLayerId: '',
   isDraging: false,
   dragId: '',
   dragStartMouseCoordinate: {
@@ -50,6 +51,13 @@ export const editorSlice = createSlice({
       }
     },
 
+    /**
+     * @description 设置当前 hover 图层 id
+     */
+    setHoverLayerId: (state, action: PayloadAction<string>) => {
+      state.hoverLayerId = action.payload;
+    },
+
     setIsDraging: (state, action: PayloadAction<boolean>) => {
       state.isDraging = action.payload;
     },
@@ -82,6 +90,7 @@ export const {
   setDragStartMouseCoordinate,
   setDragStartLayersCoordinate,
   setDragId,
+  setHoverLayerId,
 } = editorSlice.actions;
 
 export const selectCurImageId = (state: RootState) => state.editor.curImageId;
@@ -92,5 +101,6 @@ export const selectDragStartMouseCoordinate = (state: RootState) =>
 export const selectDragStartLayersCoordinate = (state: RootState) =>
   state.editor.dragStartLayersCoordinate;
 export const selectDragId = (state: RootState) => state.editor.dragId;
+export const selectHoverLayerId = (state: RootState) => state.editor.hoverLayerId;
 
 export default editorSlice.reducer;

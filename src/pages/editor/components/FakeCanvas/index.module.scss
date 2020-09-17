@@ -1,0 +1,20 @@
+.fakeCanvas {
+  position: absolute;
+  pointer-events: none;
+
+  .curContainer {
+    position: absolute;
+
+    .curItem {
+      border: 1px solid #4af;
+    }
+  }
+
+  .hoverContainer {
+    position: absolute;
+
+    .hoverItem {
+      border: 2px solid #4af;
+    }
+  }
+}

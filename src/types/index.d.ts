@@ -107,6 +107,9 @@ interface IEditorState {
   // 当前选中图层 id
   curLayerIds: string[];
 
+  // 当前 hover 图层 id
+  hoverLayerId: string;
+
   // 是否处于拖拽状态
   isDraging: boolean;
 

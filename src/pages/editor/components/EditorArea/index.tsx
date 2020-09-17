@@ -11,7 +11,7 @@ import {
   setCurLayers,
 } from '../../../../features/editor/editorSlice';
 import { Layer } from '../../../../layer';
-import MoveableControlBox from '../MoveableControlBox';
+import FakeCanvas from '../FakeCanvas';
 
 function EditorArea() {
   const canvas = useSelector(selectCanvas);
@@ -23,7 +23,7 @@ function EditorArea() {
   return (
     <div
       className={styles.editorArea}
-      onMouseDown={(e) => {
+      onMouseDown={() => {
         dispatch(setCurLayers([]));
       }}
     >
@@ -39,8 +39,8 @@ function EditorArea() {
               <Layer layer={layers.byId[id]} key={id} />
             ))
           : null}
-        <MoveableControlBox />
       </div>
+      <FakeCanvas />
     </div>
   );
 }

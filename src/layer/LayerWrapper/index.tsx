@@ -7,6 +7,7 @@ import {
   setDragStartMouseCoordinate,
   setDragStartLayersCoordinate,
   setDragId,
+  setHoverLayerId,
 } from '../../features/editor/editorSlice';
 import { guid } from '../../utils/util';
 
@@ -23,6 +24,12 @@ function LayerWrapper(props: { children: ReactElement; layer: ILayer }) {
 
   return (
     <div
+      onMouseEnter={() => {
+        dispatch(setHoverLayerId(id));
+      }}
+      onMouseLeave={() => {
+        dispatch(setHoverLayerId(''));
+      }}
       onMouseDown={(e) => {
         dispatch(setCurLayers([id]));
         dispatch(setIsDraging(true));

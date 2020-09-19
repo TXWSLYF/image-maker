@@ -3,12 +3,12 @@ import LayerWrapper from '../LayerWrapper';
 
 function TextLayer(props: { layer: ITextLayer }) {
   const {
-    properties: { fontSize, text },
+    properties: { fontSize, text, fontFamily, color },
   } = props.layer;
 
   return (
     <LayerWrapper layer={props.layer}>
-      <span style={{ fontSize }}>{text}</span>
+      <div style={{ fontSize, fontFamily, lineHeight: `${fontSize}px`, color }}>{text}</div>
     </LayerWrapper>
   );
 }

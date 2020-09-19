@@ -11,15 +11,4 @@
     transition: all 0.2s ease-in-out 0s;
     cursor: pointer;
   }
-
-  .propertyRow {
-    display: flex;
-    justify-content: space-between;
-
-    label {
-      display: inline-block;
-      width: 60px;
-      text-align: right;
-    }
-  }
 }

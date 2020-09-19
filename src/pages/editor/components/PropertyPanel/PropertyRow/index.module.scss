@@ -1,0 +1,15 @@
+.propertyRow {
+    display: flex;
+    justify-content: space-between;
+
+    label {
+        display: inline-block;
+        width: 60px;
+        text-align: right;
+    }
+
+    > div {
+        display: flex;
+        align-items: center;
+    }
+}

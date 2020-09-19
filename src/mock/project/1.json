@@ -13,7 +13,10 @@
         "31457c3a701d": {
           "id": "31457c3a701d",
           "name": "xx",
-          "layers": ["31457c3a701f"]
+          "layers": [
+            "31457c3a701f",
+            "5cf3000344e6"
+          ]
         },
         "31457c3a701v": {
           "id": "31457c3a701v",
@@ -21,7 +24,10 @@
           "layers": []
         }
       },
-      "allIds": ["31457c3a701d", "31457c3a701v"]
+      "allIds": [
+        "31457c3a701d",
+        "31457c3a701v"
+      ]
     },
     "layers": {
       "byId": {
@@ -31,8 +37,8 @@
           "editable": true,
           "deletable": true,
           "properties": {
-            "x": 0,
-            "y": 0,
+            "x": 100,
+            "y": 100,
             "width": 100,
             "height": 100,
             "color": "black",
@@ -40,9 +46,32 @@
             "rotation": 0,
             "src": "https://static.xhxly.cn/fc357090-5a22-11ea-82db-91c6358ad7fc.png"
           }
+        },
+        "5cf3000344e6": {
+          "id": "5cf3000344e6",
+          "type": "TEXT",
+          "editable": true,
+          "deletable": true,
+          "properties": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 20,
+            "opacity": 1,
+            "rotation": 0,
+            "text": "hello",
+            "fontSize": 20,
+            "fontFamily": "sans-serif",
+            "textAlign": "left",
+            "lineHeight": 20,
+            "color": "#000000"
+          }
         }
       },
-      "allIds": ["31457c3a701f"]
+      "allIds": [
+        "31457c3a701f",
+        "5cf3000344e6"
+      ]
     }
   }
 }

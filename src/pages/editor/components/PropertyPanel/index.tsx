@@ -30,7 +30,10 @@ function PropertyPanel() {
                 {(() => {
                   switch (layer.type) {
                     case 'TEXT':
-                      return <TextPropertyPanel />;
+                      return <TextPropertyPanel
+                        properties={layer.properties}
+                        layerId={layer.id}
+                      />;
                     case 'IMG':
                       return <ImgPropertyPanel />;
                     default:

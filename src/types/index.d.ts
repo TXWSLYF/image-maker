@@ -27,6 +27,7 @@ interface ITextProperties extends IBaseProperties {
   fontFamily: string;
   lineHeight: number;
   textAlign: 'left' | 'center' | 'right';
+  color: string;
 }
 
 interface IImgProperties extends IBaseProperties {

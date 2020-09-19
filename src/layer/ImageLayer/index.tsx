@@ -8,7 +8,7 @@ function ImageLayer(props: { layer: IImgLayer }) {
   } = props.layer;
 
   return (
-    <LayerWrapper layer={props.layer}>
+    <LayerWrapper layer={props.layer} style={{fontSize: 0}}>
       <img src={src} alt={src} className={styles.imgLayer}/>
     </LayerWrapper>
   );

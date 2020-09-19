@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, StyleHTMLAttributes } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './index.module.scss';
 import {
@@ -14,13 +14,20 @@ import { guid } from '../../utils/util';
 /**
  * @description HOC，所有图层的 wrapper
  */
-function LayerWrapper(props: { children: ReactElement; layer: ILayer }) {
+function LayerWrapper(props: { children: ReactElement; layer: ILayer; style?: React.CSSProperties }) {
   const dispatch = useDispatch();
 
-  const {
+  const { style, layer: {
     id,
     properties: { width, height, x, y, rotation, opacity },
-  } = props.layer;
+  } } = props;
+
+  const innerStyle = {
+    width,
+    height,
+    transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`,
+    opacity,
+  }
 
   return (
     <div
@@ -39,12 +46,7 @@ function LayerWrapper(props: { children: ReactElement; layer: ILayer }) {
         e.stopPropagation();
       }}
       className={styles.layerWrapper}
-      style={{
-        width,
-        height,
-        transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`,
-        opacity,
-      }}
+      style={style ? Object.assign(innerStyle, style) : innerStyle}
     >
       {props.children}
     </div>

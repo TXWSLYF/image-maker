@@ -6,7 +6,7 @@
     "title": "demo",
     "canvas": {
       "width": 600,
-      "height": 600
+      "height": 800
     },
     "images": {
       "byId": {
@@ -39,12 +39,12 @@
           "properties": {
             "x": 100,
             "y": 100,
-            "width": 100,
-            "height": 100,
+            "width": 300,
+            "height": 200,
             "color": "black",
             "opacity": 1,
             "rotation": 0,
-            "src": "https://static.xhxly.cn/fc357090-5a22-11ea-82db-91c6358ad7fc.png"
+            "src": "http://static.xhxly.cn/1fcdaef0-5a23-11ea-82db-91c6358ad7fc.png"
           }
         },
         "5cf3000344e6": {

@@ -1,17 +1,17 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import styles from './index.module.scss';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import styles from "./index.module.scss";
 import {
   selectCanvas,
   selectImages,
   selectLayers,
-} from '../../../../features/project/projectSlice';
+} from "../../../../features/project/projectSlice";
 import {
   selectCurImageId,
   setCurLayers,
-} from '../../../../features/editor/editorSlice';
-import { Layer } from '../../../../layer';
-import FakeCanvas from '../FakeCanvas';
+} from "../../../../features/editor/editorSlice";
+import { Layer } from "../../../../layer";
+import FakeCanvas from "../FakeCanvas";
 
 function EditorArea() {
   const canvas = useSelector(selectCanvas);
@@ -28,6 +28,7 @@ function EditorArea() {
       }}
     >
       <div
+        id="editorCanvas"
         className={styles.canvas}
         style={{
           width: canvas.width,

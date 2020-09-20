@@ -7,7 +7,8 @@
     top: 0;
     left: 0;
 
-    .curItem {
+    .itemSelectBorder,
+    .itemTotalBorder {
       position: absolute;
       border: 1px solid #4af;
     }
@@ -15,9 +16,129 @@
 
   .hoverContainer {
     position: absolute;
+    top: 0;
+    left: 0;
 
     .hoverItem {
+      position: absolute;
       border: 2px solid #4af;
+    }
+  }
+
+  .selectionHandler {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    .singleResizer {
+      position: absolute;
+
+      > * {
+        pointer-events: auto;
+      }
+
+      .rotate {
+        position: absolute;
+        left: 50%;
+        top: -26px;
+        width: 18px;
+        height: 18px;
+        margin-left: -9px;
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .resizable-handler {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+        z-index: 1;
+
+        &.t,
+        &.b {
+          margin-left: -7px;
+        }
+
+        &.l,
+        &.r {
+          margin-top: -7px;
+        }
+
+        &.t,
+        &.tl,
+        &.tr {
+          top: -7px;
+        }
+
+        &.b,
+        &.bl,
+        &.br {
+          bottom: -7px;
+        }
+
+        &.br,
+        &.r,
+        &.tr {
+          right: -7px;
+        }
+
+        &.bl,
+        &.l,
+        &.tl {
+          left: -7px;
+        }
+      }
+
+      .t,
+      .b {
+        left: 50%;
+        margin-left: -3px;
+      }
+
+      .l,
+      .r {
+        top: 50%;
+        margin-top: -3px;
+      }
+
+      .t,
+      .tl,
+      .tr {
+        top: -3px;
+      }
+
+      .b,
+      .bl,
+      .br {
+        bottom: -3px;
+      }
+
+      .r,
+      .tr,
+      .br {
+        right: -3px;
+      }
+
+      .l,
+      .tl,
+      .bl {
+        left: -3px;
+      }
+
+      .square {
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        background: white;
+        border-radius: 50%;
+        border: 1px solid #298df8;
+      }
     }
   }
 }

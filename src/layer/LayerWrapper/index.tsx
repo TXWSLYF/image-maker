@@ -1,5 +1,5 @@
-import React, { ReactElement, StyleHTMLAttributes } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { ReactElement } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './index.module.scss';
 import {
   setCurLayers,
@@ -8,14 +8,19 @@ import {
   setDragStartLayersCoordinate,
   setDragId,
   setHoverLayerId,
+  addCurLayers,
+  selectCurLayerIds
 } from '../../features/editor/editorSlice';
 import { guid } from '../../utils/util';
+import { selectLayers } from '../../features/project/projectSlice';
 
 /**
  * @description HOC，所有图层的 wrapper
  */
 function LayerWrapper(props: { children: ReactElement; layer: ILayer; style?: React.CSSProperties }) {
   const dispatch = useDispatch();
+  const curLayerIds = useSelector(selectCurLayerIds);
+  const layers = useSelector(selectLayers);
 
   const { style, layer: {
     id,
@@ -38,11 +43,26 @@ function LayerWrapper(props: { children: ReactElement; layer: ILayer; style?: Re
         dispatch(setHoverLayerId(''));
       }}
       onMouseDown={(e) => {
-        dispatch(setCurLayers([id]));
+
+        // 点击当前选中的图层，直接跳过
+        if (!curLayerIds.includes(id)) {
+          if (e.shiftKey) {
+            // 如果 shift 处于按下状态，多选
+            dispatch(addCurLayers(id));
+          } else {
+            // 否则单选
+            dispatch(setCurLayers([id]));
+          }
+        }
+
         dispatch(setIsDraging(true));
         dispatch(setDragStartMouseCoordinate({ x: e.clientX, y: e.clientY }));
         dispatch(setDragId(guid()));
-        dispatch(setDragStartLayersCoordinate([{ id, x, y }]));
+        dispatch(setDragStartLayersCoordinate([{ id, x, y }, ...curLayerIds.map(layerId => {
+          const { x, y } = layers.byId[layerId].properties
+
+          return { id: layerId, x, y }
+        })]));
         e.stopPropagation();
       }}
       className={styles.layerWrapper}

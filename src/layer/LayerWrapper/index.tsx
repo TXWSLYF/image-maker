@@ -43,26 +43,45 @@ function LayerWrapper(props: { children: ReactElement; layer: ILayer; style?: Re
         dispatch(setHoverLayerId(''));
       }}
       onMouseDown={(e) => {
+        let startLayersCoordinate: IEditorState['dragStartLayersCoordinate'] = []
+
+        // 当前选中图层坐标
+        const curLayersCoordinate = curLayerIds.map(layerId => {
+          const { x, y } = layers.byId[layerId].properties
+
+          return { id: layerId, x, y }
+        })
+
+        // 当前点击图层坐标
+        const curLayerCoordinate = { id, x, y }
+
+        // 开启拖拽
+        dispatch(setIsDraging(true));
+
+        // 记录鼠标初始位置
+        dispatch(setDragStartMouseCoordinate({ x: e.clientX, y: e.clientY }));
+
+        // 标记本次拖拽 id
+        dispatch(setDragId(guid()));
 
         // 点击当前选中的图层，直接跳过
         if (!curLayerIds.includes(id)) {
           if (e.shiftKey) {
             // 如果 shift 处于按下状态，多选
             dispatch(addCurLayers(id));
+            startLayersCoordinate = [curLayerCoordinate, ...curLayersCoordinate];
           } else {
             // 否则单选
             dispatch(setCurLayers([id]));
+            startLayersCoordinate = [curLayerCoordinate];
           }
+        } else {
+          startLayersCoordinate = curLayersCoordinate
         }
 
-        dispatch(setIsDraging(true));
-        dispatch(setDragStartMouseCoordinate({ x: e.clientX, y: e.clientY }));
-        dispatch(setDragId(guid()));
-        dispatch(setDragStartLayersCoordinate([{ id, x, y }, ...curLayerIds.map(layerId => {
-          const { x, y } = layers.byId[layerId].properties
+        // 设置拖拽移动图层坐标点
+        dispatch(setDragStartLayersCoordinate(startLayersCoordinate));
 
-          return { id: layerId, x, y }
-        })]));
         e.stopPropagation();
       }}
       className={styles.layerWrapper}

@@ -3,6 +3,7 @@ import undoable, { excludeAction } from 'redux-undo';
 import projectReducer, {
   initProject,
   setLayersCoordinate,
+  setLayersColor,
 } from '../features/project/projectSlice';
 import editorReducer from '../features/editor/editorSlice';
 
@@ -33,9 +34,13 @@ export const store = configureStore({
           // }
 
           return setLayersCoordinate.type + action.payload.dragId;
-        } else {
-          return null;
         }
+
+        if (action.type === setLayersColor.type) {
+          return setLayersColor.type + action.payload.layerIds.toString();
+        }
+
+        return null;
       },
 
       // filter: (action) => {

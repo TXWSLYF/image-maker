@@ -96,6 +96,20 @@ export const projectSlice = createSlice({
         ] = newProperties[key];
       }
     },
+
+    /**
+     * @description 改变图层 color 属性
+     */
+    setLayersColor(
+      state,
+      action: PayloadAction<{ layerIds: string[]; newColor: string }>) {
+      const { layerIds, newColor } = action.payload;
+
+      layerIds.forEach(layerId => {
+        const layer: ITextLayer = state.layers.byId[layerId] as ITextLayer;
+        layer.properties.color = newColor;
+      })
+    }
   },
 });
 
@@ -106,6 +120,7 @@ export const {
   addLayer,
   setLayersCoordinate,
   setLayersProperties,
+  setLayersColor,
 } = projectSlice.actions;
 
 export const selectImages = (state: RootState) => state.project.present.images;

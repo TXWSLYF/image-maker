@@ -3,7 +3,7 @@ import { InputNumber, Collapse } from 'antd';
 import { useDispatch } from 'react-redux';
 import styles from './index.module.scss';
 import PropertyRow from '../PropertyRow'
-import { setLayersProperties } from '../../../../../features/project/projectSlice';
+import { setLayersProperties } from 'src/features/project/projectSlice';
 
 const { Panel } = Collapse;
 

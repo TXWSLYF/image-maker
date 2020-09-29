@@ -1,18 +1,18 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './index.module.scss';
-import TopBar from '../TopBar';
-import PageList from '../PageList';
-import EditArea from '../EditorArea';
-import PropertyPanel from '../PropertyPanel';
-import { setLayersCoordinate } from '../../../../features/project/projectSlice';
+import { setLayersCoordinate } from 'src/features/project/projectSlice';
 import {
   selectIsDraging,
   setIsDraging,
   selectDragStartMouseCoordinate,
   selectDragStartLayersCoordinate,
   selectDragId,
-} from '../../../../features/editor/editorSlice';
+} from 'src/features/editor/editorSlice';
+import styles from './index.module.scss';
+import TopBar from '../TopBar';
+import PageList from '../PageList';
+import EditArea from '../EditorArea';
+import PropertyPanel from '../PropertyPanel';
 
 function Draggeble() {
   const dispatch = useDispatch();

@@ -2,9 +2,9 @@ import { Collapse } from 'antd';
 import React from 'react';
 import PropertyRow from '../PropertyRow';
 import './index.scss';
-import ChromeColorPicker from '../../../../../components/ChromeColorPicker'
+import ChromeColorPicker from 'src/components/ChromeColorPicker'
 import { useDispatch } from 'react-redux';
-import { setLayersColor } from '../../../../../features/project/projectSlice';
+import { setLayersColor } from 'src/features/project/projectSlice';
 
 const { Panel } = Collapse
 

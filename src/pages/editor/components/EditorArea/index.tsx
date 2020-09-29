@@ -5,12 +5,12 @@ import {
   selectCanvas,
   selectImages,
   selectLayers,
-} from "../../../../features/project/projectSlice";
+} from "src/features/project/projectSlice";
 import {
   selectCurImageId,
   setCurLayers,
-} from "../../../../features/editor/editorSlice";
-import { Layer } from "../../../../layer";
+} from "src/features/editor/editorSlice";
+import { Layer } from "src/layer";
 import FakeCanvas from "../FakeCanvas";
 
 function EditorArea() {

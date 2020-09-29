@@ -1,11 +1,11 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import undoable, { excludeAction } from 'redux-undo';
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import undoable, { excludeAction } from "redux-undo";
 import projectReducer, {
   initProject,
   setLayersCoordinate,
   setLayersColor,
-} from '../features/project/projectSlice';
-import editorReducer from '../features/editor/editorSlice';
+} from "src/features/project/projectSlice";
+import editorReducer from "src/features/editor/editorSlice";
 
 export const store = configureStore({
   reducer: {

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
-import { guid } from '../../utils/util';
+import { RootState } from 'src/app/store';
+import { guid } from 'src/utils/util';
 
 const initialState: IProjectState = {
   id: 0,

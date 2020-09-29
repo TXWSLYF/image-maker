@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './index.module.scss';
 import { useSelector } from 'react-redux';
-import { selectCurLayerIds } from '../../../../features/editor/editorSlice';
-import { selectLayers } from '../../../../features/project/projectSlice';
+import { selectCurLayerIds } from 'src/features/editor/editorSlice';
+import { selectLayers } from 'src/features/project/projectSlice';
 import PagePropertyPanel from './PagePropertyPanel';
 import BasePropertyPanel from './BasePropertyPanel';
 import TextPropertyPanel from './TextPropertyPanel';

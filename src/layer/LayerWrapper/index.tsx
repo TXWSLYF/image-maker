@@ -10,9 +10,9 @@ import {
   setHoverLayerId,
   addCurLayers,
   selectCurLayerIds
-} from '../../features/editor/editorSlice';
-import { guid } from '../../utils/util';
-import { selectLayers } from '../../features/project/projectSlice';
+} from 'src/features/editor/editorSlice';
+import { guid } from 'src/utils/util';
+import { selectLayers } from 'src/features/project/projectSlice';
 
 /**
  * @description HOC，所有图层的 wrapper

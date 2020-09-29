@@ -7,9 +7,9 @@ import {
   setDragStartMouseCoordinate,
   setDragStartLayersCoordinate,
   setDragId,
-} from '../../../../features/editor/editorSlice';
-import { selectLayers } from '../../../../features/project/projectSlice';
-import { guid } from '../../../../utils/util';
+} from 'src/features/editor/editorSlice';
+import { selectLayers } from 'src/features/project/projectSlice';
+import { guid } from 'src/utils/util';
 
 function caculateRectRotateCoordinate({
   x,

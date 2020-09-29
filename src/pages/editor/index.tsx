@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getProjectInfo } from '../../api/project';
+import { initProject } from 'src/features/project/projectSlice';
+import { setCurImage } from 'src/features/editor/editorSlice';
+import { getProjectInfo } from 'src/api/project';
 import styles from './index.module.scss';
 import Draggable from './components/Draggable';
-import { initProject } from '../../features/project/projectSlice';
-import { setCurImage } from '../../features/editor/editorSlice';
 
 function EditorPage() {
   const dispatch = useDispatch();

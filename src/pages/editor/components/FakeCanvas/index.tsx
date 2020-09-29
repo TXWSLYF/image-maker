@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import {
   selectCurLayerIds,
   selectHoverLayerId,
-} from "../../../../features/editor/editorSlice";
+} from "src/features/editor/editorSlice";
 import {
   selectCanvas,
   selectLayers,
-} from "../../../../features/project/projectSlice";
+} from "src/features/project/projectSlice";
 import styles from "./index.module.scss";
 
 function curContainerRender(

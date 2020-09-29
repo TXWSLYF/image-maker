@@ -4,16 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from 'redux-undo';
 import { Button } from 'antd';
 import styles from './index.module.scss';
-import { textLayer, imgLayer } from '../../../../layer';
+import { textLayer, imgLayer } from 'src/layer';
 import {
   addLayer,
   selectProjectPastLength,
   selectProjectFutureLength,
-} from '../../../../features/project/projectSlice';
+} from 'src/features/project/projectSlice';
 import {
   selectCurImageId,
   setCurLayers,
-} from '../../../../features/editor/editorSlice';
+} from 'src/features/editor/editorSlice';
 
 const layerList = [
   {

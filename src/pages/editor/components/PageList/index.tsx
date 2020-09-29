@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './index.module.scss';
-import { selectImages } from '../../../../features/project/projectSlice';
+import { selectImages } from 'src/features/project/projectSlice';
 import {
   selectCurImageId,
   setCurImage,
   setCurLayers,
-} from '../../../../features/editor/editorSlice';
+} from 'src/features/editor/editorSlice';
 
 function PageList() {
   const images = useSelector(selectImages);

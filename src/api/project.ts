@@ -1,4 +1,4 @@
 import request from './_request';
 
 export const getProjectInfo = (id: string) =>
-  request.get<IRequestResponse<IProjectState>>(`/project/${id}`);
+  request.get<IResponseWrapper<IProjectState>>(`/project/${id}`);

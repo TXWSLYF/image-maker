@@ -1,4 +1,4 @@
-// 基础properties定义
+// 基础 properties 定义
 interface IBaseProperties {
   // 横坐标
   x: number;
@@ -21,6 +21,7 @@ interface IBaseProperties {
   // zIndex?: number;
 }
 
+// 文字组件 properties
 interface ITextProperties extends IBaseProperties {
   text: string;
   fontSize: number;
@@ -30,10 +31,12 @@ interface ITextProperties extends IBaseProperties {
   color: string;
 }
 
+// 图片组件 properties
 interface IImgProperties extends IBaseProperties {
   src: string;
 }
 
+// 基础图层
 interface IBaseLayer<T = IBaseProperties> {
   // id
   id: string;
@@ -51,10 +54,12 @@ interface IBaseLayer<T = IBaseProperties> {
   properties: T;
 }
 
+// 文字图层
 interface ITextLayer extends IBaseLayer<ITextProperties> {
   type: 'TEXT';
 }
 
+// 图片图层
 interface IImgLayer extends IBaseLayer<IImgProperties> {
   type: 'IMG';
 }
@@ -124,13 +129,33 @@ interface IEditorState {
   dragStartLayersCoordinate: ({ id: string } & ICoordinate)[];
 }
 
-interface IRequestResponse<T> {
+// 通用返回数据格式
+interface IResponseWrapper<T> {
   errNo: number;
   errMsg: string;
   data: T;
 }
 
+// 二维坐标系坐标点
 interface ICoordinate {
   x: number;
   y: number;
+}
+
+// 矩形坐标尺寸
+interface IRect {
+  // 矩形左上角 x 坐标
+  x: number;
+
+  // 矩形左上角 y 坐标
+  y: number;
+
+  // 矩形宽度
+  width: number;
+
+  // 矩形高度
+  height: number;
+
+  // 矩形旋转角
+  rotation: number;
 }

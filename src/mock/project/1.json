@@ -6,7 +6,7 @@
     "title": "demo",
     "canvas": {
       "width": 600,
-      "height": 800
+      "height": 500
     },
     "images": {
       "byId": {

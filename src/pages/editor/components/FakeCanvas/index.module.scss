@@ -39,6 +39,7 @@
       }
 
       .rotate {
+        pointer-events: auto;
         position: absolute;
         left: 50%;
         top: -26px;

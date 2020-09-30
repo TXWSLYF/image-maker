@@ -58,6 +58,9 @@ export const editorSlice = createSlice({
       state.hoverLayerId = action.payload;
     },
 
+    /**
+     * @description 设置拖拽状态
+     */
     setIsDraging: (state, action: PayloadAction<boolean>) => {
       state.isDraging = action.payload;
     },
@@ -101,6 +104,7 @@ export const selectDragStartMouseCoordinate = (state: RootState) =>
 export const selectDragStartLayersCoordinate = (state: RootState) =>
   state.editor.dragStartLayersCoordinate;
 export const selectDragId = (state: RootState) => state.editor.dragId;
-export const selectHoverLayerId = (state: RootState) => state.editor.hoverLayerId;
+export const selectHoverLayerId = (state: RootState) =>
+  state.editor.hoverLayerId;
 
 export default editorSlice.reducer;

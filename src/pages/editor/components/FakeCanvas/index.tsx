@@ -1,9 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {
-  selectCurLayerIds,
-  selectHoverLayerId,
-} from 'src/features/editor/editorSlice';
+import { selectCurLayerIds, selectHoverLayerId } from 'src/features/editor/editorSlice';
 import { selectCanvas, selectLayers } from 'src/features/project/projectSlice';
 import calcMiniEnclosingRect from 'src/utils/calcMiniEnclosingRect';
 import styles from './index.module.scss';
@@ -17,20 +14,13 @@ interface ISingleResizerStyle {
 function curContainerRender(
   curLayerIds: string[],
   layersById: IProjectState['layers']['byId'],
-  singleResizerStyle: ISingleResizerStyle
+  singleResizerStyle: ISingleResizerStyle,
 ) {
   return (
     <div className={styles.curContainer}>
-      {curLayerIds.length > 1 ? (
-        <div
-          className={styles.itemTotalBorder}
-          style={singleResizerStyle}
-        ></div>
-      ) : null}
+      {curLayerIds.length > 1 ? <div className={styles.itemTotalBorder} style={singleResizerStyle}></div> : null}
       {curLayerIds.map((curLayerId) => {
-        const { width, height, x, y, rotation } = layersById[
-          curLayerId
-        ].properties;
+        const { width, height, x, y, rotation } = layersById[curLayerId].properties;
 
         return (
           <div
@@ -51,11 +41,10 @@ function curContainerRender(
 function hoverContainerRender(
   hoverLayerId: string,
   curLayerIds: string[],
-  layersById: IProjectState['layers']['byId']
+  layersById: IProjectState['layers']['byId'],
 ) {
   if (!hoverLayerId) return null;
-  if (curLayerIds.findIndex((layerId) => layerId === hoverLayerId) !== -1)
-    return null;
+  if (curLayerIds.findIndex((layerId) => layerId === hoverLayerId) !== -1) return null;
 
   const { width, height, x, y, rotation } = layersById[hoverLayerId].properties;
 
@@ -73,10 +62,7 @@ function hoverContainerRender(
   );
 }
 
-function selectionHandlerRender(
-  curLayerIds: string[],
-  singleResizerStyle: ISingleResizerStyle
-) {
+function selectionHandlerRender(curLayerIds: string[], singleResizerStyle: ISingleResizerStyle) {
   if (!curLayerIds.length) return null;
 
   return (
@@ -95,38 +81,14 @@ function selectionHandlerRender(
             ></path>
           </svg>
         </div>
-        <div
-          className={`${styles.t} ${styles['resizable-handler']}`}
-          style={{ cursor: 'nw-resize' }}
-        ></div>
-        <div
-          className={`${styles.b} ${styles['resizable-handler']}`}
-          style={{ cursor: 'se-resize' }}
-        ></div>
-        <div
-          className={`${styles.r} ${styles['resizable-handler']}`}
-          style={{ cursor: 'ne-resize' }}
-        ></div>
-        <div
-          className={`${styles.l} ${styles['resizable-handler']}`}
-          style={{ cursor: 'sw-resize' }}
-        ></div>
-        <div
-          className={`${styles.tr} ${styles['resizable-handler']}`}
-          style={{ cursor: 'n-resize' }}
-        ></div>
-        <div
-          className={`${styles.tl} ${styles['resizable-handler']}`}
-          style={{ cursor: 'w-resize' }}
-        ></div>
-        <div
-          className={`${styles.br} ${styles['resizable-handler']}`}
-          style={{ cursor: 'e-resize' }}
-        ></div>
-        <div
-          className={`${styles.bl} ${styles['resizable-handler']}`}
-          style={{ cursor: 's-resize' }}
-        ></div>
+        <div className={`${styles.t} ${styles['resizable-handler']}`} style={{ cursor: 'nw-resize' }}></div>
+        <div className={`${styles.b} ${styles['resizable-handler']}`} style={{ cursor: 'se-resize' }}></div>
+        <div className={`${styles.r} ${styles['resizable-handler']}`} style={{ cursor: 'ne-resize' }}></div>
+        <div className={`${styles.l} ${styles['resizable-handler']}`} style={{ cursor: 'sw-resize' }}></div>
+        <div className={`${styles.tr} ${styles['resizable-handler']}`} style={{ cursor: 'n-resize' }}></div>
+        <div className={`${styles.tl} ${styles['resizable-handler']}`} style={{ cursor: 'w-resize' }}></div>
+        <div className={`${styles.br} ${styles['resizable-handler']}`} style={{ cursor: 'e-resize' }}></div>
+        <div className={`${styles.bl} ${styles['resizable-handler']}`} style={{ cursor: 's-resize' }}></div>
         <div className={`${styles.t} ${styles.square}`}></div>
         <div className={`${styles.b} ${styles.square}`}></div>
         <div className={`${styles.r} ${styles.square}`}></div>
@@ -148,9 +110,7 @@ function FakeCanvas() {
 
   let singleResizerStyle = undefined;
   if (curLayerIds.length === 1) {
-    const { width, height, x, y, rotation } = layersById[
-      curLayerIds[0]
-    ].properties;
+    const { width, height, x, y, rotation } = layersById[curLayerIds[0]].properties;
     singleResizerStyle = {
       width,
       height,
@@ -158,7 +118,7 @@ function FakeCanvas() {
     };
   } else {
     const { width, height, x, y, rotation } = calcMiniEnclosingRect(
-      curLayerIds.map((layerId) => layersById[layerId].properties)
+      curLayerIds.map((layerId) => layersById[layerId].properties),
     );
     singleResizerStyle = {
       width,

@@ -18,9 +18,7 @@ function Draggeble() {
   const dispatch = useDispatch();
   const isDraging = useSelector(selectIsDraging);
   const { x, y } = useSelector(selectDragStartMouseCoordinate);
-  const dragStartLayersCoordinate = useSelector(
-    selectDragStartLayersCoordinate
-  );
+  const dragStartLayersCoordinate = useSelector(selectDragStartLayersCoordinate);
   const dragId = useSelector(selectDragId);
 
   return (
@@ -34,13 +32,11 @@ function Draggeble() {
           dispatch(
             setLayersCoordinate({
               dragId,
-              idWithCoordinate: dragStartLayersCoordinate.map(
-                (idWithCoordinate) => {
-                  const { id, x, y } = idWithCoordinate;
-                  return { id, x: x + offsetX, y: y + offsetY };
-                }
-              ),
-            })
+              idWithCoordinate: dragStartLayersCoordinate.map((idWithCoordinate) => {
+                const { id, x, y } = idWithCoordinate;
+                return { id, x: x + offsetX, y: y + offsetY };
+              }),
+            }),
           );
         }
       }}

@@ -1,11 +1,7 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import undoable, { excludeAction } from "redux-undo";
-import projectReducer, {
-  initProject,
-  setLayersCoordinate,
-  setLayersColor,
-} from "src/features/project/projectSlice";
-import editorReducer from "src/features/editor/editorSlice";
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import undoable, { excludeAction } from 'redux-undo';
+import projectReducer, { initProject, setLayersCoordinate, setLayersColor } from 'src/features/project/projectSlice';
+import editorReducer from 'src/features/editor/editorSlice';
 
 export const store = configureStore({
   reducer: {
@@ -69,9 +65,4 @@ export const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;

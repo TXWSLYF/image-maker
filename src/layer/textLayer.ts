@@ -16,7 +16,7 @@ const textLayer = (): ITextLayer => ({
     fontFamily: 'sans-serif',
     textAlign: 'left',
     lineHeight: 20,
-    color: '#000000'
+    color: '#000000',
   },
 });
 

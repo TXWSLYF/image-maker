@@ -9,7 +9,7 @@ import {
   setDragId,
   setHoverLayerId,
   addCurLayers,
-  selectCurLayerIds
+  selectCurLayerIds,
 } from 'src/features/editor/editorSlice';
 import { guid } from 'src/utils/util';
 import { selectLayers } from 'src/features/project/projectSlice';
@@ -22,17 +22,20 @@ function LayerWrapper(props: { children: ReactElement; layer: ILayer; style?: Re
   const curLayerIds = useSelector(selectCurLayerIds);
   const layers = useSelector(selectLayers);
 
-  const { style, layer: {
-    id,
-    properties: { width, height, x, y, rotation, opacity },
-  } } = props;
+  const {
+    style,
+    layer: {
+      id,
+      properties: { width, height, x, y, rotation, opacity },
+    },
+  } = props;
 
   const innerStyle = {
     width,
     height,
     transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`,
     opacity,
-  }
+  };
 
   return (
     <div
@@ -43,17 +46,17 @@ function LayerWrapper(props: { children: ReactElement; layer: ILayer; style?: Re
         dispatch(setHoverLayerId(''));
       }}
       onMouseDown={(e) => {
-        let startLayersCoordinate: IEditorState['dragStartLayersCoordinate'] = []
+        let startLayersCoordinate: IEditorState['dragStartLayersCoordinate'] = [];
 
         // 当前选中图层坐标
-        const curLayersCoordinate = curLayerIds.map(layerId => {
-          const { x, y } = layers.byId[layerId].properties
+        const curLayersCoordinate = curLayerIds.map((layerId) => {
+          const { x, y } = layers.byId[layerId].properties;
 
-          return { id: layerId, x, y }
-        })
+          return { id: layerId, x, y };
+        });
 
         // 当前点击图层坐标
-        const curLayerCoordinate = { id, x, y }
+        const curLayerCoordinate = { id, x, y };
 
         // 开启拖拽
         dispatch(setIsDraging(true));
@@ -76,7 +79,7 @@ function LayerWrapper(props: { children: ReactElement; layer: ILayer; style?: Re
             startLayersCoordinate = [curLayerCoordinate];
           }
         } else {
-          startLayersCoordinate = curLayersCoordinate
+          startLayersCoordinate = curLayersCoordinate;
         }
 
         // 设置拖拽移动图层坐标点

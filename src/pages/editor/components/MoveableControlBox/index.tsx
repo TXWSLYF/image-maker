@@ -101,9 +101,7 @@ function MoveableControlBox() {
               key={index}
               className={styles.point}
               style={{
-                transform: `translate(${x - moveableDirectionSize / 2}px, ${
-                  y - moveableDirectionSize / 2
-                }px)`,
+                transform: `translate(${x - moveableDirectionSize / 2}px, ${y - moveableDirectionSize / 2}px)`,
                 width: moveableDirectionSize,
                 height: moveableDirectionSize,
               }}
@@ -119,9 +117,7 @@ function MoveableControlBox() {
           }}
           onMouseDown={(e) => {
             dispatch(setIsDraging(true));
-            dispatch(
-              setDragStartMouseCoordinate({ x: e.clientX, y: e.clientY })
-            );
+            dispatch(setDragStartMouseCoordinate({ x: e.clientX, y: e.clientY }));
             dispatch(setDragId(guid()));
             dispatch(
               setDragStartLayersCoordinate(
@@ -132,8 +128,8 @@ function MoveableControlBox() {
                   } = layer;
 
                   return { id, x, y };
-                })
-              )
+                }),
+              ),
             );
             e.stopPropagation();
           }}

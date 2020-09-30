@@ -51,10 +51,7 @@ export const projectSlice = createSlice({
      * @param imageId 添加图层的图片 id
      * @param layer 图层数据
      */
-    addLayer: (
-      state,
-      action: PayloadAction<{ imageId: string; layer: ILayer }>
-    ) => {
+    addLayer: (state, action: PayloadAction<{ imageId: string; layer: ILayer }>) => {
       const { imageId, layer } = action.payload;
       const id = guid();
       state.layers.byId[id] = Object.assign(layer, { id });
@@ -70,7 +67,7 @@ export const projectSlice = createSlice({
       action: PayloadAction<{
         dragId: string;
         idWithCoordinate: ({ id: string } & ICoordinate)[];
-      }>
+      }>,
     ) => {
       action.payload.idWithCoordinate.forEach((coordinateWithId) => {
         const { id, x, y } = coordinateWithId;
@@ -84,32 +81,25 @@ export const projectSlice = createSlice({
     /**
      * @description 改变图层属性
      */
-    setLayersProperties(
-      state,
-      action: PayloadAction<{ layerId: string; newProperties: any }>
-    ) {
+    setLayersProperties(state, action: PayloadAction<{ layerId: string; newProperties: any }>) {
       const { layerId, newProperties } = action.payload;
 
       for (const key in newProperties) {
-        state.layers.byId[layerId].properties[
-          key as keyof ILayer['properties']
-        ] = newProperties[key];
+        state.layers.byId[layerId].properties[key as keyof ILayer['properties']] = newProperties[key];
       }
     },
 
     /**
      * @description 改变图层 color 属性
      */
-    setLayersColor(
-      state,
-      action: PayloadAction<{ layerIds: string[]; newColor: string }>) {
+    setLayersColor(state, action: PayloadAction<{ layerIds: string[]; newColor: string }>) {
       const { layerIds, newColor } = action.payload;
 
-      layerIds.forEach(layerId => {
+      layerIds.forEach((layerId) => {
         const layer: ITextLayer = state.layers.byId[layerId] as ITextLayer;
         layer.properties.color = newColor;
-      })
-    }
+      });
+    },
   },
 });
 
@@ -126,9 +116,7 @@ export const {
 export const selectImages = (state: RootState) => state.project.present.images;
 export const selectLayers = (state: RootState) => state.project.present.layers;
 export const selectCanvas = (state: RootState) => state.project.present.canvas;
-export const selectProjectPastLength = (state: RootState) =>
-  state.project.past.length;
-export const selectProjectFutureLength = (state: RootState) =>
-  state.project.future.length;
+export const selectProjectPastLength = (state: RootState) => state.project.past.length;
+export const selectProjectFutureLength = (state: RootState) => state.project.future.length;
 
 export default projectSlice.reducer;

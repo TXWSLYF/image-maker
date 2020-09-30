@@ -19,7 +19,7 @@ request.interceptors.response.use(
 
     return response;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 export default request;

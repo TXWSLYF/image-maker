@@ -23,17 +23,11 @@ function PropertyPanel() {
             const [layer] = curLayers;
             return (
               <div>
-                <BasePropertyPanel
-                  properties={layer.properties}
-                  layerId={layer.id}
-                />
+                <BasePropertyPanel properties={layer.properties} layerId={layer.id} />
                 {(() => {
                   switch (layer.type) {
                     case 'TEXT':
-                      return <TextPropertyPanel
-                        properties={layer.properties}
-                        layerId={layer.id}
-                      />;
+                      return <TextPropertyPanel properties={layer.properties} layerId={layer.id} />;
                     case 'IMG':
                       return <ImgPropertyPanel />;
                     default:

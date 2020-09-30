@@ -5,15 +5,8 @@ import { ActionCreators } from 'redux-undo';
 import { Button } from 'antd';
 import styles from './index.module.scss';
 import { textLayer, imgLayer } from 'src/layer';
-import {
-  addLayer,
-  selectProjectPastLength,
-  selectProjectFutureLength,
-} from 'src/features/project/projectSlice';
-import {
-  selectCurImageId,
-  setCurLayers,
-} from 'src/features/editor/editorSlice';
+import { addLayer, selectProjectPastLength, selectProjectFutureLength } from 'src/features/project/projectSlice';
+import { selectCurImageId, setCurLayers } from 'src/features/editor/editorSlice';
 
 const layerList = [
   {
@@ -69,9 +62,7 @@ function TopBar() {
               className={styles.layerItem}
               key={name}
               onClick={() => {
-                dispatch(
-                  addLayer({ imageId: curImageId, layer: initialClass() })
-                );
+                dispatch(addLayer({ imageId: curImageId, layer: initialClass() }));
               }}
             >
               <Icon style={{ fontSize: 35 }} />
@@ -83,7 +74,9 @@ function TopBar() {
 
       {/* 操作区 */}
       <div className={styles.operations}>
-        <Button color="primary" type="primary">保存</Button>
+        <Button color="primary" type="primary">
+          保存
+        </Button>
         <Button color="primary" style={{ marginLeft: 10 }} type="primary">
           导出
         </Button>

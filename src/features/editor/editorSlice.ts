@@ -65,17 +65,11 @@ export const editorSlice = createSlice({
       state.isDraging = action.payload;
     },
 
-    setDragStartMouseCoordinate: (
-      state,
-      action: PayloadAction<ICoordinate>
-    ) => {
+    setDragStartMouseCoordinate: (state, action: PayloadAction<ICoordinate>) => {
       state.dragStartMouseCoordinate = action.payload;
     },
 
-    setDragStartLayersCoordinate: (
-      state,
-      action: PayloadAction<IEditorState['dragStartLayersCoordinate']>
-    ) => {
+    setDragStartLayersCoordinate: (state, action: PayloadAction<IEditorState['dragStartLayersCoordinate']>) => {
       state.dragStartLayersCoordinate = action.payload;
     },
 
@@ -99,12 +93,9 @@ export const {
 export const selectCurImageId = (state: RootState) => state.editor.curImageId;
 export const selectCurLayerIds = (state: RootState) => state.editor.curLayerIds;
 export const selectIsDraging = (state: RootState) => state.editor.isDraging;
-export const selectDragStartMouseCoordinate = (state: RootState) =>
-  state.editor.dragStartMouseCoordinate;
-export const selectDragStartLayersCoordinate = (state: RootState) =>
-  state.editor.dragStartLayersCoordinate;
+export const selectDragStartMouseCoordinate = (state: RootState) => state.editor.dragStartMouseCoordinate;
+export const selectDragStartLayersCoordinate = (state: RootState) => state.editor.dragStartLayersCoordinate;
 export const selectDragId = (state: RootState) => state.editor.dragId;
-export const selectHoverLayerId = (state: RootState) =>
-  state.editor.hoverLayerId;
+export const selectHoverLayerId = (state: RootState) => state.editor.hoverLayerId;
 
 export default editorSlice.reducer;

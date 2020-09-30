@@ -1,6 +1,6 @@
 import React from 'react';
 import LayerWrapper from '../LayerWrapper';
-import styles from './index.module.scss'
+import styles from './index.module.scss';
 
 function ImageLayer(props: { layer: IImgLayer }) {
   const {
@@ -8,8 +8,8 @@ function ImageLayer(props: { layer: IImgLayer }) {
   } = props.layer;
 
   return (
-    <LayerWrapper layer={props.layer} style={{fontSize: 0}}>
-      <img src={src} alt={src} className={styles.imgLayer}/>
+    <LayerWrapper layer={props.layer} style={{ fontSize: 0 }}>
+      <img src={src} alt={src} className={styles.imgLayer} />
     </LayerWrapper>
   );
 }

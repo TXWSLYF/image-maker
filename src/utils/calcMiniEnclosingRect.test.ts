@@ -1,7 +1,4 @@
-import calcMiniEnclosingRect, {
-  calcRectCenter,
-  calcRectCoordinates,
-} from './calcMiniEnclosingRect';
+import calcMiniEnclosingRect, { calcRectCenter, calcRectCoordinates } from './calcMiniEnclosingRect';
 import calcRotatePoint from './calcRotatePoint';
 
 test('miniEnclosingRect', () => {
@@ -29,30 +26,18 @@ test('miniEnclosingRect', () => {
   const rect2Coordinates = calcRectCoordinates(rect2);
 
   // 计算期望最小包围矩形 x 坐标
-  const expectMiniRectX = calcRotatePoint(
-    rect1Coordinates[2],
-    rect1Center,
-    rect1.rotation
-  ).x;
+  const expectMiniRectX = calcRotatePoint(rect1Coordinates[2], rect1Center, rect1.rotation).x;
 
   // 计算期望最小包围矩形 y 坐标
-  const expectMiniRectY = calcRotatePoint(
-    rect1Coordinates[0],
-    rect1Center,
-    rect1.rotation
-  ).y;
+  const expectMiniRectY = calcRotatePoint(rect1Coordinates[0], rect1Center, rect1.rotation).y;
 
   const miniRect = calcMiniEnclosingRect([rect1, rect2]);
 
   expect(miniRect.x).toEqual(expectMiniRectX);
   expect(miniRect.y).toEqual(expectMiniRectY);
-  expect(miniRect.width).toEqual(
-    calcRotatePoint(rect2Coordinates[3], rect2Center, rect2.rotation).x -
-      expectMiniRectX
-  );
+  expect(miniRect.width).toEqual(calcRotatePoint(rect2Coordinates[3], rect2Center, rect2.rotation).x - expectMiniRectX);
   expect(miniRect.height).toEqual(
-    calcRotatePoint(rect1Coordinates[3], rect1Center, rect1.rotation).y -
-      expectMiniRectY
+    calcRotatePoint(rect1Coordinates[3], rect1Center, rect1.rotation).y - expectMiniRectY,
   );
   expect(miniRect.rotation).toEqual(0);
 });

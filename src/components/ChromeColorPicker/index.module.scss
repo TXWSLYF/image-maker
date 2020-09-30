@@ -1,22 +1,22 @@
 .chromeColorPicker {
-    box-sizing: border-box;
-    position: relative;
+  box-sizing: border-box;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: border-color 0.2s ease-out 0s;
+  display: inline-block;
+
+  .thumbnail {
     width: 16px;
     height: 16px;
-    border-radius: 2px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: border-color 0.2s ease-out 0s;
-    display: inline-block;
+  }
 
-    .thumbnail {
-        width: 16px;
-        height: 16px;
-    }
-
-    .colorPickerContainer {
-        position: absolute;
-        top: -115px;
-        left: -230px;
-    }
+  .colorPickerContainer {
+    position: absolute;
+    top: -115px;
+    left: -230px;
+  }
 }

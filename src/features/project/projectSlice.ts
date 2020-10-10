@@ -79,7 +79,25 @@ export const projectSlice = createSlice({
     },
 
     /**
-     * @description 改变图层属性
+     * @description 设置图层旋转角度
+     */
+    setLayersRotation: (
+      state,
+      action: PayloadAction<{
+        rotateId: string;
+        idWithRotation: { id: string; rotation: number }[];
+      }>,
+    ) => {
+      action.payload.idWithRotation.forEach((idWithRotation) => {
+        const { id, rotation } = idWithRotation;
+        const { properties } = state.layers.byId[id];
+
+        properties.rotation = rotation;
+      });
+    },
+
+    /**
+     * @description 改变图层属性，TODO: newProperties 类型定义优化
      */
     setLayersProperties(state, action: PayloadAction<{ layerId: string; newProperties: any }>) {
       const { layerId, newProperties } = action.payload;
@@ -111,6 +129,7 @@ export const {
   setLayersCoordinate,
   setLayersProperties,
   setLayersColor,
+  setLayersRotation,
 } = projectSlice.actions;
 
 export const selectImages = (state: RootState) => state.project.present.images;

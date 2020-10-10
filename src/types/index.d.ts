@@ -116,6 +116,9 @@ interface IEditorState {
   // 当前 hover 图层 id
   hoverLayerId: string;
 
+  // 编辑区相对于页面的坐标
+  editorCanvasCoordinate: ICoordinate;
+
   // 是否处于拖拽状态
   isDraging: boolean;
 
@@ -126,7 +129,22 @@ interface IEditorState {
   dragStartMouseCoordinate: ICoordinate;
 
   // 拖拽开始点被拖动图层初始坐标
-  dragStartLayersCoordinate: ({ id: string } & ICoordinate)[];
+  dragStartLayersCoordinate: IIdWithCoordinate[];
+
+  // 是否处于旋转状态
+  isRotating: boolean;
+
+  // 唯一标识一次旋转过程的 id
+  rotateId: string;
+
+  // 旋转开始点鼠标坐标
+  rotateStartMouseCoordinate: ICoordinate;
+
+  // 旋转中心点坐标
+  rotateCenterCoordinate: ICoordinate;
+
+  // 旋转开始点被旋转图层初始位置信息
+  rotateStartLayersRotation: (Pick<IBaseLayer, 'id'> & Pick<IBaseProperties, 'rotation'>)[];
 }
 
 // 通用返回数据格式
@@ -141,6 +159,8 @@ interface ICoordinate {
   x: number;
   y: number;
 }
+
+type IIdWithCoordinate = { id: string } & ICoordinate;
 
 // 矩形坐标尺寸
 interface IRect {

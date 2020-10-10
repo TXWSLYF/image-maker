@@ -1,8 +1,17 @@
+import { Dispatch } from '@reduxjs/toolkit';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectCurLayerIds, selectHoverLayerId } from 'src/features/editor/editorSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurLayerIds, selectEditorCanvasCoordinate, selectHoverLayerId } from 'src/features/editor/editorSlice';
 import { selectCanvas, selectLayers } from 'src/features/project/projectSlice';
-import calcMiniEnclosingRect from 'src/utils/calcMiniEnclosingRect';
+import calcMiniEnclosingRect, { calcRectCenter } from 'src/utils/calcMiniEnclosingRect';
+import {
+  setIsRotating,
+  setRotateId,
+  setRotateStartMouseCoordinate,
+  setRotateStartLayersRotation,
+  setRotateCenterCoordinate,
+} from 'src/features/editor/editorSlice';
+import { guid } from 'src/utils/util';
 import styles from './index.module.scss';
 
 interface ISingleResizerStyle {
@@ -62,7 +71,13 @@ function hoverContainerRender(
   );
 }
 
-function selectionHandlerRender(curLayerIds: string[], singleResizerStyle: ISingleResizerStyle) {
+function selectionHandlerRender(
+  curLayerIds: string[],
+  layersById: IProjectState['layers']['byId'],
+  singleResizerStyle: ISingleResizerStyle,
+  editorCanvasCoordinate: ICoordinate,
+  dispatch: Dispatch,
+) {
   if (!curLayerIds.length) return null;
 
   return (
@@ -71,6 +86,37 @@ function selectionHandlerRender(curLayerIds: string[], singleResizerStyle: ISing
         <div
           className={styles.rotate}
           onMouseDown={(e) => {
+            // 设置旋转状态为 true
+            dispatch(setIsRotating(true));
+
+            // 设置本次旋转过程 id
+            dispatch(setRotateId(guid()));
+
+            // 记录鼠标初始点击位置
+            dispatch(setRotateStartMouseCoordinate({ x: e.clientX, y: e.clientY }));
+
+            // 记录旋转中心点坐标
+            const rectCenter = calcRectCenter(layersById[curLayerIds[0]].properties);
+            dispatch(
+              setRotateCenterCoordinate({
+                x: rectCenter.x + editorCanvasCoordinate.x,
+                y: rectCenter.y + editorCanvasCoordinate.y,
+              }),
+            );
+
+            // 记录旋转图层当前时刻位置
+            dispatch(
+              setRotateStartLayersRotation(
+                curLayerIds.map((id) => {
+                  const {
+                    properties: { rotation },
+                  } = layersById[id];
+
+                  return { id, rotation };
+                }),
+              ),
+            );
+
             e.stopPropagation();
           }}
         >
@@ -103,10 +149,12 @@ function selectionHandlerRender(curLayerIds: string[], singleResizerStyle: ISing
 }
 
 function FakeCanvas() {
+  const dispatch = useDispatch();
   const canvas = useSelector(selectCanvas);
   const { byId: layersById } = useSelector(selectLayers);
   const curLayerIds = useSelector(selectCurLayerIds);
   const hoverLayerId = useSelector(selectHoverLayerId);
+  const editorCanvasCoordinate = useSelector(selectEditorCanvasCoordinate);
 
   let singleResizerStyle = undefined;
   if (curLayerIds.length === 1) {
@@ -137,7 +185,7 @@ function FakeCanvas() {
     >
       {curContainerRender(curLayerIds, layersById, singleResizerStyle)}
       {hoverContainerRender(hoverLayerId, curLayerIds, layersById)}
-      {selectionHandlerRender(curLayerIds, singleResizerStyle)}
+      {selectionHandlerRender(curLayerIds, layersById, singleResizerStyle, editorCanvasCoordinate, dispatch)}
     </div>
   );
 }

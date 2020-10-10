@@ -1,6 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import undoable, { excludeAction } from 'redux-undo';
-import projectReducer, { initProject, setLayersCoordinate, setLayersColor } from 'src/features/project/projectSlice';
+import projectReducer, {
+  initProject,
+  setLayersCoordinate,
+  setLayersColor,
+  setLayersRotation,
+} from 'src/features/project/projectSlice';
 import editorReducer from 'src/features/editor/editorSlice';
 
 export const store = configureStore({
@@ -30,6 +35,10 @@ export const store = configureStore({
           // }
 
           return setLayersCoordinate.type + action.payload.dragId;
+        }
+
+        if (action.type === setLayersRotation.type) {
+          return setLayersRotation.type + action.payload.rotateId;
         }
 
         if (action.type === setLayersColor.type) {

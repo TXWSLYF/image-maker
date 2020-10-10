@@ -1,3 +1,5 @@
+import { toFixed } from './util';
+
 /**
  * @description 旋转点算法，求一个坐标点绕中心点顺时针旋转任意角度之后的坐标
  * @param point 被旋转点
@@ -16,8 +18,8 @@ const calcRotatePoint = (point: ICoordinate, center: ICoordinate, rotation: numb
 
   return {
     // 解决浮点数溢出问题
-    x: parseFloat((centerX + cos * (x - centerX) - sin * (y - centerY)).toFixed(10)),
-    y: parseFloat((centerY + sin * (x - centerX) + cos * (y - centerY)).toFixed(10)),
+    x: toFixed(centerX + cos * (x - centerX) - sin * (y - centerY)),
+    y: toFixed(centerY + sin * (x - centerX) + cos * (y - centerY)),
   };
 };
 

@@ -137,8 +137,8 @@ interface IEditorState {
   // 唯一标识一次旋转过程的 id
   rotateId: string;
 
-  // 旋转开始点鼠标坐标
-  rotateStartMouseCoordinate: ICoordinate;
+  // 旋转开始点鼠标与 x 轴正方向夹角
+  rotateStartMouseAngle: number;
 
   // 旋转中心点坐标
   rotateCenterCoordinate: ICoordinate;

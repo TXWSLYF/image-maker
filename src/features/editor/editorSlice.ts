@@ -24,10 +24,7 @@ const initialState: IEditorState = {
   // 旋转相关参数
   isRotating: false,
   rotateId: '',
-  rotateStartMouseCoordinate: {
-    x: 0,
-    y: 0,
-  },
+  rotateStartMouseAngle: 0,
   rotateCenterCoordinate: { x: 0, y: 0 },
   rotateStartLayersRotation: [],
 };
@@ -113,8 +110,8 @@ export const editorSlice = createSlice({
       state.rotateId = action.payload;
     },
 
-    setRotateStartMouseCoordinate: (state, action: PayloadAction<ICoordinate>) => {
-      state.rotateStartMouseCoordinate = action.payload;
+    setRotateStartMouseAngle: (state, action: PayloadAction<number>) => {
+      state.rotateStartMouseAngle = action.payload;
     },
 
     setRotateCenterCoordinate: (state, action: PayloadAction<IEditorState['rotateCenterCoordinate']>) => {
@@ -141,7 +138,7 @@ export const {
 
   setIsRotating,
   setRotateId,
-  setRotateStartMouseCoordinate,
+  setRotateStartMouseAngle,
   setRotateCenterCoordinate,
   setRotateStartLayersRotation,
 } = editorSlice.actions;
@@ -158,7 +155,7 @@ export const selectDragStartLayersCoordinate = (state: RootState) => state.edito
 
 export const selectIsRotating = (state: RootState) => state.editor.isRotating;
 export const selectRotateId = (state: RootState) => state.editor.rotateId;
-export const selectRotateStartMouseCoordinate = (state: RootState) => state.editor.rotateStartMouseCoordinate;
+export const selectRotateStartMouseAngle = (state: RootState) => state.editor.rotateStartMouseAngle;
 export const selectRotateCenterCoordinate = (state: RootState) => state.editor.rotateCenterCoordinate;
 export const selectRotateStartLayersRotation = (state: RootState) => state.editor.rotateStartLayersRotation;
 

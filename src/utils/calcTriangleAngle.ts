@@ -1,3 +1,4 @@
+import { R2D } from 'src/common/constants';
 import calcDistance from './calcDistance';
 import { toFixed } from './util';
 
@@ -11,7 +12,7 @@ const calcTriangleAngle = (p0: ICoordinate, p1: ICoordinate, p2: ICoordinate) =>
 
   const cosθ = (Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / (2 * a * b);
 
-  return toFixed((Math.acos(cosθ) / Math.PI) * 180);
+  return toFixed(Math.acos(cosθ) * R2D);
 };
 
 export default calcTriangleAngle;

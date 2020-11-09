@@ -1,3 +1,4 @@
+import { D2R } from 'src/common/constants';
 import { toFixed } from './util';
 
 /**
@@ -8,7 +9,7 @@ import { toFixed } from './util';
  */
 const calcRotatePoint = (point: ICoordinate, center: ICoordinate, rotation: number): ICoordinate => {
   // 转换为弧度
-  const rad = (rotation / 180) * Math.PI;
+  const rad = rotation * D2R;
 
   const cos = Math.cos(rad);
   const sin = Math.sin(rad);

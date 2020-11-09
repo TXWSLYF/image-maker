@@ -10,6 +10,7 @@ import {
 } from 'src/features/editor/editorSlice';
 import { selectLayers } from 'src/features/project/projectSlice';
 import { guid } from 'src/utils/util';
+import { D2R } from 'src/common/constants';
 
 function caculateRectRotateCoordinate({
   x,
@@ -33,12 +34,12 @@ function caculateRectRotateCoordinate({
   const _caculateRectRotateCoordinate = (coordinate: ICoordinate) => {
     return {
       x:
-        (coordinate.x - rotateOrigin.x) * Math.cos((rotation * Math.PI) / 180) -
-        (coordinate.y - rotateOrigin.y) * Math.sin((rotation * Math.PI) / 180) +
+        (coordinate.x - rotateOrigin.x) * Math.cos(rotation * D2R) -
+        (coordinate.y - rotateOrigin.y) * Math.sin(rotation * D2R) +
         rotateOrigin.x,
       y:
-        (coordinate.x - rotateOrigin.x) * Math.sin((rotation * Math.PI) / 180) +
-        (coordinate.y - rotateOrigin.y) * Math.cos((rotation * Math.PI) / 180) +
+        (coordinate.x - rotateOrigin.x) * Math.sin(rotation * D2R) +
+        (coordinate.y - rotateOrigin.y) * Math.cos(rotation * D2R) +
         rotateOrigin.y,
     };
   };

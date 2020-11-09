@@ -7,12 +7,13 @@ import calcMiniEnclosingRect, { calcRectCenter } from 'src/utils/calcMiniEnclosi
 import {
   setIsRotating,
   setRotateId,
-  setRotateStartMouseCoordinate,
+  setRotateStartMouseAngle,
   setRotateStartLayersRotation,
   setRotateCenterCoordinate,
 } from 'src/features/editor/editorSlice';
 import { guid } from 'src/utils/util';
 import styles from './index.module.scss';
+import { R2D } from 'src/common/constants';
 
 interface ISingleResizerStyle {
   width: number;
@@ -86,23 +87,27 @@ function selectionHandlerRender(
         <div
           className={styles.rotate}
           onMouseDown={(e) => {
+            const { clientX, clientY } = e;
+
             // 设置旋转状态为 true
             dispatch(setIsRotating(true));
 
             // 设置本次旋转过程 id
             dispatch(setRotateId(guid()));
 
-            // 记录鼠标初始点击位置
-            dispatch(setRotateStartMouseCoordinate({ x: e.clientX, y: e.clientY }));
-
             // 记录旋转中心点坐标
-            const rectCenter = calcRectCenter(layersById[curLayerIds[0]].properties);
-            dispatch(
-              setRotateCenterCoordinate({
-                x: rectCenter.x + editorCanvasCoordinate.x,
-                y: rectCenter.y + editorCanvasCoordinate.y,
-              }),
-            );
+            const rectCenterCoordinate = calcRectCenter(layersById[curLayerIds[0]].properties);
+            const rotateCenterCoordinate = {
+              x: rectCenterCoordinate.x + editorCanvasCoordinate.x,
+              y: rectCenterCoordinate.y + editorCanvasCoordinate.y,
+            };
+            dispatch(setRotateCenterCoordinate(rotateCenterCoordinate));
+
+            const rotateStartMouseAngle =
+              R2D * Math.atan2(clientY - rotateCenterCoordinate.y, clientX - rotateCenterCoordinate.x);
+
+            // 记录初始旋转时，鼠标点击点与 x 轴正方向夹角
+            dispatch(setRotateStartMouseAngle(rotateStartMouseAngle));
 
             // 记录旋转图层当前时刻位置
             dispatch(

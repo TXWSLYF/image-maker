@@ -10,11 +10,12 @@ import {
   selectDragId,
   selectIsRotating,
   selectRotateId,
-  selectRotateStartMouseCoordinate,
+  selectRotateStartMouseAngle,
   selectRotateStartLayersRotation,
   selectRotateCenterCoordinate,
 } from 'src/features/editor/editorSlice';
-import calcTriangleAngle from 'src/utils/calcTriangleAngle';
+import transfromAngle from 'src/utils/transformAngle';
+import { R2D } from 'src/common/constants';
 import styles from './index.module.scss';
 import TopBar from '../TopBar';
 import PageList from '../PageList';
@@ -33,7 +34,7 @@ function Draggeble() {
   // 旋转相关数据
   const isRotating = useSelector(selectIsRotating);
   const rotateId = useSelector(selectRotateId);
-  const rotateStartMouseCoordinate = useSelector(selectRotateStartMouseCoordinate);
+  const rotateStartMouseAngle = useSelector(selectRotateStartMouseAngle);
   const rotateCenterCoordinate = useSelector(selectRotateCenterCoordinate);
   const rotateStartLayersRotation = useSelector(selectRotateStartLayersRotation);
 
@@ -67,12 +68,12 @@ function Draggeble() {
               rotateId,
               idWithRotation: rotateStartLayersRotation.map((idWithRotation) => {
                 const { id, rotation } = idWithRotation;
-                const angle = calcTriangleAngle(rotateCenterCoordinate, rotateStartMouseCoordinate, {
-                  x: clientX,
-                  y: clientY,
-                });
+                const rotateEndMouseAngle =
+                  R2D * Math.atan2(clientY - rotateCenterCoordinate.y, clientX - rotateCenterCoordinate.x);
+                const angle = rotateEndMouseAngle - rotateStartMouseAngle;
+                const newRotation = transfromAngle(Math.round(rotation + angle));
 
-                return { id, rotation: rotation + angle };
+                return { id, rotation: newRotation };
               }),
             }),
           );

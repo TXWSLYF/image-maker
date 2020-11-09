@@ -1,9 +1,10 @@
 import React from 'react';
 import { InputNumber, Collapse } from 'antd';
 import { useDispatch } from 'react-redux';
+import { setLayersProperties } from 'src/features/project/projectSlice';
+import transfromAngle from 'src/utils/transformAngle';
 import styles from './index.module.scss';
 import PropertyRow from '../PropertyRow';
-import { setLayersProperties } from 'src/features/project/projectSlice';
 
 const { Panel } = Collapse;
 
@@ -55,13 +56,14 @@ function BasePropertyPanel({ properties, layerId }: { properties: IBasePropertie
             leftChild={
               <InputNumber
                 style={{ width: 70 }}
+                // TODO: 数据不同步
                 value={properties.rotation}
                 onChange={(value) => {
                   dispatch(
                     setLayersProperties({
                       layerId,
                       newProperties: {
-                        rotation: value,
+                        rotation: transfromAngle(Number(value)),
                       },
                     }),
                   );

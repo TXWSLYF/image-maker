@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { initProject } from 'src/features/project/projectSlice';
 import { setCurImage } from 'src/features/editor/editorSlice';
-import { getProjectInfo } from 'src/api/project';
+import projectApi from 'src/api/project';
 import styles from './index.module.scss';
 import Draggable from './components/Draggable';
 
@@ -14,15 +14,19 @@ function EditorPage() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await getProjectInfo(id);
+        const res = await projectApi.retrieve(Number(id));
         const {
-          data: { data },
+          data: {
+            data: { data },
+          },
         } = res;
+        const initProjectData: IProjectState = { id, ...JSON.parse(data) };
         const {
           images: { allIds },
-        } = data;
+        } = initProjectData;
+
         // 初始化 project 数据
-        dispatch(initProject(data));
+        dispatch(initProject(initProjectData));
 
         // 设置当前选中图片
         dispatch(setCurImage(allIds[0]));

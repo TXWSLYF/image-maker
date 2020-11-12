@@ -1,3 +1,5 @@
-import request from './_request';
+import createCurdApis from 'src/common/utils/createCurdApis';
 
-export const getProjectInfo = (id: string) => request.get<IResponseWrapper<IProjectState>>(`/project/${id}`);
+const projectApi = createCurdApis<DtoProject>('/project');
+
+export default projectApi;

@@ -11,15 +11,22 @@ const request = axios.create({
 
 request.interceptors.response.use(
   (response) => {
-    const { errNo, errMsg } = response.data;
+    const { code, msg } = response.data;
 
-    if (errNo !== 0) {
-      return Promise.reject(new Error(errMsg));
+    if (code !== 0) {
+      const error = new Error(msg);
+      console.error(error);
+
+      return Promise.reject(error);
     }
 
     return response;
   },
-  (error) => Promise.reject(error),
+  (error) => {
+    console.error(error);
+
+    return Promise.reject(error);
+  },
 );
 
 export default request;

@@ -151,6 +151,7 @@ export const {
   setLayersBaseProperties,
 } = projectSlice.actions;
 
+export const selectProject = (state: RootState) => state.project.present;
 export const selectImages = (state: RootState) => state.project.present.images;
 export const selectLayers = (state: RootState) => state.project.present.layers;
 export const selectCanvas = (state: RootState) => state.project.present.canvas;

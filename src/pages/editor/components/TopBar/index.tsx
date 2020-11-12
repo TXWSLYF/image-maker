@@ -2,11 +2,17 @@ import React from 'react';
 import { FileTextOutlined, FileImageOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from 'redux-undo';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import styles from './index.module.scss';
 import { textLayer, imgLayer } from 'src/layer';
-import { addLayer, selectProjectPastLength, selectProjectFutureLength } from 'src/features/project/projectSlice';
+import {
+  addLayer,
+  selectProjectPastLength,
+  selectProjectFutureLength,
+  selectProject,
+} from 'src/features/project/projectSlice';
 import { selectCurImageId, setCurLayers } from 'src/features/editor/editorSlice';
+import projectApi from 'src/api/project';
 
 const layerList = [
   {
@@ -23,9 +29,18 @@ const layerList = [
 
 function TopBar() {
   const dispatch = useDispatch();
+  const project = useSelector(selectProject);
   const curImageId = useSelector(selectCurImageId);
   const projectPastLength = useSelector(selectProjectPastLength);
   const projectFutureLength = useSelector(selectProjectFutureLength);
+
+  const handleClickSave = async () => {
+    const { id, ...data } = project;
+    try {
+      await projectApi.update({ id, data: JSON.stringify(data) });
+      message.success('保存成功');
+    } catch (error) {}
+  };
 
   return (
     <header className={styles.topBar}>
@@ -74,7 +89,7 @@ function TopBar() {
 
       {/* 操作区 */}
       <div className={styles.operations}>
-        <Button color="primary" type="primary">
+        <Button color="primary" type="primary" onClick={handleClickSave}>
           保存
         </Button>
         <Button color="primary" style={{ marginLeft: 10 }} type="primary">

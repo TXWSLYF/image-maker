@@ -165,13 +165,6 @@ interface IEditorState {
   dragZoomStartLayersPosition: (IRect & Pick<IBaseLayer, 'id'>)[];
 }
 
-// 通用返回数据格式
-interface IResponseWrapper<T> {
-  errNo: number;
-  errMsg: string;
-  data: T;
-}
-
 // 二维坐标系坐标点
 interface ICoordinate {
   x: number;

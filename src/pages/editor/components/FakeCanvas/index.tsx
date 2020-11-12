@@ -1,7 +1,16 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurLayerIds, selectEditorCanvasCoordinate, selectHoverLayerId } from 'src/features/editor/editorSlice';
+import {
+  selectCurLayerIds,
+  selectEditorCanvasCoordinate,
+  selectHoverLayerId,
+  setDragZoomDirection,
+  setDragZoomId,
+  setDragZoomStartLayersPosition,
+  setDragZoomStartMouseCoordinate,
+  setIsDragZooming,
+} from 'src/features/editor/editorSlice';
 import { selectCanvas, selectLayers } from 'src/features/project/projectSlice';
 import calcMiniEnclosingRect, { calcRectCenter } from 'src/utils/calcMiniEnclosingRect';
 import {
@@ -81,6 +90,53 @@ function selectionHandlerRender(
 ) {
   if (!curLayerIds.length) return null;
 
+  const handleDragZoom = (
+    dragZoomDirection: IEditorState['dragZoomDirection'],
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    const { clientX, clientY } = e;
+
+    // 设置拖拽缩放状态为 true
+    dispatch(setIsDragZooming(true));
+
+    // 设置本次拖拽缩放 id
+    dispatch(setDragZoomId(guid()));
+
+    // 记录拖拽缩放鼠标起始坐标
+    dispatch(
+      setDragZoomStartMouseCoordinate({
+        x: clientX,
+        y: clientY,
+      }),
+    );
+
+    // 记录拖拽缩放方向
+    dispatch(setDragZoomDirection(dragZoomDirection));
+
+    // 记录当前图层信息
+    dispatch(
+      setDragZoomStartLayersPosition(
+        curLayerIds.map((layerId) => {
+          const {
+            id,
+            properties: { x, y, width, height, rotation },
+          } = layersById[layerId];
+
+          return {
+            id,
+            x,
+            y,
+            width,
+            height,
+            rotation,
+          };
+        }),
+      ),
+    );
+
+    e.stopPropagation();
+  };
+
   return (
     <div className={styles.selectionHandler}>
       <div className={styles.singleResizer} style={singleResizerStyle}>
@@ -132,14 +188,62 @@ function selectionHandlerRender(
             ></path>
           </svg>
         </div>
-        <div className={`${styles.t} ${styles['resizable-handler']}`} style={{ cursor: 'nw-resize' }}></div>
-        <div className={`${styles.b} ${styles['resizable-handler']}`} style={{ cursor: 'se-resize' }}></div>
-        <div className={`${styles.r} ${styles['resizable-handler']}`} style={{ cursor: 'ne-resize' }}></div>
-        <div className={`${styles.l} ${styles['resizable-handler']}`} style={{ cursor: 'sw-resize' }}></div>
-        <div className={`${styles.tr} ${styles['resizable-handler']}`} style={{ cursor: 'n-resize' }}></div>
-        <div className={`${styles.tl} ${styles['resizable-handler']}`} style={{ cursor: 'w-resize' }}></div>
-        <div className={`${styles.br} ${styles['resizable-handler']}`} style={{ cursor: 'e-resize' }}></div>
-        <div className={`${styles.bl} ${styles['resizable-handler']}`} style={{ cursor: 's-resize' }}></div>
+        <div
+          className={`${styles.t} ${styles['resizable-handler']}`}
+          style={{ cursor: 'n-resize' }}
+          onMouseDown={(e) => {
+            handleDragZoom(['n'], e);
+          }}
+        ></div>
+        <div
+          className={`${styles.b} ${styles['resizable-handler']}`}
+          style={{ cursor: 's-resize' }}
+          onMouseDown={(e) => {
+            handleDragZoom(['s'], e);
+          }}
+        ></div>
+        <div
+          className={`${styles.r} ${styles['resizable-handler']}`}
+          style={{ cursor: 'e-resize' }}
+          onMouseDown={(e) => {
+            handleDragZoom(['e'], e);
+          }}
+        ></div>
+        <div
+          className={`${styles.l} ${styles['resizable-handler']}`}
+          style={{ cursor: 'w-resize' }}
+          onMouseDown={(e) => {
+            handleDragZoom(['w'], e);
+          }}
+        ></div>
+        <div
+          className={`${styles.tr} ${styles['resizable-handler']}`}
+          style={{ cursor: 'ne-resize' }}
+          onMouseDown={(e) => {
+            handleDragZoom(['n', 'e'], e);
+          }}
+        ></div>
+        <div
+          className={`${styles.tl} ${styles['resizable-handler']}`}
+          style={{ cursor: 'nw-resize' }}
+          onMouseDown={(e) => {
+            handleDragZoom(['n', 'w'], e);
+          }}
+        ></div>
+        <div
+          className={`${styles.br} ${styles['resizable-handler']}`}
+          style={{ cursor: 'se-resize' }}
+          onMouseDown={(e) => {
+            handleDragZoom(['s', 'e'], e);
+          }}
+        ></div>
+        <div
+          className={`${styles.bl} ${styles['resizable-handler']}`}
+          style={{ cursor: 'sw-resize' }}
+          onMouseDown={(e) => {
+            handleDragZoom(['s', 'w'], e);
+          }}
+        ></div>
         <div className={`${styles.t} ${styles.square}`}></div>
         <div className={`${styles.b} ${styles.square}`}></div>
         <div className={`${styles.r} ${styles.square}`}></div>

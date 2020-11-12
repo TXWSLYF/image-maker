@@ -118,6 +118,24 @@ export const projectSlice = createSlice({
         layer.properties.color = newColor;
       });
     },
+
+    /**
+     * @description 设置图层基础属性
+     */
+    setLayersBaseProperties(
+      state,
+      action: PayloadAction<{
+        actionId: string;
+        layers: {
+          id: string;
+          newProperties: Partial<IBaseProperties>;
+        }[];
+      }>,
+    ) {
+      action.payload.layers.forEach(({ id, newProperties }) => {
+        state.layers.byId[id].properties = { ...state.layers.byId[id].properties, ...newProperties };
+      });
+    },
   },
 });
 
@@ -130,6 +148,7 @@ export const {
   setLayersProperties,
   setLayersColor,
   setLayersRotation,
+  setLayersBaseProperties,
 } = projectSlice.actions;
 
 export const selectImages = (state: RootState) => state.project.present.images;

@@ -27,6 +27,13 @@ const initialState: IEditorState = {
   rotateStartMouseAngle: 0,
   rotateCenterCoordinate: { x: 0, y: 0 },
   rotateStartLayersRotation: [],
+
+  // 拖拽缩放相关参数
+  isDragZooming: false,
+  dragZoomId: '',
+  dragZoomStartMouseCoordinate: { x: 0, y: 0 },
+  dragZoomDirection: [],
+  dragZoomStartLayersPosition: [],
 };
 
 export const editorSlice = createSlice({
@@ -121,6 +128,26 @@ export const editorSlice = createSlice({
     setRotateStartLayersRotation: (state, action: PayloadAction<IEditorState['rotateStartLayersRotation']>) => {
       state.rotateStartLayersRotation = action.payload;
     },
+
+    /**
+     * @description 设置拖拽缩放相关属性
+     */
+
+    setIsDragZooming: (state, action: PayloadAction<IEditorState['isDragZooming']>) => {
+      state.isDragZooming = action.payload;
+    },
+    setDragZoomId: (state, action: PayloadAction<IEditorState['dragZoomId']>) => {
+      state.dragZoomId = action.payload;
+    },
+    setDragZoomStartMouseCoordinate: (state, action: PayloadAction<IEditorState['dragZoomStartMouseCoordinate']>) => {
+      state.dragZoomStartMouseCoordinate = action.payload;
+    },
+    setDragZoomDirection: (state, action: PayloadAction<IEditorState['dragZoomDirection']>) => {
+      state.dragZoomDirection = action.payload;
+    },
+    setDragZoomStartLayersPosition: (state, action: PayloadAction<IEditorState['dragZoomStartLayersPosition']>) => {
+      state.dragZoomStartLayersPosition = action.payload;
+    },
   },
 });
 
@@ -141,6 +168,12 @@ export const {
   setRotateStartMouseAngle,
   setRotateCenterCoordinate,
   setRotateStartLayersRotation,
+
+  setIsDragZooming,
+  setDragZoomId,
+  setDragZoomStartMouseCoordinate,
+  setDragZoomDirection,
+  setDragZoomStartLayersPosition,
 } = editorSlice.actions;
 
 export const selectCurImageId = (state: RootState) => state.editor.curImageId;
@@ -158,5 +191,11 @@ export const selectRotateId = (state: RootState) => state.editor.rotateId;
 export const selectRotateStartMouseAngle = (state: RootState) => state.editor.rotateStartMouseAngle;
 export const selectRotateCenterCoordinate = (state: RootState) => state.editor.rotateCenterCoordinate;
 export const selectRotateStartLayersRotation = (state: RootState) => state.editor.rotateStartLayersRotation;
+
+export const selectIsDragZooming = (state: RootState) => state.editor.isDragZooming;
+export const selectDragZoomId = (state: RootState) => state.editor.dragZoomId;
+export const selectDragZoomStartMouseCoordinate = (state: RootState) => state.editor.dragZoomStartMouseCoordinate;
+export const selectDragZoomDirection = (state: RootState) => state.editor.dragZoomDirection;
+export const selectDragZoomStartLayersPosition = (state: RootState) => state.editor.dragZoomStartLayersPosition;
 
 export default editorSlice.reducer;

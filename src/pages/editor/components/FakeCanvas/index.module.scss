@@ -55,6 +55,7 @@
       }
 
       .resizable-handler {
+        pointer-events: auto;
         position: absolute;
         width: 14px;
         height: 14px;

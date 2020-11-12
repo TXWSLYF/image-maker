@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLayersCoordinate, setLayersRotation } from 'src/features/project/projectSlice';
+import { setLayersBaseProperties, setLayersCoordinate, setLayersRotation } from 'src/features/project/projectSlice';
 import {
   setIsDraging,
   setIsRotating,
@@ -13,6 +13,12 @@ import {
   selectRotateStartMouseAngle,
   selectRotateStartLayersRotation,
   selectRotateCenterCoordinate,
+  setIsDragZooming,
+  selectIsDragZooming,
+  selectDragZoomId,
+  selectDragZoomDirection,
+  selectDragZoomStartMouseCoordinate,
+  selectDragZoomStartLayersPosition,
 } from 'src/features/editor/editorSlice';
 import transfromAngle from 'src/utils/transformAngle';
 import { R2D } from 'src/common/constants';
@@ -37,6 +43,13 @@ function Draggeble() {
   const rotateStartMouseAngle = useSelector(selectRotateStartMouseAngle);
   const rotateCenterCoordinate = useSelector(selectRotateCenterCoordinate);
   const rotateStartLayersRotation = useSelector(selectRotateStartLayersRotation);
+
+  // 拖拽缩放相关
+  const isDragZooming = useSelector(selectIsDragZooming);
+  const dragZoomId = useSelector(selectDragZoomId);
+  const dragZoomDirection = useSelector(selectDragZoomDirection);
+  const dragZoomStartMouseCoordinate = useSelector(selectDragZoomStartMouseCoordinate);
+  const dragZoomStartLayersPosition = useSelector(selectDragZoomStartLayersPosition);
 
   return (
     <div
@@ -78,6 +91,52 @@ function Draggeble() {
             }),
           );
         }
+
+        // 处理拖拽缩放逻辑
+        if (isDragZooming) {
+          const { x, y } = dragZoomStartMouseCoordinate;
+          let moveX = 0;
+          let moveY = 0;
+
+          if (
+            dragZoomDirection.find((d) => {
+              return d === 'n' || d === 's';
+            })
+          ) {
+            moveY = clientY - y;
+          }
+
+          if (
+            dragZoomDirection.find((d) => {
+              return d === 'w' || d === 'e';
+            })
+          ) {
+            moveX = clientX - x;
+          }
+
+          dispatch(
+            setLayersBaseProperties({
+              actionId: dragZoomId,
+              layers: dragZoomStartLayersPosition.map((position) => {
+                let { x, y, width, height, rotation } = position;
+
+                width = width + moveX;
+                height = height + moveY;
+
+                return {
+                  id: position.id,
+                  newProperties: {
+                    x,
+                    y,
+                    width,
+                    height,
+                    rotation,
+                  },
+                };
+              }),
+            }),
+          );
+        }
       }}
       onMouseUp={() => {
         // 取消拖拽状态
@@ -85,6 +144,9 @@ function Draggeble() {
 
         // 取消旋转状态
         dispatch(setIsRotating(false));
+
+        // 取消拖拽缩放状态
+        dispatch(setIsDragZooming(false));
       }}
     >
       <TopBar />

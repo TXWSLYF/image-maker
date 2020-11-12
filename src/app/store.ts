@@ -13,27 +13,8 @@ export const store = configureStore({
     editor: editorReducer,
     project: undoable(projectReducer, {
       filter: excludeAction(initProject.type),
-      // groupBy: groupByActionTypes(setLayersCoordinate.type),
-
       groupBy: function (action) {
         if (action.type === setLayersCoordinate.type) {
-          // // if (prevActionPayload.length === 0) {
-          // //   prevActionPayload = action.payload;
-          // //   return setLayersCoordinate.type;
-          // // }
-
-          // if (action.payload.length !== prevActionPayload.length) {
-          //   prevActionPayload = action.payload;
-          //   return null;
-          // }
-
-          // for (let i = 0; i < prevActionPayload.length; i++) {
-          //   if (prevActionPayload[i].id !== action.payload[i].id) {
-          //     prevActionPayload = action.payload;
-          //     return null;
-          //   }
-          // }
-
           return setLayersCoordinate.type + action.payload.dragId;
         }
 

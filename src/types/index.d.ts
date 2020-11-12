@@ -106,6 +106,9 @@ interface IProjectState {
   };
 }
 
+// 方向类型，上北、下南、左西、右东
+type Direction = 'n' | 's' | 'w' | 'e';
+
 interface IEditorState {
   // 当前图片 id
   curImageId: string;
@@ -145,6 +148,21 @@ interface IEditorState {
 
   // 旋转开始点被旋转图层初始位置信息
   rotateStartLayersRotation: (Pick<IBaseLayer, 'id'> & Pick<IBaseProperties, 'rotation'>)[];
+
+  // 是否处于拖拽缩放状态
+  isDragZooming: boolean;
+
+  // 唯一标识一次拖拽缩放过程的 id
+  dragZoomId: string;
+
+  // 拖拽缩放起始鼠标坐标
+  dragZoomStartMouseCoordinate: ICoordinate;
+
+  // 拖拽缩放方向
+  dragZoomDirection: Direction[];
+
+  // 拖拽缩放图层位置信息
+  dragZoomStartLayersPosition: (IRect & Pick<IBaseLayer, 'id'>)[];
 }
 
 // 通用返回数据格式

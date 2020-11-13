@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import useSWR from 'swr';
+import { Spin } from 'antd';
 import { initProject } from 'src/features/project/projectSlice';
 import { setCurImage } from 'src/features/editor/editorSlice';
 import projectApi from 'src/api/project';
@@ -11,36 +13,34 @@ function EditorPage() {
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await projectApi.retrieve(Number(id));
-        const {
-          data: {
-            data: { data },
-          },
-        } = res;
-        const initProjectData: IProjectState = { id, ...JSON.parse(data) };
-        const {
-          images: { allIds },
-        } = initProjectData;
+  const { data, error } = useSWR(`project/${id}`, () => {
+    return projectApi.retrieve(Number(id));
+  });
 
-        // 初始化 project 数据
-        dispatch(initProject(initProjectData));
+  function renderChild() {
+    if (error) return <div>error</div>;
+    if (!data)
+      return (
+        <div className={styles.loadingContainer}>
+          <Spin size="large" />
+        </div>
+      );
 
-        // 设置当前选中图片
-        dispatch(setCurImage(allIds[0]));
-      } catch (error) {
-        console.error(error.message);
-      }
-    })();
-  }, [dispatch, id]);
+    const initProjectData: IProjectState = { id, ...JSON.parse(data.data.data.data) };
+    const {
+      images: { allIds },
+    } = initProjectData;
 
-  return (
-    <div className={styles.editorPage}>
-      <Draggable />
-    </div>
-  );
+    // 初始化 project 数据
+    dispatch(initProject(initProjectData));
+
+    // 设置当前选中图片
+    dispatch(setCurImage(allIds[0]));
+
+    return <Draggable />;
+  }
+
+  return <div className={styles.editorPage}>{renderChild()}</div>;
 }
 
 export default EditorPage;

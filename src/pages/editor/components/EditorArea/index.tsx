@@ -21,16 +21,21 @@ function EditorArea() {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
 
-  const handleKeyDown = useCallback(() => {
-    // 重置 hoverLayerId
-    dispatch(setHoverLayerId(''));
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key !== 'Backspace') return;
 
-    // 重置当前选中图层 id
-    dispatch(setCurLayers([]));
+      // 重置 hoverLayerId
+      dispatch(setHoverLayerId(''));
 
-    // 删除当前选中图层数据
-    dispatch(deleteLayers(curLayerIds));
-  }, [dispatch, curLayerIds]);
+      // 重置当前选中图层 id
+      dispatch(setCurLayers([]));
+
+      // 删除当前选中图层数据
+      dispatch(deleteLayers(curLayerIds));
+    },
+    [dispatch, curLayerIds],
+  );
 
   useLayoutEffect(() => {
     const updateEditorCanvasCoordinate = () => {

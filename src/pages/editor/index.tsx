@@ -34,7 +34,7 @@ function EditorPage() {
         console.error(error.message);
       }
     })();
-  });
+  }, [dispatch, id]);
 
   return (
     <div className={styles.editorPage}>

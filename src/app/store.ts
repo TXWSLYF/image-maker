@@ -5,6 +5,7 @@ import projectReducer, {
   setLayersCoordinate,
   setLayersColor,
   setLayersRotation,
+  setLayersBaseProperties,
 } from 'src/features/project/projectSlice';
 import editorReducer from 'src/features/editor/editorSlice';
 
@@ -26,28 +27,12 @@ export const store = configureStore({
           return setLayersColor.type + action.payload.layerIds.toString();
         }
 
+        if (action.type === setLayersBaseProperties.type && action.payload.actionId) {
+          return action.type + action.payload.actionId;
+        }
+
         return null;
       },
-
-      // filter: (action) => {
-      //   if (action.type === initProject.type) {
-      //     return false;
-      //   } else {
-      //     if (action.type !== prevActionType) {
-      //       ignoreRapid = false;
-      //       prevActionType = action.type;
-      //       return true;
-      //     }
-      //     if (ignoreRapid) {
-      //       return false;
-      //     }
-      //     ignoreRapid = true;
-      //     setTimeout(() => {
-      //       ignoreRapid = false;
-      //     }, IGNORE_TIME);
-      //     return true;
-      //   }
-      // },
       // 很关键的属性，能将 present state 和  _latestUnfiltered state 保持同步
       syncFilter: true,
     }),

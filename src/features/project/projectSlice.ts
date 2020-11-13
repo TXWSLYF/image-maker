@@ -38,6 +38,13 @@ export const projectSlice = createSlice({
     },
 
     /**
+     * @description 设置画布大小
+     */
+    setCanvasSize: (state, action: PayloadAction<Partial<IProjectState['canvas']>>) => {
+      state.canvas = { ...state.canvas, ...action.payload };
+    },
+
+    /**
      * @description 添加图片
      */
     addImage: (state) => {
@@ -136,12 +143,32 @@ export const projectSlice = createSlice({
         state.layers.byId[id].properties = { ...state.layers.byId[id].properties, ...newProperties };
       });
     },
+
+    /**
+     * @description
+     */
+    deleteLayers(state, action: PayloadAction<IBaseLayer['id'][]>) {
+      const { payload } = action;
+      const { images, layers } = state;
+
+      // 删除所有 image 中要删除的 layer
+      images.allIds.forEach((imageId) => {
+        images.byId[imageId].layers = images.byId[imageId].layers.filter((layer) => !payload.includes(layer));
+      });
+
+      // 删除所有 layer
+      layers.allIds = layers.allIds.filter((layerId) => !payload.includes(layerId));
+      payload.forEach((layerId) => {
+        delete layers.byId[layerId];
+      });
+    },
   },
 });
 
 export const {
   initProject,
   setProjectTitle,
+  setCanvasSize,
   addImage,
   addLayer,
   setLayersCoordinate,
@@ -149,6 +176,7 @@ export const {
   setLayersColor,
   setLayersRotation,
   setLayersBaseProperties,
+  deleteLayers,
 } = projectSlice.actions;
 
 export const selectProject = (state: RootState) => state.project.present;

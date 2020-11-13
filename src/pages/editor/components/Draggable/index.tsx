@@ -51,6 +51,12 @@ function Draggeble() {
   const dragZoomStartMouseCoordinate = useSelector(selectDragZoomStartMouseCoordinate);
   const dragZoomStartLayersPosition = useSelector(selectDragZoomStartLayersPosition);
 
+  // 判断拖拽方向
+  const hasN = dragZoomDirection.find((d) => d === 'n');
+  const hasS = dragZoomDirection.find((d) => d === 's');
+  const hasW = dragZoomDirection.find((d) => d === 'w');
+  const hasE = dragZoomDirection.find((d) => d === 'e');
+
   return (
     <div
       className={styles.editorPageWrapper}
@@ -95,33 +101,47 @@ function Draggeble() {
         // 处理拖拽缩放逻辑
         if (isDragZooming) {
           const { x, y } = dragZoomStartMouseCoordinate;
-          let moveX = 0;
-          let moveY = 0;
 
-          if (
-            dragZoomDirection.find((d) => {
-              return d === 'n' || d === 's';
-            })
-          ) {
-            moveY = clientY - y;
-          }
+          // 鼠标移动距离
+          const moveX = clientX - x;
+          const moveY = clientY - y;
 
-          if (
-            dragZoomDirection.find((d) => {
-              return d === 'w' || d === 'e';
-            })
-          ) {
-            moveX = clientX - x;
-          }
+          // 各个属性的变化值
+          let changeX = 0;
+          let changeY = 0;
+          let changeWidth = 0;
+          let changeHeight = 0;
 
           dispatch(
             setLayersBaseProperties({
               actionId: dragZoomId,
               layers: dragZoomStartLayersPosition.map((position) => {
-                let { x, y, width, height, rotation } = position;
+                const { rotation } = position;
+                let { x, y, width, height } = position;
 
-                width = width + moveX;
-                height = height + moveY;
+                // TODO: 将 rotation 考虑进来
+                if (hasN) {
+                  changeY = moveY;
+                  changeHeight = -moveY;
+                }
+
+                if (hasS) {
+                  changeHeight = moveY;
+                }
+
+                if (hasW) {
+                  changeX = moveX;
+                  changeWidth = -moveX;
+                }
+
+                if (hasE) {
+                  changeWidth = moveX;
+                }
+
+                x = x + changeX;
+                y = y + changeY;
+                width = width + changeWidth;
+                height = height + changeHeight;
 
                 return {
                   id: position.id,

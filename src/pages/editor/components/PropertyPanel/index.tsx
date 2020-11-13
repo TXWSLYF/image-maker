@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectCurLayerIds } from 'src/features/editor/editorSlice';
 import { selectLayers } from 'src/features/project/projectSlice';
 import PagePropertyPanel from './PagePropertyPanel';
@@ -9,6 +9,7 @@ import TextPropertyPanel from './TextPropertyPanel';
 import ImgPropertyPanel from './ImgPropertyPanel';
 
 function PropertyPanel() {
+  const dispatch = useDispatch();
   const curLayerIds = useSelector(selectCurLayerIds);
   const layers = useSelector(selectLayers);
   const curLayers = curLayerIds.map((id) => layers.byId[id]);
@@ -29,7 +30,7 @@ function PropertyPanel() {
                     case 'TEXT':
                       return <TextPropertyPanel properties={layer.properties} layerId={layer.id} />;
                     case 'IMG':
-                      return <ImgPropertyPanel />;
+                      return <ImgPropertyPanel properties={layer.properties} layerId={layer.id} dispatch={dispatch} />;
                     default:
                       return <div>TODO</div>;
                   }

@@ -145,7 +145,23 @@ export const projectSlice = createSlice({
     },
 
     /**
-     * @description
+     * @description 设置图片图层属性
+     */
+    setImgLayerProperties: (
+      state,
+      action: PayloadAction<{
+        layerId: IBaseLayer['id'];
+        newProperties: Partial<IImgProperties>;
+      }>,
+    ) => {
+      const { layerId, newProperties } = action.payload;
+      const layer: IImgLayer = state.layers.byId[layerId] as IImgLayer;
+
+      layer.properties = { ...layer.properties, ...newProperties };
+    },
+
+    /**
+     * @description 删除图层
      */
     deleteLayers(state, action: PayloadAction<IBaseLayer['id'][]>) {
       const { payload } = action;
@@ -177,6 +193,7 @@ export const {
   setLayersRotation,
   setLayersBaseProperties,
   deleteLayers,
+  setImgLayerProperties,
 } = projectSlice.actions;
 
 export const selectProject = (state: RootState) => state.project.present;

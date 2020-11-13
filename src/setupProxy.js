@@ -21,11 +21,12 @@ module.exports = function (app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://localhost:8080',
+      // target: 'http://localhost:8080',
+      // pathRewrite: {
+      //   '^/api': '/', // remove base path
+      // },
+      target: 'http://image-maker.qsxqd.com',
       changeOrigin: true,
-      pathRewrite: {
-        '^/api': '/', // remove base path
-      },
     }),
   );
 };

@@ -32,7 +32,7 @@ interface ISingleResizerStyle {
 
 function curContainerRender(
   curLayerIds: string[],
-  layersById: IProjectState['layers']['byId'],
+  layersById: IProjectState['data']['layersById'],
   singleResizerStyle: ISingleResizerStyle,
 ) {
   return (
@@ -60,7 +60,7 @@ function curContainerRender(
 function hoverContainerRender(
   hoverLayerId: string,
   curLayerIds: string[],
-  layersById: IProjectState['layers']['byId'],
+  layersById: IProjectState['data']['layersById'],
 ) {
   if (!hoverLayerId) return null;
   if (curLayerIds.findIndex((layerId) => layerId === hoverLayerId) !== -1) return null;
@@ -83,7 +83,7 @@ function hoverContainerRender(
 
 function selectionHandlerRender(
   curLayerIds: string[],
-  layersById: IProjectState['layers']['byId'],
+  layersById: IProjectState['data']['layersById'],
   singleResizerStyle: ISingleResizerStyle,
   editorCanvasCoordinate: ICoordinate,
   dispatch: Dispatch,

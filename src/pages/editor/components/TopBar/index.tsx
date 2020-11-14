@@ -35,9 +35,9 @@ function TopBar() {
   const projectFutureLength = useSelector(selectProjectFutureLength);
 
   const handleClickSave = async () => {
-    const { id, ...data } = project;
+    const { id, name, data } = project;
     try {
-      await projectApi.update({ id, data: JSON.stringify(data) });
+      await projectApi.update({ id, name, data: JSON.stringify(data) });
       message.success('保存成功');
     } catch (error) {}
   };

@@ -3,13 +3,13 @@
   "errMsg": "success",
   "data": {
     "id": 1,
-    "title": "demo",
-    "canvas": {
-      "width": 400,
-      "height": 500
-    },
-    "images": {
-      "byId": {
+    "name": "demo",
+    "data": {
+      "canvas": {
+        "width": 400,
+        "height": 500
+      },
+      "imagesById": {
         "31457c3a701d": {
           "id": "31457c3a701d",
           "name": "xx",
@@ -21,10 +21,8 @@
           "layers": []
         }
       },
-      "allIds": ["31457c3a701d", "31457c3a701v"]
-    },
-    "layers": {
-      "byId": {
+      "imageAllIds": ["31457c3a701d", "31457c3a701v"],
+      "layersById": {
         "31457c3a701f": {
           "id": "31457c3a701f",
           "type": "IMG",
@@ -62,7 +60,7 @@
           }
         }
       },
-      "allIds": ["31457c3a701f", "5cf3000344e6"]
+      "layerAllIds": ["31457c3a701f", "5cf3000344e6"]
     }
   }
 }

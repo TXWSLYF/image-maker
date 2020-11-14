@@ -26,16 +26,18 @@ function EditorPage() {
         </div>
       );
 
-    const initProjectData: IProjectState = { id, ...JSON.parse(data.data.data.data) };
+    const { id, name, data: data1 } = data.data.data;
+    const initProjectData: IProjectState = { id, name, data: JSON.parse(data1) };
+
     const {
-      images: { allIds },
+      data: { imageAllIds },
     } = initProjectData;
 
     // 初始化 project 数据
     dispatch(initProject(initProjectData));
 
     // 设置当前选中图片
-    dispatch(setCurImage(allIds[0]));
+    dispatch(setCurImage(imageAllIds[0]));
 
     return <Draggable />;
   }

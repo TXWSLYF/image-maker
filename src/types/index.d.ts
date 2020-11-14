@@ -72,17 +72,17 @@ interface IProjectState {
   id: number;
 
   // 项目标题
-  title: string;
+  name: string;
 
-  // 画布相关
-  canvas: {
-    width: number;
-    height: number;
-  };
+  data: {
+    // 画布相关
+    canvas: {
+      width: number;
+      height: number;
+    };
 
-  // 图片 map
-  images: {
-    byId: {
+    // 图片数据
+    imagesById: {
       [key: string]: {
         // 图片 id
         id: string;
@@ -94,15 +94,13 @@ interface IProjectState {
         layers: string[];
       };
     };
-    allIds: string[];
-  };
+    imageAllIds: string[];
 
-  // 图层 map
-  layers: {
-    byId: {
+    // 图层数据
+    layersById: {
       [key: string]: ILayer;
     };
-    allIds: string[];
+    layerAllIds: string[];
   };
 }
 

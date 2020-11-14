@@ -4,13 +4,22 @@ import { guid } from 'src/utils/util';
 
 const initialState: IProjectState = {
   id: 0,
-  title: '',
-  canvas: {
-    width: 600,
-    height: 800,
+  name: 'image-maker',
+  data: {
+    // 画布数据
+    canvas: {
+      width: 600,
+      height: 800,
+    },
+
+    // 图片数据
+    imagesById: {},
+    imageAllIds: [],
+
+    // 图层数据
+    layersById: {},
+    layerAllIds: [],
   },
-  images: { byId: {}, allIds: [] },
-  layers: { byId: {}, allIds: [] },
 };
 
 export const projectSlice = createSlice({
@@ -21,27 +30,25 @@ export const projectSlice = createSlice({
      * @description 初始化项目
      */
     initProject: (state, action: PayloadAction<IProjectState>) => {
-      const { id, title, images, layers, canvas } = action.payload;
+      const { id, name, data } = action.payload;
 
       state.id = id;
-      state.title = title;
-      state.images = images;
-      state.layers = layers;
-      state.canvas = canvas;
+      state.name = name;
+      state.data = data;
     },
 
     /**
      * @description 设置项目名称
      */
-    setProjectTitle: (state, action: PayloadAction<string>) => {
-      state.title = action.payload;
+    setProjectName: (state, action: PayloadAction<string>) => {
+      state.name = action.payload;
     },
 
     /**
      * @description 设置画布大小
      */
-    setCanvasSize: (state, action: PayloadAction<Partial<IProjectState['canvas']>>) => {
-      state.canvas = { ...state.canvas, ...action.payload };
+    setCanvasSize: (state, action: PayloadAction<Partial<IProjectState['data']['canvas']>>) => {
+      state.data.canvas = { ...state.data.canvas, ...action.payload };
     },
 
     /**
@@ -49,8 +56,8 @@ export const projectSlice = createSlice({
      */
     addImage: (state) => {
       const id = guid();
-      state.images.byId[id] = { name: id, id, layers: [] };
-      state.images.allIds.push(id);
+      state.data.imagesById[id] = { name: id, id, layers: [] };
+      state.data.imageAllIds.push(id);
     },
 
     /**
@@ -61,9 +68,10 @@ export const projectSlice = createSlice({
     addLayer: (state, action: PayloadAction<{ imageId: string; layer: ILayer }>) => {
       const { imageId, layer } = action.payload;
       const id = guid();
-      state.layers.byId[id] = Object.assign(layer, { id });
-      state.layers.allIds.push(id);
-      state.images.byId[imageId].layers.push(id);
+
+      state.data.layersById[id] = { ...layer, id };
+      state.data.layerAllIds.push(id);
+      state.data.imagesById[imageId].layers.push(id);
     },
 
     /**
@@ -78,7 +86,7 @@ export const projectSlice = createSlice({
     ) => {
       action.payload.idWithCoordinate.forEach((coordinateWithId) => {
         const { id, x, y } = coordinateWithId;
-        const { properties } = state.layers.byId[id];
+        const { properties } = state.data.layersById[id];
 
         properties.x = x;
         properties.y = y;
@@ -97,7 +105,7 @@ export const projectSlice = createSlice({
     ) => {
       action.payload.idWithRotation.forEach((idWithRotation) => {
         const { id, rotation } = idWithRotation;
-        const { properties } = state.layers.byId[id];
+        const { properties } = state.data.layersById[id];
 
         properties.rotation = rotation;
       });
@@ -110,7 +118,7 @@ export const projectSlice = createSlice({
       const { layerId, newProperties } = action.payload;
 
       for (const key in newProperties) {
-        state.layers.byId[layerId].properties[key as keyof ILayer['properties']] = newProperties[key];
+        state.data.layersById[layerId].properties[key as keyof ILayer['properties']] = newProperties[key];
       }
     },
 
@@ -121,7 +129,7 @@ export const projectSlice = createSlice({
       const { layerIds, newColor } = action.payload;
 
       layerIds.forEach((layerId) => {
-        const layer: ITextLayer = state.layers.byId[layerId] as ITextLayer;
+        const layer: ITextLayer = state.data.layersById[layerId] as ITextLayer;
         layer.properties.color = newColor;
       });
     },
@@ -140,7 +148,7 @@ export const projectSlice = createSlice({
       }>,
     ) {
       action.payload.layers.forEach(({ id, newProperties }) => {
-        state.layers.byId[id].properties = { ...state.layers.byId[id].properties, ...newProperties };
+        state.data.layersById[id].properties = { ...state.data.layersById[id].properties, ...newProperties };
       });
     },
 
@@ -155,7 +163,7 @@ export const projectSlice = createSlice({
       }>,
     ) => {
       const { layerId, newProperties } = action.payload;
-      const layer: IImgLayer = state.layers.byId[layerId] as IImgLayer;
+      const layer: IImgLayer = state.data.layersById[layerId] as IImgLayer;
 
       layer.properties = { ...layer.properties, ...newProperties };
     },
@@ -165,17 +173,17 @@ export const projectSlice = createSlice({
      */
     deleteLayers(state, action: PayloadAction<IBaseLayer['id'][]>) {
       const { payload } = action;
-      const { images, layers } = state;
+      let { imagesById, imageAllIds, layersById, layerAllIds } = state.data;
 
       // 删除所有 image 中要删除的 layer
-      images.allIds.forEach((imageId) => {
-        images.byId[imageId].layers = images.byId[imageId].layers.filter((layer) => !payload.includes(layer));
+      imageAllIds.forEach((imageId) => {
+        imagesById[imageId].layers = imagesById[imageId].layers.filter((layer) => !payload.includes(layer));
       });
 
       // 删除所有 layer
-      layers.allIds = layers.allIds.filter((layerId) => !payload.includes(layerId));
+      layerAllIds = layerAllIds.filter((layerId) => !payload.includes(layerId));
       payload.forEach((layerId) => {
-        delete layers.byId[layerId];
+        delete layersById[layerId];
       });
     },
   },
@@ -183,7 +191,7 @@ export const projectSlice = createSlice({
 
 export const {
   initProject,
-  setProjectTitle,
+  setProjectName,
   setCanvasSize,
   addImage,
   addLayer,
@@ -197,9 +205,24 @@ export const {
 } = projectSlice.actions;
 
 export const selectProject = (state: RootState) => state.project.present;
-export const selectImages = (state: RootState) => state.project.present.images;
-export const selectLayers = (state: RootState) => state.project.present.layers;
-export const selectCanvas = (state: RootState) => state.project.present.canvas;
+export const selectProjectName = (state: RootState) => state.project.present.name;
+export const selectImages = (state: RootState) => {
+  const { imagesById, imageAllIds } = state.project.present.data;
+
+  return {
+    byId: imagesById,
+    allIds: imageAllIds,
+  };
+};
+export const selectLayers = (state: RootState) => {
+  const { layersById, layerAllIds } = state.project.present.data;
+
+  return {
+    byId: layersById,
+    allIds: layerAllIds,
+  };
+};
+export const selectCanvas = (state: RootState) => state.project.present.data.canvas;
 export const selectProjectPastLength = (state: RootState) => state.project.past.length;
 export const selectProjectFutureLength = (state: RootState) => state.project.future.length;
 

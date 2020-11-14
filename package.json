@@ -30,7 +30,10 @@
     "typescript": "~3.8.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run start:prod",
+    "start:mock": "react-scripts start --proxy=MOCK",
+    "start:local": "react-scripts start --proxy=LOCAL",
+    "start:prod": "react-scripts start --proxy=PROD",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

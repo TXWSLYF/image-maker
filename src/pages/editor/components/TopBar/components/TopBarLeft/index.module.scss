@@ -1,0 +1,41 @@
+.topBarLeft {
+  flex: 0 0 248px;
+  padding-right: 10px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  .backIcon {
+    display: flex;
+    width: 44px;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-right: 7px;
+    color: rgb(141, 158, 167);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.1s linear 0s;
+
+    &:hover {
+      color: rgb(65, 80, 88);
+      background: rgb(242, 242, 242);
+    }
+
+    > svg {
+      height: 12px;
+      fill: currentColor;
+      width: 1em;
+    }
+  }
+
+  .projectName {
+    font-size: 14px;
+    color: rgb(82, 94, 113);
+    line-height: unset;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 15em;
+  }
+}

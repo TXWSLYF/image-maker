@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import useSWR from 'swr';
 import { Spin } from 'antd';
 import { initProject } from 'src/features/project/projectSlice';
 import { setCurImage } from 'src/features/editor/editorSlice';
+import useRequest from 'src/common/hooks/useRequest';
 import projectApi from 'src/api/project';
 import styles from './index.module.scss';
 import Draggable from './components/Draggable';
@@ -13,9 +13,11 @@ function EditorPage() {
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
 
-  const { data, error } = useSWR(`project/${id}`, () => {
+  const fetcher = useCallback(() => {
     return projectApi.retrieve(Number(id));
-  });
+  }, [id]);
+
+  const { data, error } = useRequest(fetcher);
 
   function renderChild() {
     if (error) return <div>error</div>;

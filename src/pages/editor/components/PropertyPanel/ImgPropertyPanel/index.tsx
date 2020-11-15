@@ -36,7 +36,7 @@ const ImgPropertyPanel = ({
         </Collapse>
       </div>
     );
-  }, [properties, layerId]);
+  }, [handleInput, properties]);
 };
 
 export default ImgPropertyPanel;

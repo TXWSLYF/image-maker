@@ -1,33 +1,11 @@
+@import 'src/assets/scss/variables.scss';
+
 .topBar {
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
-  box-shadow: 0 1px 4px hsla(0, 0%, 88.2%, 0.5);
-}
-
-.undoRedo {
-  margin-left: 16px;
-}
-
-.layerList {
-  display: flex;
-  align-items: center;
-}
-
-.layerItem {
-  text-align: center;
-  cursor: pointer;
-
-  &:not(:first-child) {
-    margin-left: 16px;
-  }
-}
-
-.layerItemName {
-}
-
-.operations {
-  margin-right: 16px;
+  height: $top-bar-height;
+  background: rgb(255, 255, 255);
+  box-shadow: rgba(100, 100, 100, 0.2) 0px 2px 3px 0px;
 }

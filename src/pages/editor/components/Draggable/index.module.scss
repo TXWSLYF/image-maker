@@ -1,10 +1,10 @@
-$topBarHeight: 80px;
+@import 'src/assets/scss/variables.scss';
 
 .editorPageWrapper {
   background-color: #fff;
 }
 
 .mainContainer {
-  height: calc(100vh - #{$topBarHeight});
+  height: calc(100vh - #{$top-bar-height});
   display: flex;
 }

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from 'src/app/store';
+import { AppThunk, RootState } from 'src/app/store';
+import projectApi from 'src/api/project';
 import { guid } from 'src/utils/util';
 
 const initialState: IProjectState = {
@@ -173,7 +174,7 @@ export const projectSlice = createSlice({
      */
     deleteLayers(state, action: PayloadAction<IBaseLayer['id'][]>) {
       const { payload } = action;
-      let { imagesById, imageAllIds, layersById, layerAllIds } = state.data;
+      let { imagesById, imageAllIds, layersById } = state.data;
 
       // 删除所有 image 中要删除的 layer
       imageAllIds.forEach((imageId) => {
@@ -181,7 +182,7 @@ export const projectSlice = createSlice({
       });
 
       // 删除所有 layer
-      layerAllIds = layerAllIds.filter((layerId) => !payload.includes(layerId));
+      state.data.layerAllIds = state.data.layerAllIds.filter((layerId) => !payload.includes(layerId));
       payload.forEach((layerId) => {
         delete layersById[layerId];
       });
@@ -225,5 +226,13 @@ export const selectLayers = (state: RootState) => {
 export const selectCanvas = (state: RootState) => state.project.present.data.canvas;
 export const selectProjectPastLength = (state: RootState) => state.project.past.length;
 export const selectProjectFutureLength = (state: RootState) => state.project.future.length;
+
+/**
+ * @description 保存项目
+ */
+export const saveProject = (): AppThunk => async (dispatch, getState) => {
+  const { id, name, data } = getState().project.present;
+  await projectApi.update({ id, name, data: JSON.stringify(data) });
+};
 
 export default projectSlice.reducer;

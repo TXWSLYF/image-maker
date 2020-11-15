@@ -36,7 +36,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "npx prettier --write src/"
+    "format": "npx prettier --write src/",
+    "deploy": "sh scripts/deploy.sh"
   },
   "eslintConfig": {
     "extends": "react-app"

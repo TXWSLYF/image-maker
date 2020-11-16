@@ -1,3 +1,5 @@
+@import 'src/assets/scss/variables.scss';
+
 .basicWidgets {
   position: relative;
   flex-shrink: 0;
@@ -37,6 +39,33 @@
       }
 
       > svg {
+        fill: currentColor;
+        width: 1em;
+      }
+    }
+  }
+
+  .navFooter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .iconWrapper {
+      position: relative;
+      width: 40px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      color: rgb(108, 109, 110);
+
+      &:hover {
+        background-color: rgb(242, 242, 242);
+      }
+
+      > svg {
+        transition: $left-panel-transition;
         fill: currentColor;
         width: 1em;
       }

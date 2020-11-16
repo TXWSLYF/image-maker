@@ -5,6 +5,7 @@ const initialState: IEditorState = {
   curImageId: '',
   curLayerIds: [],
   hoverLayerId: '',
+  isLeftPanelVisible: true,
 
   // 编辑区相对于页面的坐标
   editorCanvasCoordinate: {
@@ -88,20 +89,24 @@ export const editorSlice = createSlice({
     },
 
     /**
+     * @description 设置页面列表是否收起
+     */
+    setIsLeftPanelVisible: (state, action: PayloadAction<boolean>) => {
+      state.isLeftPanelVisible = action.payload;
+    },
+
+    /**
      * @description 设置拖拽状态
      */
     setIsDraging: (state, action: PayloadAction<boolean>) => {
       state.isDraging = action.payload;
     },
-
     setDragId: (state, action: PayloadAction<string>) => {
       state.dragId = action.payload;
     },
-
     setDragStartMouseCoordinate: (state, action: PayloadAction<ICoordinate>) => {
       state.dragStartMouseCoordinate = action.payload;
     },
-
     setDragStartLayersCoordinate: (state, action: PayloadAction<IEditorState['dragStartLayersCoordinate']>) => {
       state.dragStartLayersCoordinate = action.payload;
     },
@@ -112,19 +117,15 @@ export const editorSlice = createSlice({
     setIsRotating: (state, action: PayloadAction<boolean>) => {
       state.isRotating = action.payload;
     },
-
     setRotateId: (state, action: PayloadAction<string>) => {
       state.rotateId = action.payload;
     },
-
     setRotateStartMouseAngle: (state, action: PayloadAction<number>) => {
       state.rotateStartMouseAngle = action.payload;
     },
-
     setRotateCenterCoordinate: (state, action: PayloadAction<IEditorState['rotateCenterCoordinate']>) => {
       state.rotateCenterCoordinate = action.payload;
     },
-
     setRotateStartLayersRotation: (state, action: PayloadAction<IEditorState['rotateStartLayersRotation']>) => {
       state.rotateStartLayersRotation = action.payload;
     },
@@ -132,7 +133,6 @@ export const editorSlice = createSlice({
     /**
      * @description 设置拖拽缩放相关属性
      */
-
     setIsDragZooming: (state, action: PayloadAction<IEditorState['isDragZooming']>) => {
       state.isDragZooming = action.payload;
     },
@@ -157,6 +157,7 @@ export const {
   setCurLayers,
   setEditorCanvasCoordinate,
   setHoverLayerId,
+  setIsLeftPanelVisible,
 
   setIsDraging,
   setDragId,
@@ -180,6 +181,7 @@ export const selectCurImageId = (state: RootState) => state.editor.curImageId;
 export const selectCurLayerIds = (state: RootState) => state.editor.curLayerIds;
 export const selectHoverLayerId = (state: RootState) => state.editor.hoverLayerId;
 export const selectEditorCanvasCoordinate = (state: RootState) => state.editor.editorCanvasCoordinate;
+export const selectIsLeftPanelVisible = (state: RootState) => state.editor.isLeftPanelVisible;
 
 export const selectIsDraging = (state: RootState) => state.editor.isDraging;
 export const selectDragId = (state: RootState) => state.editor.dragId;

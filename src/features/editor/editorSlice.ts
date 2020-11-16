@@ -5,7 +5,12 @@ const initialState: IEditorState = {
   curImageId: '',
   curLayerIds: [],
   hoverLayerId: '',
+
+  /**
+   * @description 左侧面板属性
+   */
   isLeftPanelVisible: true,
+  leftPanelWidth: 209,
 
   // 编辑区相对于页面的坐标
   editorCanvasCoordinate: {
@@ -94,6 +99,9 @@ export const editorSlice = createSlice({
     setIsLeftPanelVisible: (state, action: PayloadAction<boolean>) => {
       state.isLeftPanelVisible = action.payload;
     },
+    setLeftPanelWidth: (state, action: PayloadAction<number>) => {
+      state.leftPanelWidth = action.payload;
+    },
 
     /**
      * @description 设置拖拽状态
@@ -158,6 +166,7 @@ export const {
   setEditorCanvasCoordinate,
   setHoverLayerId,
   setIsLeftPanelVisible,
+  setLeftPanelWidth,
 
   setIsDraging,
   setDragId,
@@ -181,7 +190,12 @@ export const selectCurImageId = (state: RootState) => state.editor.curImageId;
 export const selectCurLayerIds = (state: RootState) => state.editor.curLayerIds;
 export const selectHoverLayerId = (state: RootState) => state.editor.hoverLayerId;
 export const selectEditorCanvasCoordinate = (state: RootState) => state.editor.editorCanvasCoordinate;
+
+/**
+ * @description LeftPanel 相关属性
+ */
 export const selectIsLeftPanelVisible = (state: RootState) => state.editor.isLeftPanelVisible;
+export const selectLeftPanelWidth = (state: RootState) => state.editor.leftPanelWidth;
 
 export const selectIsDraging = (state: RootState) => state.editor.isDraging;
 export const selectDragId = (state: RootState) => state.editor.dragId;

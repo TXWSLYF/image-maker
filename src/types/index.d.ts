@@ -162,8 +162,11 @@ interface IEditorState {
   // 拖拽缩放图层位置信息
   dragZoomStartLayersPosition: (IRect & Pick<IBaseLayer, 'id'>)[];
 
-  // 左侧面板是否可见
-  isLeftPanelVisible: boolean;
+  /**
+   * @description 左侧面板相关属性
+   */
+  isLeftPanelVisible: boolean; // 左侧面板是否可见
+  leftPanelWidth: number; // 左侧面板宽度
 }
 
 // 二维坐标系坐标点

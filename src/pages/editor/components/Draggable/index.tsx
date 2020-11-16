@@ -27,6 +27,7 @@ import TopBar from '../TopBar';
 import PageList from '../PageList';
 import EditArea from '../EditorArea';
 import PropertyPanel from '../PropertyPanel';
+import BasicWidgets from '../BasicWidgets';
 
 function Draggeble() {
   const dispatch = useDispatch();
@@ -171,6 +172,7 @@ function Draggeble() {
     >
       <TopBar />
       <main className={styles.mainContainer}>
+        <BasicWidgets />
         <PageList />
         <EditArea />
         <PropertyPanel />

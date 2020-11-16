@@ -7,7 +7,7 @@ const imgLayer = (): IImgLayer => ({
     x: 0,
     y: 0,
     width: 100,
-    height: 20,
+    height: 100,
     opacity: 1,
     rotation: 0,
 

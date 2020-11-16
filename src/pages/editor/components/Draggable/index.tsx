@@ -24,7 +24,6 @@ import transfromAngle from 'src/utils/transformAngle';
 import { R2D } from 'src/common/constants';
 import styles from './index.module.scss';
 import TopBar from '../TopBar';
-import PageList from '../PageList';
 import EditArea from '../EditorArea';
 import PropertyPanel from '../PropertyPanel';
 import BasicWidgets from '../BasicWidgets';
@@ -175,7 +174,6 @@ function Draggeble() {
       <main className={styles.mainContainer}>
         <BasicWidgets />
         <LeftPanel />
-        {/* <PageList /> */}
         <EditArea />
         <PropertyPanel />
       </main>

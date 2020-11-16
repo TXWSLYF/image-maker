@@ -1,17 +1,17 @@
 .pageList {
-  flex-shrink: 0;
-  flex-grow: 0;
-  width: 300px;
-  box-shadow: -5px 0 5px -5px #cecece;
-}
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
-.pageItem {
-  text-align: center;
-  margin: 10px 0;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  .pageItem {
+    text-align: center;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
 
-  &:hover {
-    background-color: #cecece;
+    &:hover {
+      background-color: #cecece;
+    }
   }
 }

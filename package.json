@@ -30,11 +30,11 @@
   },
   "scripts": {
     "start": "npm run start:prod",
-    "start:mock": "react-scripts start --proxy=MOCK",
-    "start:local": "react-scripts start --proxy=LOCAL",
-    "start:prod": "react-scripts start --proxy=PROD",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start:mock": "react-app-rewired start --proxy=MOCK",
+    "start:local": "react-app-rewired start --proxy=LOCAL",
+    "start:prod": "react-app-rewired start --proxy=PROD",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "format": "npx prettier --write src/",
     "deploy": "sh scripts/deploy.sh"
@@ -58,7 +58,8 @@
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "http-proxy-middleware": "^1.0.6",
-    "husky": "^4.3.0"
+    "husky": "^4.3.0",
+    "react-app-rewired": "^2.1.6"
   },
   "husky": {
     "hooks": {

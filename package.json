@@ -37,7 +37,8 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "format": "npx prettier --write src/",
-    "deploy": "sh scripts/deploy.sh"
+    "deploy": "sh scripts/deploy.sh",
+    "analyze": "npx cra-bundle-analyzer"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -59,7 +60,8 @@
     "@commitlint/config-conventional": "^11.0.0",
     "http-proxy-middleware": "^1.0.6",
     "husky": "^4.3.0",
-    "react-app-rewired": "^2.1.6"
+    "react-app-rewired": "^2.1.6",
+    "source-map-explorer": "^2.5.0"
   },
   "husky": {
     "hooks": {

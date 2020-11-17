@@ -1,6 +1,16 @@
 import React, { useMemo } from 'react';
 import { ReactComponent as PageSvg } from 'src/assets/svg/page.svg';
+import { ReactComponent as EllipsisSvg } from 'src/assets/svg/ellipsis.svg';
+import { ReactComponent as CircleSvg } from 'src/assets/svg/circle.svg';
 import styles from './index.module.scss';
+
+const circleSvgStyle: React.CSSProperties = {
+  position: 'absolute',
+  right: 17,
+  width: 6,
+  height: 6,
+  fill: 'currentcolor',
+};
 
 interface PageListItemLiProps {
   isActive: boolean;
@@ -16,7 +26,11 @@ const PageListItemLi = ({ isActive, onClick, text }: PageListItemLiProps) => {
           <div className={styles.pageListItemLiIcon}>
             <PageSvg />
           </div>
-          <span className={styles.editableDiv}>{text}</span>
+          <div className={styles.editableDiv}>{text}</div>
+          <div className={styles.actions}>
+            <EllipsisSvg />
+          </div>
+          {isActive ? <CircleSvg style={circleSvgStyle} /> : null}
         </div>
       </li>
     );

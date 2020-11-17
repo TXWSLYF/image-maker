@@ -34,6 +34,34 @@
       border-top: 1px solid transparent;
       border-bottom: 1px solid transparent;
     }
+
+    &:hover {
+      > svg {
+        display: none;
+      }
+
+      .actions {
+        display: flex;
+      }
+    }
+
+    .actions {
+      display: none;
+      align-items: center;
+      color: rgb(141, 158, 167);
+      padding: 0px 10px;
+
+      &:hover {
+        color: rgb(41, 141, 248);
+      }
+
+      > svg {
+        font-size: 14px;
+        pointer-events: none;
+        fill: currentColor;
+        width: 1em;
+      }
+    }
   }
 
   &Icon {

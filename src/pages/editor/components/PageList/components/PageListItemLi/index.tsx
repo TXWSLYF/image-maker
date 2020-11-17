@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { Tooltip } from 'antd';
 import { ReactComponent as PageSvg } from 'src/assets/svg/page.svg';
 import { ReactComponent as EllipsisSvg } from 'src/assets/svg/ellipsis.svg';
 import { ReactComponent as CircleSvg } from 'src/assets/svg/circle.svg';
@@ -27,9 +28,19 @@ const PageListItemLi = ({ isActive, onClick, text }: PageListItemLiProps) => {
             <PageSvg />
           </div>
           <div className={styles.editableDiv}>{text}</div>
-          <div className={styles.actions}>
-            <EllipsisSvg />
-          </div>
+          <Tooltip
+            title="1"
+            placement="rightTop"
+            align={{ offset: [-10, 0] }}
+            onVisibleChange={(visible) => {
+              // TODO:
+            }}
+          >
+            <div className={styles.actions}>
+              <EllipsisSvg />
+            </div>
+          </Tooltip>
+
           {isActive ? <CircleSvg style={circleSvgStyle} /> : null}
         </div>
       </li>

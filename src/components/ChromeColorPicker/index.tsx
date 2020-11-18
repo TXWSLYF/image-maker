@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { ChromePicker, ColorChangeHandler } from 'react-color';
-import { useClickAway } from 'react-use';
+import useClickAway from 'src/common/hooks/useClickAway';
 import styles from './index.module.scss';
 
 function ChromeColorPicker({ color, onChange }: { color: string; onChange: ColorChangeHandler }) {

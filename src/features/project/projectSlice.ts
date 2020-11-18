@@ -55,8 +55,9 @@ export const projectSlice = createSlice({
     /**
      * @description 添加图片
      */
-    addImage: (state) => {
+    addPage: (state) => {
       const id = guid();
+      // TODO: 调整 name 生成算法
       state.data.imagesById[id] = { name: id, id, layers: [] };
       state.data.imageAllIds.push(id);
     },
@@ -194,7 +195,7 @@ export const {
   initProject,
   setProjectName,
   setCanvasSize,
-  addImage,
+  addPage,
   addLayer,
   setLayersCoordinate,
   setLayersProperties,

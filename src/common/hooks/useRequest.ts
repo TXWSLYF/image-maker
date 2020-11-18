@@ -1,20 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-type fetcherFn<T> = (...args: any) => Promise<T>;
+export type FetcherFn<T> = (...args: any) => Promise<T>;
 
-const useRequest = <T = any, Error = any>(fn: fetcherFn<T>) => {
+const useRequest = <T = any, Error = any>(fn: FetcherFn<T>) => {
   const [data, setData] = useState<T>();
   const [error, setError] = useState<Error>();
+  const savedFetcherFn = useRef(fn);
 
   useEffect(() => {
-    fn()
+    savedFetcherFn.current = fn;
+  }, [fn]);
+
+  useEffect(() => {
+    savedFetcherFn
+      .current()
       .then((data) => {
         setData(data);
       })
       .catch((error) => {
         setError(error);
       });
-  }, [fn]);
+  }, []);
 
   return { data, error };
 };

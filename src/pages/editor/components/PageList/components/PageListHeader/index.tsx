@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { Tooltip } from 'antd';
+import Tooltip from 'src/components/Tooltip';
 import { ReactComponent as AddSvg } from 'src/assets/svg/add.svg';
 import { addPage } from 'src/features/project/projectSlice';
 import styles from './index.module.scss';
@@ -14,7 +14,7 @@ const PageListHeader = () => {
   return useMemo(() => {
     return (
       <div className={styles.pageListHeader}>
-        <Tooltip title={'页面'} placement="top" mouseEnterDelay={0} mouseLeaveDelay={0}>
+        <Tooltip title={'页面'} placement="top">
           <AddSvg onClick={handleAddPage} />
         </Tooltip>
       </div>

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Tooltip } from 'antd';
+import Tooltip from 'src/components/Tooltip';
 import { ReactComponent as PageSvg } from 'src/assets/svg/page.svg';
 import { ReactComponent as EllipsisSvg } from 'src/assets/svg/ellipsis.svg';
 import { ReactComponent as CircleSvg } from 'src/assets/svg/circle.svg';

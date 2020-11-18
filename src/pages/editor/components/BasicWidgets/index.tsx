@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Tooltip } from 'antd';
+import Tooltip from 'src/components/Tooltip';
 import { selectCurImageId, selectIsLeftPanelVisible, setIsLeftPanelVisible } from 'src/features/editor/editorSlice';
 import { addLayer } from 'src/features/project/projectSlice';
 import { imgLayer, textLayer } from 'src/layer';

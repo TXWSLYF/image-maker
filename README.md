@@ -5,3 +5,4 @@
 
 ## References
 1. [svg 编辑器](https://c.runoob.com/more/svgeditor/)
+2. [How to git add only files that have already been staged](https://stacktoheap.com/blog/2016/01/02/git-add-only-files-already-staged/)

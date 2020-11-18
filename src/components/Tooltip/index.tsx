@@ -3,7 +3,7 @@ import { Tooltip as AntdTooltip } from 'antd';
 import { TooltipPropsWithTitle } from 'antd/es/tooltip';
 
 const DEFAULT_BACKGROUND_COLOR = '#1f292e';
-const defaultOverlayInnerStyle = {
+export const defaultOverlayInnerStyle = {
   fontSize: 12,
   lineHeight: '18px',
   padding: '3px 7px',

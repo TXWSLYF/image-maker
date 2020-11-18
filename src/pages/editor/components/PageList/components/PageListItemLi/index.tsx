@@ -3,6 +3,7 @@ import Tooltip from 'src/components/Tooltip';
 import { ReactComponent as PageSvg } from 'src/assets/svg/page.svg';
 import { ReactComponent as EllipsisSvg } from 'src/assets/svg/ellipsis.svg';
 import { ReactComponent as CircleSvg } from 'src/assets/svg/circle.svg';
+import MenuList from 'src/components/MenuList';
 import styles from './index.module.scss';
 
 const circleSvgStyle: React.CSSProperties = {
@@ -29,11 +30,25 @@ const PageListItemLi = ({ isActive, onClick, text }: PageListItemLiProps) => {
           </div>
           <div className={styles.editableDiv}>{text}</div>
           <Tooltip
-            title="1"
+            color={'white'}
+            title={
+              <MenuList
+                menuList={[
+                  {
+                    text: '删除',
+                  },
+                ]}
+              />
+            }
             placement="rightTop"
-            align={{ offset: [-10, 0] }}
+            overlayInnerStyle={{
+              padding: 0,
+            }}
+            visible={true}
+            align={{ offset: [-14, 0] }}
             onVisibleChange={(visible) => {
               // TODO:
+              console.log(visible);
             }}
           >
             <div className={styles.actions}>

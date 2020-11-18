@@ -1,0 +1,21 @@
+.menuList {
+  padding: 4px 0px;
+  background: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px 0px;
+  min-width: 94px;
+  cursor: pointer;
+
+  &Item {
+    display: flex;
+    align-items: center;
+    padding: 0px 16px;
+    height: 26px;
+    color: rgb(65, 80, 88);
+    white-space: nowrap;
+
+    &:hover {
+      background: rgb(245, 245, 245);
+      color: rgb(41, 141, 248);
+    }
+  }
+}

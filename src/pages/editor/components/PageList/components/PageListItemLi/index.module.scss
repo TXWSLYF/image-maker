@@ -10,6 +10,10 @@
   font-size: 12px;
   cursor: pointer;
 
+  &:hover {
+    background: rgb(247, 247, 247);
+  }
+
   &.active {
     color: rgb(41, 141, 248);
     background: rgb(242, 248, 255);

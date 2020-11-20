@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { difference } from 'lodash';
 import { AppThunk, RootState } from 'src/app/store';
 import projectApi from 'src/api/project';
 import { guid } from 'src/utils/util';
@@ -188,6 +189,32 @@ export const projectSlice = createSlice({
         delete layersById[layerId];
       });
     },
+
+    /**
+     * @description 删除页面
+     */
+    deletePages(state, action: PayloadAction<string[]>) {
+      // 筛选出剩余未删除页面
+      const unDeletedPageIds = difference(state.data.imageAllIds, action.payload);
+
+      // 页面数量最少为 1
+      if (unDeletedPageIds.length === 0) {
+        throw new Error('不能删除全部页面');
+      }
+
+      action.payload.forEach((pageId) => {
+        // 删除图层数据
+        const { layers } = state.data.imagesById[pageId];
+        layers.forEach((layerId) => {
+          delete state.data.layersById[layerId];
+        });
+        state.data.layerAllIds = difference(state.data.layerAllIds, layers);
+
+        // 删除页面数据
+        delete state.data.imagesById[pageId];
+      });
+      state.data.imageAllIds = unDeletedPageIds;
+    },
   },
 });
 
@@ -204,6 +231,7 @@ export const {
   setLayersBaseProperties,
   deleteLayers,
   setImgLayerProperties,
+  deletePages,
 } = projectSlice.actions;
 
 export const selectProject = (state: RootState) => state.project.present;
@@ -227,6 +255,7 @@ export const selectLayers = (state: RootState) => {
 export const selectCanvas = (state: RootState) => state.project.present.data.canvas;
 export const selectProjectPastLength = (state: RootState) => state.project.past.length;
 export const selectProjectFutureLength = (state: RootState) => state.project.future.length;
+export const selectPageAllIds = (state: RootState) => state.project.present.data.imageAllIds;
 
 /**
  * @description 保存项目

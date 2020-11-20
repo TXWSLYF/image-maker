@@ -1,10 +1,20 @@
-import React, { useMemo } from 'react';
-import Tooltip from 'src/components/Tooltip';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Tooltip, Modal } from 'antd';
 import { ReactComponent as PageSvg } from 'src/assets/svg/page.svg';
 import { ReactComponent as EllipsisSvg } from 'src/assets/svg/ellipsis.svg';
 import { ReactComponent as CircleSvg } from 'src/assets/svg/circle.svg';
 import MenuList from 'src/components/MenuList';
 import styles from './index.module.scss';
+interface PageListItemLiProps {
+  text: string;
+  isActive: boolean;
+  onClick: () => void;
+  onDelete: () => void;
+}
+
+const ACTIVE_COLOR = 'rgb(41, 141, 248)';
+const ACTIVE_BG_COLOR = 'rgb(242, 248, 255)';
+const HOVER_BG_COLOR = 'rgb(247, 247, 247)';
 
 const circleSvgStyle: React.CSSProperties = {
   position: 'absolute',
@@ -14,16 +24,66 @@ const circleSvgStyle: React.CSSProperties = {
   fill: 'currentcolor',
 };
 
-interface PageListItemLiProps {
-  isActive: boolean;
-  text: string;
-  onClick: () => void;
-}
+const overlayInnerStyle = {
+  padding: 0,
+};
 
-const PageListItemLi = ({ isActive, onClick, text }: PageListItemLiProps) => {
+const pageNameStyle: React.CSSProperties = {
+  color: 'red',
+  marginLeft: 6,
+  marginRight: 6,
+};
+
+const PageListItemLi = ({ text, isActive, onClick, onDelete }: PageListItemLiProps) => {
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const pageListItemLiClassName = useMemo(() => {
+    if (isActive) {
+      return `${styles.pageListItemLi} ${styles.active}`;
+    } else {
+      return `${styles.pageListItemLi}`;
+    }
+  }, [isActive]);
+  const pageListItemLiStyle = useMemo(() => {
+    return {
+      background: `${isActive ? ACTIVE_BG_COLOR : tooltipVisible ? HOVER_BG_COLOR : ''}`,
+    };
+  }, [isActive, tooltipVisible]);
+  const handleVisibleChange = useCallback((visible) => {
+    setTooltipVisible(visible);
+  }, []);
+
+  const handleDelete = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      Modal.confirm({
+        mask: false,
+        title: (
+          <div>
+            确定删除页面<span style={pageNameStyle}>{text}</span>？
+          </div>
+        ),
+        okText: '确定',
+        onOk: () => {
+          onDelete();
+        },
+        cancelText: '取消',
+      });
+      e.stopPropagation();
+    },
+    [text, onDelete],
+  );
+
+  const menuList = useMemo(() => {
+    return [
+      {
+        text: '删除',
+        onClick: handleDelete,
+      },
+    ];
+  }, [handleDelete]);
+
   return useMemo(() => {
     return (
-      <li className={`${styles.pageListItemLi} ${isActive ? styles.active : ''}`} onClick={onClick}>
+      <li className={pageListItemLiClassName} onClick={onClick} style={pageListItemLiStyle}>
         <div className={styles.pageName}>
           <div className={styles.pageListItemLiIcon}>
             <PageSvg />
@@ -31,36 +91,36 @@ const PageListItemLi = ({ isActive, onClick, text }: PageListItemLiProps) => {
           <div className={styles.editableDiv}>{text}</div>
           <Tooltip
             color={'white'}
-            title={
-              <MenuList
-                menuList={[
-                  {
-                    text: '删除',
-                  },
-                ]}
-              />
-            }
+            title={<MenuList menuList={menuList} />}
             placement="rightTop"
-            overlayInnerStyle={{
-              padding: 0,
-            }}
-            visible={true}
-            align={{ offset: [-14, 0] }}
-            onVisibleChange={(visible) => {
-              // TODO:
-              console.log(visible);
-            }}
+            overlayInnerStyle={overlayInnerStyle}
+            onVisibleChange={handleVisibleChange}
           >
-            <div className={styles.actions}>
+            <div
+              className={styles.actions}
+              style={{
+                display: `${tooltipVisible ? 'flex' : ''}`,
+                color: `${tooltipVisible ? ACTIVE_COLOR : ''}`,
+              }}
+            >
               <EllipsisSvg />
             </div>
           </Tooltip>
 
-          {isActive ? <CircleSvg style={circleSvgStyle} /> : null}
+          {isActive && !tooltipVisible ? <CircleSvg style={circleSvgStyle} /> : null}
         </div>
       </li>
     );
-  }, [isActive, onClick, text]);
+  }, [
+    isActive,
+    onClick,
+    text,
+    tooltipVisible,
+    handleVisibleChange,
+    pageListItemLiClassName,
+    pageListItemLiStyle,
+    menuList,
+  ]);
 };
 
 export default PageListItemLi;

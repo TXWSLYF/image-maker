@@ -17,6 +17,7 @@
     "@types/react-router-dom": "^5.1.5",
     "antd": "^4.6.2",
     "axios": "^0.20.0",
+    "lodash": "^4.17.20",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-color": "^2.18.1",
@@ -59,6 +60,7 @@
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "@types/lodash": "^4.14.165",
     "http-proxy-middleware": "^1.0.6",
     "husky": "^4.3.0",
     "react-app-rewired": "^2.1.6",

@@ -9,7 +9,7 @@ const PageListHeader = () => {
   const dispatch = useDispatch();
   const handleAddPage = useCallback(() => {
     dispatch(addPage());
-  }, []);
+  }, [dispatch]);
 
   return useMemo(() => {
     return (
@@ -19,7 +19,7 @@ const PageListHeader = () => {
         </Tooltip>
       </div>
     );
-  }, []);
+  }, [handleAddPage]);
 };
 
 export default PageListHeader;

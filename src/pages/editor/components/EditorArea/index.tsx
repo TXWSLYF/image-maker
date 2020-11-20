@@ -53,12 +53,7 @@ function EditorArea() {
   }, [dispatch, ref, canvas]);
 
   return (
-    <div
-      className={styles.editorArea}
-      onMouseDown={() => {
-        dispatch(setCurLayers([]));
-      }}
-    >
+    <div className={styles.editorArea}>
       <div
         id="editorCanvas"
         ref={ref}

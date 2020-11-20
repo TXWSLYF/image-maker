@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLayersBaseProperties, setLayersCoordinate, setLayersRotation } from 'src/features/project/projectSlice';
 import {
@@ -19,9 +19,11 @@ import {
   selectDragZoomDirection,
   selectDragZoomStartMouseCoordinate,
   selectDragZoomStartLayersPosition,
+  setCurLayers,
 } from 'src/features/editor/editorSlice';
 import transfromAngle from 'src/utils/transformAngle';
 import { R2D } from 'src/common/constants';
+import Scroll, { ScrollProps } from 'src/components/Scroll';
 import styles from './index.module.scss';
 import TopBar from '../TopBar';
 import EditArea from '../EditorArea';
@@ -31,6 +33,24 @@ import LeftPanel from '../LeftPanel';
 
 function Draggeble() {
   const dispatch = useDispatch();
+
+  const scrollProps: ScrollProps = useMemo(() => {
+    return {
+      scrollWidth: 20000,
+      scrollHeight: 2000,
+      style: {
+        position: 'fixed',
+        top: 52,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: '#f1f3f7',
+      },
+      onMouseDown: () => {
+        dispatch(setCurLayers([]));
+      },
+    };
+  }, [dispatch]);
 
   // 拖拽相关数据
   const isDraging = useSelector(selectIsDraging);
@@ -172,9 +192,20 @@ function Draggeble() {
     >
       <TopBar />
       <main className={styles.mainContainer}>
+        <Scroll {...scrollProps}>
+          <EditArea />
+        </Scroll>
         <BasicWidgets />
         <LeftPanel />
-        <EditArea />
+        // TODO: 尺子和滚动条
+        <div
+          style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            minWidth: 400,
+          }}
+        ></div>
         <PropertyPanel />
       </main>
     </div>

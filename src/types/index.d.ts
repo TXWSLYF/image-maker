@@ -167,6 +167,18 @@ interface IEditorState {
    */
   isLeftPanelVisible: boolean; // 左侧面板是否可见
   leftPanelWidth: number; // 左侧面板宽度
+
+  /**
+   * @description 拖拽画布区域相关属性
+   */
+  // 可拖拽范围
+  scrollWidth: number;
+  scrollHeight: number;
+  // 当前滚动位置
+  scrollTop: number;
+  scrollLeft: number;
+  screenWidth: number;
+  screenHeight: number;
 }
 
 // 二维坐标系坐标点

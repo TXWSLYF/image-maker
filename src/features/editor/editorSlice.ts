@@ -6,6 +6,13 @@ const initialState: IEditorState = {
   curLayerIds: [],
   hoverLayerId: '',
 
+  scrollHeight: 3000,
+  scrollWidth: 4000,
+  scrollTop: 0,
+  scrollLeft: 0,
+  screenWidth: 0,
+  screenHeight: 0,
+
   /**
    * @description 左侧面板属性
    */
@@ -156,6 +163,20 @@ export const editorSlice = createSlice({
     setDragZoomStartLayersPosition: (state, action: PayloadAction<IEditorState['dragZoomStartLayersPosition']>) => {
       state.dragZoomStartLayersPosition = action.payload;
     },
+
+    setScrollTop: (state, action: PayloadAction<number>) => {
+      state.scrollTop = action.payload;
+    },
+    setScrollLeft: (state, action: PayloadAction<number>) => {
+      state.scrollLeft = action.payload;
+    },
+
+    setScreenHeight: (state, action: PayloadAction<number>) => {
+      state.screenHeight = action.payload;
+    },
+    setScreenWidth: (state, action: PayloadAction<number>) => {
+      state.screenWidth = action.payload;
+    },
   },
 });
 
@@ -184,6 +205,11 @@ export const {
   setDragZoomStartMouseCoordinate,
   setDragZoomDirection,
   setDragZoomStartLayersPosition,
+
+  setScrollTop,
+  setScrollLeft,
+  setScreenHeight,
+  setScreenWidth,
 } = editorSlice.actions;
 
 export const selectCurImageId = (state: RootState) => state.editor.curImageId;
@@ -213,5 +239,13 @@ export const selectDragZoomId = (state: RootState) => state.editor.dragZoomId;
 export const selectDragZoomStartMouseCoordinate = (state: RootState) => state.editor.dragZoomStartMouseCoordinate;
 export const selectDragZoomDirection = (state: RootState) => state.editor.dragZoomDirection;
 export const selectDragZoomStartLayersPosition = (state: RootState) => state.editor.dragZoomStartLayersPosition;
+
+export const selectScrollHeight = (state: RootState) => state.editor.scrollHeight;
+export const selectScrollWidth = (state: RootState) => state.editor.scrollWidth;
+export const selectScrollTop = (state: RootState) => state.editor.scrollTop;
+export const selectScrollLeft = (state: RootState) => state.editor.scrollLeft;
+
+export const selectScreenHeight = (state: RootState) => state.editor.screenHeight;
+export const selectScreenWidth = (state: RootState) => state.editor.screenWidth;
 
 export default editorSlice.reducer;

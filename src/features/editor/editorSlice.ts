@@ -164,11 +164,53 @@ export const editorSlice = createSlice({
       state.dragZoomStartLayersPosition = action.payload;
     },
 
-    setScrollTop: (state, action: PayloadAction<number>) => {
-      state.scrollTop = action.payload;
+    setScrollTop: (state, action: PayloadAction<{ offset?: number; newScrollTop?: number }>) => {
+      const { offset, newScrollTop } = action.payload;
+      const { scrollTop, scrollHeight, screenHeight } = state;
+      // TODO: 缓存计算结果
+      const maxScrollTop = (scrollHeight - screenHeight) / 2;
+
+      let indeedScrollTop = 0;
+
+      if (offset !== undefined && newScrollTop === undefined) {
+        indeedScrollTop = scrollTop + offset;
+      } else if (offset === undefined && newScrollTop !== undefined) {
+        indeedScrollTop = newScrollTop;
+      }
+
+      if (indeedScrollTop < -maxScrollTop) {
+        indeedScrollTop = -maxScrollTop;
+      }
+
+      if (indeedScrollTop > maxScrollTop) {
+        indeedScrollTop = maxScrollTop;
+      }
+
+      state.scrollTop = indeedScrollTop;
     },
-    setScrollLeft: (state, action: PayloadAction<number>) => {
-      state.scrollLeft = action.payload;
+    setScrollLeft: (state, action: PayloadAction<{ offset?: number; newScrollLeft?: number }>) => {
+      const { offset, newScrollLeft } = action.payload;
+      const { scrollLeft, scrollWidth, screenWidth } = state;
+      // TODO: 缓存计算结果
+      const maxScrollLeft = (scrollWidth - screenWidth) / 2;
+
+      let indeedScrollLeft = 0;
+
+      if (offset !== undefined && newScrollLeft === undefined) {
+        indeedScrollLeft = scrollLeft + offset;
+      } else if (offset === undefined && newScrollLeft !== undefined) {
+        indeedScrollLeft = newScrollLeft;
+      }
+
+      if (indeedScrollLeft < -maxScrollLeft) {
+        indeedScrollLeft = -maxScrollLeft;
+      }
+
+      if (indeedScrollLeft > maxScrollLeft) {
+        indeedScrollLeft = maxScrollLeft;
+      }
+
+      state.scrollLeft = indeedScrollLeft;
     },
 
     setScreenHeight: (state, action: PayloadAction<number>) => {

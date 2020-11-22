@@ -10,6 +10,8 @@ import {
   selectScrollWidth,
   setScreenHeight,
   setScreenWidth,
+  selectScrollTop,
+  selectScrollLeft,
 } from 'src/features/editor/editorSlice';
 import EditorArea from '../EditorArea';
 
@@ -26,26 +28,29 @@ const Screen = () => {
   const dispatch = useDispatch();
   const scrollHeight = useSelector(selectScrollHeight);
   const scrollWidth = useSelector(selectScrollWidth);
+  const scrollTop = useSelector(selectScrollTop);
+  const scrollLeft = useSelector(selectScrollLeft);
 
   const onMouseDown = useCallback(() => {
     dispatch(setCurLayers([]));
   }, [dispatch]);
-  const onScrollTopChange = useCallback(
-    (scrollTop) => {
-      dispatch(setScrollTop(scrollTop));
-    },
-    [dispatch],
-  );
-  const onScrollLeftChange = useCallback(
-    (scrollLeft) => {
-      dispatch(setScrollLeft(scrollLeft));
-    },
-    [dispatch],
-  );
   const onScrollResize = useCallback(
     ({ width, height }: { width: number; height: number }) => {
       dispatch(setScreenHeight(height));
       dispatch(setScreenWidth(width));
+    },
+    [dispatch],
+  );
+  const handleWheelX = useCallback(
+    (data: { offset?: number; newScrollLeft?: number }) => {
+      dispatch(setScrollLeft(data));
+    },
+    [dispatch],
+  );
+
+  const handleWheelY = useCallback(
+    (data: { offset?: number; newScrollTop?: number }) => {
+      dispatch(setScrollTop(data));
     },
     [dispatch],
   );
@@ -55,16 +60,18 @@ const Screen = () => {
       <Scroll
         scrollWidth={scrollWidth}
         scrollHeight={scrollHeight}
+        scrollTop={scrollTop}
+        scrollLeft={scrollLeft}
         style={style}
         onMouseDown={onMouseDown}
-        onScrollTopChange={onScrollTopChange}
-        onScrollLeftChange={onScrollLeftChange}
         onResize={onScrollResize}
+        handleWheelX={handleWheelX}
+        handleWheelY={handleWheelY}
       >
         <EditorArea />
       </Scroll>
     );
-  }, [onMouseDown, onScrollLeftChange, onScrollResize, onScrollTopChange, scrollHeight, scrollWidth]);
+  }, [handleWheelX, handleWheelY, onMouseDown, onScrollResize, scrollHeight, scrollLeft, scrollTop, scrollWidth]);
 };
 
 export default Screen;

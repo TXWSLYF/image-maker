@@ -5,17 +5,19 @@ import styles from './index.module.scss';
 export interface ScrollProps {
   scrollWidth: number;
   scrollHeight: number;
-  children?: React.ReactNode;
-  style?: React.CSSProperties;
-  onMouseDown?: () => void;
-  onScrollTopChange?: (scrollTop: number) => void;
-  onScrollLeftChange?: (scrollLeft: number) => void;
-  onResize?: (size: { width: number; height: number }) => void;
+  scrollTop: number;
+  scrollLeft: number;
+  handleWheelY: (data: { offset?: number; newScrollTop?: number }) => void;
+  handleWheelX: (data: { offset?: number; newScrollLeft?: number }) => void;
+  onMouseDown: () => void;
+  onResize: (size: { width: number; height: number }) => void;
+  children: React.ReactNode;
+  style: React.CSSProperties;
 }
 
 const Scroll = (props: ScrollProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { onMouseDown, onScrollTopChange, onScrollLeftChange, onResize } = props;
+  const { onMouseDown, onResize, handleWheelX, handleWheelY, scrollLeft, scrollTop } = props;
 
   // 滚动速率
   const [wheelSpeed] = useState(1);
@@ -24,8 +26,8 @@ const Scroll = (props: ScrollProps) => {
   const [sensitivity] = useState(1);
 
   // 容器宽高
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [containerHeight, setContainerHeight] = useState(0);
+  const [, setContainerWidth] = useState(0);
+  const [, setContainerHeight] = useState(0);
 
   // 拖拽移动相关数据
   const [isSpacePressed] = useKeyPress((e) => {
@@ -36,18 +38,6 @@ const Scroll = (props: ScrollProps) => {
   const [dragStartScrollTop, setDragStartScrollTop] = useState(0);
   const [dragStartScrollLeft, setDragStartScrollLeft] = useState(0);
 
-  // 当前偏移量
-  const [scrollTop, setScrollTop] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-
-  // 垂直水平方向最大偏移量
-  const [maxScrollTop, setMaxScrollTop] = useState(0);
-  const [maxScrollLeft, setMaxScrollLeft] = useState(0);
-
-  // 滚动范围
-  const [scrollWidth] = useState(props.scrollWidth);
-  const [scrollHeight] = useState(props.scrollHeight);
-
   // 获取容器宽高
   useEffect(() => {
     if (ref.current) {
@@ -56,69 +46,9 @@ const Scroll = (props: ScrollProps) => {
       setContainerWidth(width);
       setContainerHeight(height);
 
-      onResize && onResize({ width, height });
+      onResize({ width, height });
     }
   }, [onResize]);
-
-  // 同步 scrollTop & scrollLeft
-  useEffect(() => {
-    onScrollTopChange && onScrollTopChange(scrollTop);
-  }, [onScrollTopChange, scrollTop]);
-  useEffect(() => {
-    onScrollLeftChange && onScrollLeftChange(scrollLeft);
-  }, [onScrollLeftChange, scrollLeft]);
-
-  // 计算最大偏移量
-  useEffect(() => {
-    setMaxScrollTop((scrollHeight - containerHeight) / 2);
-  }, [scrollHeight, containerHeight]);
-  useEffect(() => {
-    setMaxScrollLeft((scrollWidth - containerWidth) / 2);
-  }, [scrollWidth, containerWidth]);
-
-  // 处理垂直方向滚动逻辑
-  const handleWheelY = useCallback(
-    (offset: number, newScrollTop?: number) => {
-      if (offset === 0 && newScrollTop === undefined) return;
-
-      setScrollTop((scrollTop) => {
-        let indeedScrollTop = newScrollTop === undefined ? scrollTop + offset : newScrollTop;
-
-        if (indeedScrollTop < -maxScrollTop) {
-          indeedScrollTop = -maxScrollTop;
-        }
-
-        if (indeedScrollTop > maxScrollTop) {
-          indeedScrollTop = maxScrollTop;
-        }
-
-        return indeedScrollTop;
-      });
-    },
-    [maxScrollTop],
-  );
-
-  // 处理水平方向滚动逻辑
-  const handleWheelX = useCallback(
-    (offset: number, newScrollLeft?: number) => {
-      if (offset === 0 && newScrollLeft === undefined) return;
-
-      setScrollLeft((scrollLeft) => {
-        let indeedScrollLeft = newScrollLeft === undefined ? scrollLeft + offset : newScrollLeft;
-
-        if (indeedScrollLeft < -maxScrollLeft) {
-          indeedScrollLeft = -maxScrollLeft;
-        }
-
-        if (indeedScrollLeft > maxScrollLeft) {
-          indeedScrollLeft = maxScrollLeft;
-        }
-
-        return indeedScrollLeft;
-      });
-    },
-    [maxScrollLeft],
-  );
 
   /**
    * @description 窗口滚动相关逻辑
@@ -128,8 +58,12 @@ const Scroll = (props: ScrollProps) => {
     const handleWheel = (e: WheelEvent) => {
       const { deltaX, deltaY } = e;
 
-      handleWheelY(deltaY > sensitivity ? wheelSpeed * deltaY : deltaY < -sensitivity ? wheelSpeed * deltaY : 0);
-      handleWheelX(deltaX > sensitivity ? wheelSpeed * deltaX : deltaX < -sensitivity ? wheelSpeed * deltaX : 0);
+      handleWheelY({
+        offset: deltaY > sensitivity ? wheelSpeed * deltaY : deltaY < -sensitivity ? wheelSpeed * deltaY : 0,
+      });
+      handleWheelX({
+        offset: deltaX > sensitivity ? wheelSpeed * deltaX : deltaX < -sensitivity ? wheelSpeed * deltaX : 0,
+      });
 
       e.stopPropagation();
       e.preventDefault();
@@ -146,7 +80,7 @@ const Scroll = (props: ScrollProps) => {
    */
   const handleDragMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      onMouseDown && onMouseDown();
+      onMouseDown();
 
       if (isSpacePressed) {
         const { clientX, clientY } = e;
@@ -166,8 +100,8 @@ const Scroll = (props: ScrollProps) => {
         const offsetX = clientX - x;
         const offsetY = clientY - y;
 
-        handleWheelX(0, -offsetX + dragStartScrollLeft);
-        handleWheelY(0, -offsetY + dragStartScrollTop);
+        handleWheelX({ newScrollLeft: -offsetX + dragStartScrollLeft });
+        handleWheelY({ newScrollTop: -offsetY + dragStartScrollTop });
       };
       const handleDragMouseUp = () => {
         setIsDraging(false);

@@ -1,7 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ActionCreators } from 'redux-undo';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { message } from 'antd';
 import { saveProject, selectProjectFutureLength, selectProjectPastLength } from 'src/features/project/projectSlice';
+import { setCurLayers } from 'src/features/editor/editorSlice';
 import { ReactComponent as CloudUploadOutlined } from 'src/assets/svg/cloudUploadOutlined.svg';
 import { ReactComponent as Rollback } from 'src/assets/svg/rollback.svg';
 import { ReactComponent as Redo } from 'src/assets/svg/redo.svg';
@@ -14,8 +17,6 @@ import { ReactComponent as Download } from 'src/assets/svg/download.svg';
 import { ReactComponent as Share } from 'src/assets/svg/share.svg';
 import TopBarIcon from '../TopBarIcon';
 import styles from './index.module.scss';
-import { setCurLayers } from 'src/features/editor/editorSlice';
-import { ActionCreators } from 'redux-undo';
 
 const style1: React.CSSProperties = { marginRight: 6 };
 const style2: React.CSSProperties = { width: 18, height: 16 };
@@ -31,6 +32,18 @@ const TopBarCenter = () => {
     message.success('保存成功');
   }, [dispatch]);
 
+  const handleSaveProjectHotkey = useCallback(
+    (event: KeyboardEvent) => {
+      dispatch(saveProject());
+      message.success('保存成功');
+      event.preventDefault();
+    },
+    [dispatch],
+  );
+
+  const isUndoDisabled = projectPastLength === 0;
+  const isRedoDisabled = projectFutureLength === 0;
+
   const handleUndo = useCallback(() => {
     dispatch(setCurLayers([]));
     dispatch(ActionCreators.undo());
@@ -41,8 +54,15 @@ const TopBarCenter = () => {
     dispatch(ActionCreators.redo());
   }, [dispatch]);
 
-  const isUndoDisabled = projectPastLength === 0;
-  const isRedoDisabled = projectFutureLength === 0;
+  /**
+   * @description 快捷键逻辑
+   */
+  // 保存快捷键
+  useHotkeys('ctrl+s, command+s', handleSaveProjectHotkey);
+  // 撤销快捷键
+  useHotkeys('ctrl+z, command+z', handleUndo, {}, [handleUndo]);
+  // 重做快捷键
+  useHotkeys('ctrl+shift+z, command+shift+z', handleRedo, {}, [handleRedo]);
 
   return useMemo(() => {
     return (

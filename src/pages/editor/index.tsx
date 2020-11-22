@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { message, Spin } from 'antd';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { initProject, saveProject } from 'src/features/project/projectSlice';
+import { Spin } from 'antd';
+import { initProject } from 'src/features/project/projectSlice';
 import { setCurImage } from 'src/features/editor/editorSlice';
 import useRequest from 'src/common/hooks/useRequest';
 import projectApi from 'src/api/project';
@@ -17,17 +16,6 @@ function EditorPage() {
   const fetcher = useCallback(() => {
     return projectApi.retrieve(Number(id));
   }, [id]);
-
-  const handleSaveProject = useCallback(
-    (event: KeyboardEvent) => {
-      dispatch(saveProject());
-      message.success('保存成功');
-      event.preventDefault();
-    },
-    [dispatch],
-  );
-
-  useHotkeys('ctrl+s, command+s', handleSaveProject);
 
   const { data, error } = useRequest(fetcher);
 

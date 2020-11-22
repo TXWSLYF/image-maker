@@ -6,8 +6,8 @@ const initialState: IEditorState = {
   curLayerIds: [],
   hoverLayerId: '',
 
-  scrollHeight: 3000,
-  scrollWidth: 4000,
+  scrollHeight: 10000,
+  scrollWidth: 10000,
   scrollTop: 0,
   scrollLeft: 0,
   screenWidth: 0,

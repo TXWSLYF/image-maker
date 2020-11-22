@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectScrollHeight,
@@ -21,6 +21,12 @@ const ScrollBar = () => {
   const scrollTop = useSelector(selectScrollTop);
   const scrollLeft = useSelector(selectScrollLeft);
 
+  const scrollTrackY = useRef<HTMLDivElement>(null);
+  const scrollTrackX = useRef<HTMLDivElement>(null);
+
+  const [scrollTrackYHeight, setScrollTrackYHeight] = useState(0);
+  const [scrollTrackXWidth, setScrollTrackXWidth] = useState(0);
+
   // 滚动条宽高百分比
   const [scrollBarYHeight, setScrollBarYHeight] = useState(0);
   const [scrollBarXWidth, setScrollBarXWidth] = useState(0);
@@ -38,6 +44,19 @@ const ScrollBar = () => {
   useEffect(() => {
     setScrollBarXWidth((screenWidth / scrollWidth) * 100);
   }, [screenWidth, scrollWidth]);
+
+  useEffect(() => {
+    if (scrollTrackY.current) {
+      const { height } = scrollTrackY.current.getBoundingClientRect();
+      setScrollTrackYHeight(height);
+    }
+  }, []);
+  useEffect(() => {
+    if (scrollTrackX.current) {
+      const { width } = scrollTrackX.current.getBoundingClientRect();
+      setScrollTrackXWidth(width);
+    }
+  }, []);
 
   const handleWheelX = useCallback(
     (data: { offset?: number; newScrollLeft?: number }) => {
@@ -83,9 +102,9 @@ const ScrollBar = () => {
         const { clientX, clientY } = e;
 
         if (mouseDownType === 'Y') {
-          handleWheelY({ newScrollTop: ((clientY - y) / screenHeight) * scrollHeight + mouseDownScrollTop });
+          handleWheelY({ newScrollTop: ((clientY - y) / scrollTrackYHeight) * scrollHeight + mouseDownScrollTop });
         } else if (mouseDownType === 'X') {
-          handleWheelX({ newScrollLeft: ((clientX - x) / screenWidth) * scrollWidth + mouseDownScrollLeft });
+          handleWheelX({ newScrollLeft: ((clientX - x) / scrollTrackXWidth) * scrollWidth + mouseDownScrollLeft });
         }
       };
       const handleMouseUp = () => {
@@ -106,15 +125,15 @@ const ScrollBar = () => {
     mouseDownScrollTop,
     scrollWidth,
     scrollHeight,
-    screenHeight,
-    screenWidth,
+    scrollTrackYHeight,
+    scrollTrackXWidth,
   ]);
 
   return useMemo(() => {
     return (
       <div className={styles.scrollBar}>
         {/* 垂直滚动条 */}
-        <div className={`${styles.scrollBarTrack} ${styles.scrollBarTrackY}`}>
+        <div ref={scrollTrackY} className={`${styles.scrollBarTrack} ${styles.scrollBarTrackY}`}>
           <div
             className={`${styles.scrollBarHandler} ${styles.scrollBarHandlerY}`}
             style={{
@@ -128,7 +147,7 @@ const ScrollBar = () => {
         </div>
 
         {/* 水平滚动条 */}
-        <div className={`${styles.scrollBarTrack} ${styles.scrollBarTrackX}`}>
+        <div ref={scrollTrackX} className={`${styles.scrollBarTrack} ${styles.scrollBarTrackX}`}>
           <div
             className={`${styles.scrollBarHandler} ${styles.scrollBarHandlerX}`}
             style={{

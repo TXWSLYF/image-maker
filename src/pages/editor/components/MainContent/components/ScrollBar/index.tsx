@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ResizeObserver from 'resize-observer-polyfill';
 import {
   selectScrollHeight,
   selectScrollLeft,
@@ -55,6 +56,35 @@ const ScrollBar = () => {
     if (scrollTrackX.current) {
       const { width } = scrollTrackX.current.getBoundingClientRect();
       setScrollTrackXWidth(width);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (scrollTrackY.current && scrollTrackX.current) {
+      // 监听尺寸变化
+      const ro = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const {
+            target,
+            contentRect: { width, height },
+          } = entry;
+
+          if (target === scrollTrackY.current) {
+            setScrollTrackYHeight(height);
+          }
+
+          if (target === scrollTrackX.current) {
+            setScrollTrackXWidth(width);
+          }
+        }
+      });
+
+      ro.observe(scrollTrackY.current);
+      ro.observe(scrollTrackX.current);
+
+      return () => {
+        ro.disconnect();
+      };
     }
   }, []);
 

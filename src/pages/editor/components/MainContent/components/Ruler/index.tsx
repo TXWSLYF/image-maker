@@ -57,7 +57,7 @@ const drawRuler = ({
     // 加 0.5 是为了让线条的中心点位置不为整数，让线条显示宽度为 1px
     ctx.moveTo(i + 0.5, 0);
 
-    const temp = i + start;
+    const temp = Math.floor(i + start);
     if (direction === 'X') {
       if (temp % (10 * step) === 0) {
         ctx.lineTo(i + 0.5, longScaleLength);
@@ -152,9 +152,7 @@ const Ruler = () => {
       rulerXCanvasCtx.fillStyle = rulerColor;
       rulerXCanvasCtx.scale(devicePixelRatio, devicePixelRatio);
 
-      const offset = Math.floor(
-        (screenWidth - canvasWidth) / 2 - cornerSize - basicWidgetsPanelWidth - leftPanelIndeedWidth,
-      );
+      const offset = (screenWidth - canvasWidth) / 2 - cornerSize - basicWidgetsPanelWidth - leftPanelIndeedWidth;
       drawRuler({
         ctx: rulerXCanvasCtx,
         step: rulerStep,
@@ -186,7 +184,7 @@ const Ruler = () => {
       rulerYCanvasCtx.scale(devicePixelRatio, devicePixelRatio);
       rulerYCanvasCtx.rotate(Math.PI / 2); // 坐标系顺时针旋转90度
 
-      const offset = Math.floor((screenHeight - canvasHeight) / 2) - cornerSize;
+      const offset = (screenHeight - canvasHeight) / 2 - cornerSize;
       drawRuler({
         ctx: rulerYCanvasCtx,
         step: rulerStep,

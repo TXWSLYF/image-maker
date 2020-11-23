@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import {} from 'src/features/editor/editorSlice';
+import Ruler from './components/Ruler';
 import ScrollBar from './components/ScrollBar';
 import styles from './index.module.scss';
 
@@ -8,6 +8,7 @@ const MainContent = () => {
     return (
       <main className={styles.mainContent}>
         <ScrollBar />
+        <Ruler />
       </main>
     );
   }, []);

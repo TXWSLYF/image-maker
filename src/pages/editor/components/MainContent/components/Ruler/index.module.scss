@@ -1,0 +1,40 @@
+.ruler {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  font-size: 12px;
+  overflow: hidden;
+
+  &X {
+    position: absolute;
+    top: 0px;
+    width: calc(100% - 16px);
+    height: 17px;
+  }
+
+  &Y {
+    position: absolute;
+    left: 0px;
+    width: 17px;
+    height: calc(100% - 16px);
+  }
+
+  .corner {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border-right: 1px solid rgb(218, 218, 220);
+    border-bottom: 1px solid rgb(218, 218, 220);
+    pointer-events: auto;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out 0s;
+    box-sizing: content-box;
+    background-color: transparent;
+
+    &.active {
+      background-color: rgba(235, 86, 72, 0.6) !important;
+    }
+  }
+}

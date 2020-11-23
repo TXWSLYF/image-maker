@@ -177,8 +177,14 @@ interface IEditorState {
   // 当前滚动位置
   scrollTop: number;
   scrollLeft: number;
+  // 滚动区域宽高
   screenWidth: number;
   screenHeight: number;
+
+  // 基础组件面板宽度
+  basicWidgetsPanelWidth: number;
+  // leftPanel 实际宽度
+  leftPanelIndeedWidth: number;
 }
 
 // 二维坐标系坐标点

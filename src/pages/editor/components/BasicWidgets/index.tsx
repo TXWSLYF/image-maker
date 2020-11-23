@@ -1,7 +1,12 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Tooltip from 'src/components/Tooltip';
-import { selectCurImageId, selectIsLeftPanelVisible, setIsLeftPanelVisible } from 'src/features/editor/editorSlice';
+import {
+  selectCurImageId,
+  selectIsLeftPanelVisible,
+  setBasicWidgetsPanelWidth,
+  setIsLeftPanelVisible,
+} from 'src/features/editor/editorSlice';
 import { addLayer } from 'src/features/project/projectSlice';
 import { imgLayer, textLayer } from 'src/layer';
 import { ReactComponent as TextSvg } from 'src/assets/svg/text.svg';
@@ -29,6 +34,14 @@ const BasicWidgets = () => {
   const curImageId = useSelector(selectCurImageId);
   const isLeftPanelVisible = useSelector(selectIsLeftPanelVisible);
 
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (ref.current) {
+      const { width } = ref.current.getBoundingClientRect();
+      dispatch(setBasicWidgetsPanelWidth(width));
+    }
+  }, [dispatch]);
+
   // 添加图层
   const handleAddLayer = useCallback(
     (initialClass) => {
@@ -47,7 +60,7 @@ const BasicWidgets = () => {
 
   return useMemo(() => {
     return (
-      <div className={styles.basicWidgets}>
+      <div className={styles.basicWidgets} ref={ref}>
         <ul>
           {basicWidgets.map((basicWidget) => {
             const { name, initialClass, SvgComponent } = basicWidget;

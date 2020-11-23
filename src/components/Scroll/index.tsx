@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useKeyPress } from 'react-use';
+import ResizeObserver from 'resize-observer-polyfill';
 import styles from './index.module.scss';
 
 export interface ScrollProps {
@@ -25,10 +26,6 @@ const Scroll = (props: ScrollProps) => {
   // 识别灵敏度
   const [sensitivity] = useState(1);
 
-  // 容器宽高
-  const [, setContainerWidth] = useState(0);
-  const [, setContainerHeight] = useState(0);
-
   // 拖拽移动相关数据
   const [isSpacePressed] = useKeyPress((e) => {
     return e.code === 'Space';
@@ -41,12 +38,24 @@ const Scroll = (props: ScrollProps) => {
   // 获取容器宽高
   useEffect(() => {
     if (ref.current) {
-      const { width, height } = ref.current.getBoundingClientRect();
+      // 监听尺寸变化
+      const ro = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const {
+            target,
+            contentRect: { width, height },
+          } = entry;
 
-      setContainerWidth(width);
-      setContainerHeight(height);
+          if (target === ref.current) {
+            onResize({ width, height });
+          }
+        }
+      });
+      ro.observe(ref.current);
 
-      onResize({ width, height });
+      return () => {
+        ro.disconnect();
+      };
     }
   }, [onResize]);
 

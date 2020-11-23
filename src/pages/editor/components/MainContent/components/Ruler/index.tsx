@@ -1,15 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ResizeObserver from 'resize-observer-polyfill';
 import {
+  selectBasicWidgetsPanelWidth,
+  selectLeftPanelIndeedWidth,
   selectScreenHeight,
   selectScreenWidth,
-  selectScrollHeight,
   selectScrollLeft,
   selectScrollTop,
-  selectScrollWidth,
   setScrollLeft,
   setScrollTop,
 } from 'src/features/editor/editorSlice';
+import { selectCanvas } from 'src/features/project/projectSlice';
 import styles from './index.module.scss';
 
 const { devicePixelRatio } = window; // 设备像素比
@@ -78,9 +80,11 @@ const drawRuler = ({
 
 const Ruler = () => {
   const dispatch = useDispatch();
-  const scrollHeight = useSelector(selectScrollHeight);
-  const scrollWidth = useSelector(selectScrollWidth);
+
+  const basicWidgetsPanelWidth = useSelector(selectBasicWidgetsPanelWidth);
+  const leftPanelIndeedWidth = useSelector(selectLeftPanelIndeedWidth);
   const screenHeight = useSelector(selectScreenHeight);
+  const { height: canvasHeight, width: canvasWidth } = useSelector(selectCanvas);
   const screenWidth = useSelector(selectScreenWidth);
   const scrollTop = useSelector(selectScrollTop);
   const scrollLeft = useSelector(selectScrollLeft);
@@ -101,21 +105,40 @@ const Ruler = () => {
   /**
    * @description 尺子相关属性
    */
-  const [rulerColor, setRulerColor] = useState('#666'); // 尺子颜色
-  const [rulerStep, setRulerStep] = useState(10); // 尺子的最小间隔，单位像素
-  const [shortScaleLength, setShortScaleLength] = useState(3); // 短刻度长度
-  const [longScaleLength, setLongScaleLength] = useState(6); // 长刻度长度
+  const [rulerColor] = useState('#666'); // 尺子颜色
+  const [rulerStep] = useState(10); // 尺子的最小间隔，单位像素
+  const [shortScaleLength] = useState(3); // 短刻度长度
+  const [longScaleLength] = useState(6); // 长刻度长度
 
   // 获取 canvas context2d & 计算画布大小
   useEffect(() => {
-    if (rulerXCanvas.current) {
+    if (rulerXCanvas.current && rulerYCanvas.current) {
       setRulerXCanvasCtx(rulerXCanvas.current.getContext('2d'));
-      setRulerXCanvasWidth(rulerXCanvas.current.getBoundingClientRect().width);
-    }
-
-    if (rulerYCanvas.current) {
       setRulerYCanvasCtx(rulerYCanvas.current.getContext('2d'));
-      setRulerYCanvasHeight(rulerYCanvas.current.getBoundingClientRect().height);
+
+      // 监听尺寸变化
+      const ro = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const {
+            target,
+            contentRect: { width, height },
+          } = entry;
+
+          if (target === rulerXCanvas.current) {
+            setRulerXCanvasWidth(width);
+          }
+
+          if (target === rulerYCanvas.current) {
+            setRulerYCanvasHeight(height);
+          }
+        }
+      });
+      ro.observe(rulerXCanvas.current);
+      ro.observe(rulerYCanvas.current);
+
+      return () => {
+        ro.disconnect();
+      };
     }
   }, []);
 
@@ -125,40 +148,66 @@ const Ruler = () => {
   useEffect(() => {
     if (rulerXCanvasCtx) {
       resetCanvasCtx(rulerXCanvasCtx);
-
       rulerXCanvasCtx.strokeStyle = rulerColor;
       rulerXCanvasCtx.fillStyle = rulerColor;
       rulerXCanvasCtx.scale(devicePixelRatio, devicePixelRatio);
+
+      const offset = Math.floor(
+        (screenWidth - canvasWidth) / 2 - cornerSize - basicWidgetsPanelWidth - leftPanelIndeedWidth,
+      );
       drawRuler({
         ctx: rulerXCanvasCtx,
         step: rulerStep,
         shortScaleLength,
         longScaleLength,
-        start: scrollLeft,
+        start: scrollLeft - offset,
         end: rulerXCanvasWidth,
         direction: 'X',
       });
     }
-  }, [rulerXCanvasCtx, rulerColor, rulerStep, shortScaleLength, longScaleLength, rulerXCanvasWidth, scrollLeft]);
+  }, [
+    rulerXCanvasCtx,
+    rulerColor,
+    rulerStep,
+    shortScaleLength,
+    longScaleLength,
+    rulerXCanvasWidth,
+    scrollLeft,
+    screenWidth,
+    canvasWidth,
+    basicWidgetsPanelWidth,
+    leftPanelIndeedWidth,
+  ]);
   useEffect(() => {
     if (rulerYCanvasCtx) {
       resetCanvasCtx(rulerYCanvasCtx);
-
       rulerYCanvasCtx.strokeStyle = rulerColor;
       rulerYCanvasCtx.fillStyle = rulerColor;
       rulerYCanvasCtx.scale(devicePixelRatio, devicePixelRatio);
       rulerYCanvasCtx.rotate(Math.PI / 2); // 坐标系顺时针旋转90度
+
+      const offset = Math.floor((screenHeight - canvasHeight) / 2) - cornerSize;
       drawRuler({
         ctx: rulerYCanvasCtx,
         step: rulerStep,
         shortScaleLength,
         longScaleLength,
-        start: scrollTop,
+        start: scrollTop - offset,
         end: rulerYCanvasHeight,
         direction: 'Y',
       });
     }
-  }, [rulerYCanvasCtx, rulerColor, rulerStep, shortScaleLength, longScaleLength, rulerYCanvasHeight, scrollTop]);
+  }, [
+    rulerYCanvasCtx,
+    rulerColor,
+    rulerStep,
+    shortScaleLength,
+    longScaleLength,
+    rulerYCanvasHeight,
+    scrollTop,
+    canvasHeight,
+    screenHeight,
+  ]);
 
   return useMemo(() => {
     return (

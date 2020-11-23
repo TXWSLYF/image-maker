@@ -28,6 +28,7 @@
     "react-scripts": "3.4.3",
     "react-use": "^15.3.4",
     "redux-undo": "^1.0.1",
+    "resize-observer-polyfill": "^1.5.1",
     "typescript": "~3.8.2"
   },
   "scripts": {

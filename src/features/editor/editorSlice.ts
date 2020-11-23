@@ -186,7 +186,7 @@ export const editorSlice = createSlice({
         indeedScrollTop = maxScrollTop;
       }
 
-      state.scrollTop = indeedScrollTop;
+      state.scrollTop = Math.floor(indeedScrollTop);
     },
     setScrollLeft: (state, action: PayloadAction<{ offset?: number; newScrollLeft?: number }>) => {
       const { offset, newScrollLeft } = action.payload;
@@ -210,7 +210,7 @@ export const editorSlice = createSlice({
         indeedScrollLeft = maxScrollLeft;
       }
 
-      state.scrollLeft = indeedScrollLeft;
+      state.scrollLeft = Math.floor(indeedScrollLeft);
     },
 
     setScreenHeight: (state, action: PayloadAction<number>) => {

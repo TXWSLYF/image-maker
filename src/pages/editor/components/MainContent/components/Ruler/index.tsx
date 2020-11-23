@@ -21,6 +21,14 @@ const rulerYCanvasStyle: React.CSSProperties = { width: cornerSize, height: '100
 const cornerStyle: React.CSSProperties = { width: cornerSize, height: cornerSize };
 
 /**
+ * @description 重置画布
+ */
+const resetCanvasCtx = (ctx: CanvasRenderingContext2D) => {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+};
+
+/**
  * @description 绘制刻度函数
  */
 const drawRuler = ({
@@ -40,27 +48,26 @@ const drawRuler = ({
   end: number;
   direction: 'X' | 'Y';
 }) => {
-  let i = step;
+  // 重新画线
+  ctx.beginPath();
 
-  for (i; i < end; i += step) {
+  for (let i = 0; i < end; i += 1) {
     // 加 0.5 是为了让线条的中心点位置不为整数，让线条显示宽度为 1px
     ctx.moveTo(i + 0.5, 0);
-    if (i % 50 === 0) {
-      if (direction === 'X') {
-        ctx.lineTo(i + 0.5, longScaleLength);
-        ctx.fillText((i + start).toString(), i, longScaleLength + 10);
-      }
 
-      if (direction === 'Y') {
-        ctx.lineTo(i + 0.5, -longScaleLength);
-        ctx.fillText((i + start).toString(), i, -longScaleLength - 2);
-      }
-    } else {
-      if (direction === 'X') {
+    const temp = i + start;
+    if (direction === 'X') {
+      if (temp % (10 * step) === 0) {
+        ctx.lineTo(i + 0.5, longScaleLength);
+        ctx.fillText(temp.toString(), i, longScaleLength + 10);
+      } else if (temp % step === 0) {
         ctx.lineTo(i + 0.5, shortScaleLength);
       }
-
-      if (direction === 'Y') {
+    } else if (direction === 'Y') {
+      if (temp % (10 * step) === 0) {
+        ctx.lineTo(i + 0.5, -longScaleLength);
+        ctx.fillText(temp.toString(), i, -longScaleLength - 2);
+      } else if (temp % step === 0) {
         ctx.lineTo(i + 0.5, -shortScaleLength);
       }
     }
@@ -97,7 +104,7 @@ const Ruler = () => {
   const [rulerColor, setRulerColor] = useState('#666'); // 尺子颜色
   const [rulerStep, setRulerStep] = useState(10); // 尺子的最小间隔，单位像素
   const [shortScaleLength, setShortScaleLength] = useState(3); // 短刻度长度
-  const [longScaleLength, setLongScaleLength] = useState(5); // 长刻度长度
+  const [longScaleLength, setLongScaleLength] = useState(6); // 长刻度长度
 
   // 获取 canvas context2d & 计算画布大小
   useEffect(() => {
@@ -116,14 +123,12 @@ const Ruler = () => {
    * @description 绘制刻度
    */
   useEffect(() => {
-    if (rulerXCanvas.current && rulerXCanvasCtx) {
-      // 重置画布
-      rulerXCanvas.current.width = rulerXCanvas.current.width;
+    if (rulerXCanvasCtx) {
+      resetCanvasCtx(rulerXCanvasCtx);
+
       rulerXCanvasCtx.strokeStyle = rulerColor;
       rulerXCanvasCtx.fillStyle = rulerColor;
       rulerXCanvasCtx.scale(devicePixelRatio, devicePixelRatio);
-      rulerXCanvasCtx.translate(0, 0);
-      rulerXCanvasCtx.font = '18px';
       drawRuler({
         ctx: rulerXCanvasCtx,
         step: rulerStep,
@@ -136,13 +141,12 @@ const Ruler = () => {
     }
   }, [rulerXCanvasCtx, rulerColor, rulerStep, shortScaleLength, longScaleLength, rulerXCanvasWidth, scrollLeft]);
   useEffect(() => {
-    if (rulerYCanvas.current && rulerYCanvasCtx) {
-      // 重置画布
-      rulerYCanvas.current.height = rulerYCanvas.current.height;
+    if (rulerYCanvasCtx) {
+      resetCanvasCtx(rulerYCanvasCtx);
+
       rulerYCanvasCtx.strokeStyle = rulerColor;
       rulerYCanvasCtx.fillStyle = rulerColor;
       rulerYCanvasCtx.scale(devicePixelRatio, devicePixelRatio);
-      rulerYCanvasCtx.translate(0, 0);
       rulerYCanvasCtx.rotate(Math.PI / 2); // 坐标系顺时针旋转90度
       drawRuler({
         ctx: rulerYCanvasCtx,

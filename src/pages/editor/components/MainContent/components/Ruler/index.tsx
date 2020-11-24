@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { usePrevious } from 'react-use';
 import ResizeObserver from 'resize-observer-polyfill';
 import {
   selectBasicWidgetsPanelWidth,
@@ -97,6 +98,9 @@ const Ruler = () => {
   const [rulerXCanvasWidth, setRulerXCanvasWidth] = useState(0);
   const [rulerYCanvasHeight, setRulerYCanvasHeight] = useState(0);
 
+  const rulerXCanvasPrevWidth = usePrevious(rulerXCanvasWidth);
+  const rulerYCanvasPrevHeight = usePrevious(rulerYCanvasHeight);
+
   const handleClickCorner = useCallback(() => {
     dispatch(setScrollLeft({ newScrollLeft: 0 }));
     dispatch(setScrollTop({ newScrollTop: 0 }));
@@ -147,7 +151,11 @@ const Ruler = () => {
    */
   useEffect(() => {
     if (rulerXCanvasCtx) {
-      resetCanvasCtx(rulerXCanvasCtx);
+      if (rulerXCanvasWidth !== rulerXCanvasPrevWidth) {
+        rulerXCanvasCtx.canvas.width = rulerXCanvasWidth * devicePixelRatio;
+      } else {
+        resetCanvasCtx(rulerXCanvasCtx);
+      }
       rulerXCanvasCtx.strokeStyle = rulerColor;
       rulerXCanvasCtx.fillStyle = rulerColor;
       rulerXCanvasCtx.scale(devicePixelRatio, devicePixelRatio);
@@ -175,10 +183,15 @@ const Ruler = () => {
     canvasWidth,
     basicWidgetsPanelWidth,
     propertyPanelWidth,
+    rulerXCanvasPrevWidth,
   ]);
   useEffect(() => {
     if (rulerYCanvasCtx) {
-      resetCanvasCtx(rulerYCanvasCtx);
+      if (rulerYCanvasHeight !== rulerYCanvasPrevHeight) {
+        rulerYCanvasCtx.canvas.height = rulerYCanvasHeight * devicePixelRatio;
+      } else {
+        resetCanvasCtx(rulerYCanvasCtx);
+      }
       rulerYCanvasCtx.strokeStyle = rulerColor;
       rulerYCanvasCtx.fillStyle = rulerColor;
       rulerYCanvasCtx.scale(devicePixelRatio, devicePixelRatio);
@@ -205,34 +218,25 @@ const Ruler = () => {
     scrollTop,
     canvasHeight,
     screenHeight,
+    rulerYCanvasPrevHeight,
   ]);
 
   return useMemo(() => {
     return (
       <div className={styles.ruler}>
         <div className={styles.rulerX} style={rulerXStyle}>
-          <canvas
-            ref={rulerXCanvas}
-            width={rulerXCanvasWidth * devicePixelRatio}
-            height={cornerSize * devicePixelRatio}
-            style={rulerXCanvasStyle}
-          />
+          <canvas ref={rulerXCanvas} height={cornerSize * devicePixelRatio} style={rulerXCanvasStyle} />
           <div className={styles.lines}></div>
         </div>
         <div className={styles.rulerY} style={rulerYStyle}>
-          <canvas
-            ref={rulerYCanvas}
-            height={rulerYCanvasHeight * devicePixelRatio}
-            width={cornerSize * devicePixelRatio}
-            style={rulerYCanvasStyle}
-          />
+          <canvas ref={rulerYCanvas} width={cornerSize * devicePixelRatio} style={rulerYCanvasStyle} />
           <div className={styles.lines}></div>
         </div>
 
         <div className={styles.corner} style={cornerStyle} onClick={handleClickCorner}></div>
       </div>
     );
-  }, [rulerXCanvasWidth, rulerYCanvasHeight, handleClickCorner]);
+  }, [handleClickCorner]);
 };
 
 export default Ruler;

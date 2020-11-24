@@ -183,8 +183,7 @@ interface IEditorState {
 
   // 基础组件面板宽度
   basicWidgetsPanelWidth: number;
-  // leftPanel 实际宽度
-  leftPanelIndeedWidth: number;
+  propertyPanelWidth: number;
 }
 
 // 二维坐标系坐标点

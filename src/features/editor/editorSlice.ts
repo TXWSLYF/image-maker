@@ -13,7 +13,7 @@ const initialState: IEditorState = {
   screenWidth: 0,
   screenHeight: 0,
   basicWidgetsPanelWidth: 0,
-  leftPanelIndeedWidth: 0,
+  propertyPanelWidth: 0,
 
   /**
    * @description 左侧面板属性
@@ -225,8 +225,8 @@ export const editorSlice = createSlice({
     setBasicWidgetsPanelWidth: (state, action: PayloadAction<number>) => {
       state.basicWidgetsPanelWidth = action.payload;
     },
-    setLeftPanelIndeedWidth: (state, action: PayloadAction<number>) => {
-      state.leftPanelIndeedWidth = action.payload;
+    setPropertyPanelWidth: (state, action: PayloadAction<number>) => {
+      state.propertyPanelWidth = action.payload;
     },
   },
 });
@@ -262,7 +262,7 @@ export const {
   setScreenHeight,
   setScreenWidth,
   setBasicWidgetsPanelWidth,
-  setLeftPanelIndeedWidth,
+  setPropertyPanelWidth,
 } = editorSlice.actions;
 
 export const selectCurImageId = (state: RootState) => state.editor.curImageId;
@@ -301,6 +301,6 @@ export const selectScrollLeft = (state: RootState) => state.editor.scrollLeft;
 export const selectScreenHeight = (state: RootState) => state.editor.screenHeight;
 export const selectScreenWidth = (state: RootState) => state.editor.screenWidth;
 export const selectBasicWidgetsPanelWidth = (state: RootState) => state.editor.basicWidgetsPanelWidth;
-export const selectLeftPanelIndeedWidth = (state: RootState) => state.editor.leftPanelIndeedWidth;
+export const selectPropertyPanelWidth = (state: RootState) => state.editor.propertyPanelWidth;
 
 export default editorSlice.reducer;

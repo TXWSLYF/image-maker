@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import ResizeObserver from 'resize-observer-polyfill';
 import {
   selectBasicWidgetsPanelWidth,
-  selectLeftPanelIndeedWidth,
   selectScreenHeight,
   selectScreenWidth,
   selectScrollLeft,
@@ -82,7 +81,6 @@ const Ruler = () => {
   const dispatch = useDispatch();
 
   const basicWidgetsPanelWidth = useSelector(selectBasicWidgetsPanelWidth);
-  const leftPanelIndeedWidth = useSelector(selectLeftPanelIndeedWidth);
   const screenHeight = useSelector(selectScreenHeight);
   const { height: canvasHeight, width: canvasWidth } = useSelector(selectCanvas);
   const screenWidth = useSelector(selectScreenWidth);
@@ -152,7 +150,7 @@ const Ruler = () => {
       rulerXCanvasCtx.fillStyle = rulerColor;
       rulerXCanvasCtx.scale(devicePixelRatio, devicePixelRatio);
 
-      const offset = (screenWidth - canvasWidth) / 2 - cornerSize - basicWidgetsPanelWidth - leftPanelIndeedWidth;
+      const offset = rulerXCanvasWidth + 300 - canvasWidth / 2 - screenWidth / 2;
       drawRuler({
         ctx: rulerXCanvasCtx,
         step: rulerStep,
@@ -174,7 +172,6 @@ const Ruler = () => {
     screenWidth,
     canvasWidth,
     basicWidgetsPanelWidth,
-    leftPanelIndeedWidth,
   ]);
   useEffect(() => {
     if (rulerYCanvasCtx) {

@@ -41,6 +41,8 @@ interface IBaseLayer<T = IBaseProperties> {
   // id
   id: string;
 
+  name: string;
+
   // 图层类型
   type: 'TEXT' | 'IMG';
 

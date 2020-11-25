@@ -1,5 +1,6 @@
 const imgLayer = (): IImgLayer => ({
   id: 'INIT',
+  name: '图片',
   type: 'IMG',
   editable: true,
   deletable: true,

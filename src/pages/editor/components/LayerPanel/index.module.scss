@@ -1,0 +1,59 @@
+.layerPanel {
+  position: relative;
+  background: rgb(255, 255, 255);
+  overflow: hidden;
+
+  &Wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .header {
+      padding-left: 10px;
+      padding-right: 5px;
+      color: rgb(65, 80, 88);
+      border-top: 1px solid rgb(222, 222, 228);
+      border-bottom: 1px solid rgb(222, 222, 228);
+      height: 36px;
+      display: flex;
+      align-content: center;
+
+      &Left {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        transition: flex 0.2s ease-in-out 0s;
+
+        p {
+          font-weight: 600;
+          color: rgb(65, 80, 88);
+          margin: 0;
+        }
+      }
+
+      &Right {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        transition: flex 0.2s ease-in-out 0s;
+
+        .svgIcon {
+          cursor: pointer;
+          width: 22px;
+          height: 34px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: rgb(65, 80, 88);
+
+          > svg {
+            fill: currentColor;
+            width: 8px;
+            height: 8px;
+          }
+        }
+      }
+    }
+  }
+}

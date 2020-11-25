@@ -1,5 +1,6 @@
 const textLayer = (): ITextLayer => ({
   id: 'INIT',
+  name: '双击编辑文本',
   type: 'TEXT',
   editable: true,
   deletable: true,
@@ -11,7 +12,7 @@ const textLayer = (): ITextLayer => ({
     opacity: 1,
     rotation: 0,
 
-    text: 'hello',
+    text: '双击编辑文本',
     fontSize: 20,
     fontFamily: 'sans-serif',
     textAlign: 'left',

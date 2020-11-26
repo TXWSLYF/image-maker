@@ -5,6 +5,7 @@ const initialState: IEditorState = {
   curImageId: '',
   curLayerIds: [],
   hoverLayerId: '',
+  echoLayerId: '',
 
   scrollHeight: 10000,
   scrollWidth: 10000,
@@ -93,6 +94,10 @@ export const editorSlice = createSlice({
      */
     setHoverLayerId: (state, action: PayloadAction<string>) => {
       state.hoverLayerId = action.payload;
+    },
+
+    setEchoLayerId: (state, action: PayloadAction<string>) => {
+      state.echoLayerId = action.payload;
     },
 
     /**
@@ -237,6 +242,7 @@ export const {
   setCurLayers,
   setEditorCanvasCoordinate,
   setHoverLayerId,
+  setEchoLayerId,
   setIsLeftPanelVisible,
   setLeftPanelWidth,
 
@@ -272,6 +278,7 @@ export const selectCurImageLayers = (state: RootState) =>
   );
 export const selectCurLayerIds = (state: RootState) => state.editor.curLayerIds;
 export const selectHoverLayerId = (state: RootState) => state.editor.hoverLayerId;
+export const selectEchoLayerId = (state: RootState) => state.editor.echoLayerId;
 export const selectEditorCanvasCoordinate = (state: RootState) => state.editor.editorCanvasCoordinate;
 
 /**

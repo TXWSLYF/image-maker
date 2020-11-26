@@ -119,6 +119,9 @@ interface IEditorState {
   // 当前 hover 图层 id
   hoverLayerId: string;
 
+  // 当前映现图层 id，当鼠标在图层列表中移入对应图层触发
+  echoLayerId: string;
+
   // 编辑区相对于页面的坐标
   editorCanvasCoordinate: ICoordinate;
 

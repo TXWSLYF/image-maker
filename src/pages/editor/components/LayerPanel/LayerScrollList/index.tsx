@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurLayerIds, setCurLayers } from 'src/features/editor/editorSlice';
+import { selectCurLayerIds, setCurLayers, setEchoLayerId } from 'src/features/editor/editorSlice';
 import { ReactComponent as TextIcon } from 'src/assets/svg/text.svg';
 import { ReactComponent as PictureIcon } from 'src/assets/svg/picture.svg';
 import styles from './index.module.scss';
@@ -39,6 +39,19 @@ const LayerScrollList = ({ layers }: LayerScrollListProps) => {
     [curLayerIds, dispatch],
   );
 
+  const handleMouseEnter = useCallback(
+    (id: IBaseLayer['id']) => {
+      dispatch(setEchoLayerId(id));
+    },
+    [dispatch],
+  );
+  const handleMouseLeave = useCallback(
+    (id: IBaseLayer['id']) => {
+      dispatch(setEchoLayerId(''));
+    },
+    [dispatch],
+  );
+
   return useMemo(() => {
     return (
       <div className={styles.layerScrollList}>
@@ -54,6 +67,12 @@ const LayerScrollList = ({ layers }: LayerScrollListProps) => {
                 onClick={(e) => {
                   handleClickLayerItem(e, id, isActive);
                 }}
+                onMouseEnter={() => {
+                  handleMouseEnter(id);
+                }}
+                onMouseLeave={() => {
+                  handleMouseLeave(id);
+                }}
               >
                 <div className={`${styles.layerItem} ${isActive ? styles.active : ''}`}>
                   <div className={styles.layerItemIcon}>
@@ -67,7 +86,7 @@ const LayerScrollList = ({ layers }: LayerScrollListProps) => {
         </ul>
       </div>
     );
-  }, [curLayerIds, handleClickLayerItem, layers]);
+  }, [curLayerIds, handleClickLayerItem, handleMouseEnter, handleMouseLeave, layers]);
 };
 
 export default LayerScrollList;

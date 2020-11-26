@@ -215,6 +215,17 @@ export const projectSlice = createSlice({
       });
       state.data.imageAllIds = unDeletedPageIds;
     },
+
+    /**
+     * @description 修改图层名称
+     */
+    setLayersName(state, action: PayloadAction<{ ids: IBaseLayer['id'][]; name: IBaseLayer['name'] }>) {
+      const { ids, name } = action.payload;
+
+      ids.forEach((id) => {
+        state.data.layersById[id].name = name;
+      });
+    },
   },
 });
 
@@ -232,6 +243,7 @@ export const {
   deleteLayers,
   setImgLayerProperties,
   deletePages,
+  setLayersName,
 } = projectSlice.actions;
 
 export const selectProject = (state: RootState) => state.project.present;

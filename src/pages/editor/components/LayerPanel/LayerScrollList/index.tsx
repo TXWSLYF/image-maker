@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurLayerIds, setCurLayers, setEchoLayerId } from 'src/features/editor/editorSlice';
 import { ReactComponent as TextIcon } from 'src/assets/svg/text.svg';
@@ -26,6 +26,7 @@ const LayerScrollList = ({ layers }: LayerScrollListProps) => {
   const dispatch = useDispatch();
   const curLayerIds = useSelector(selectCurLayerIds);
   const [editingNameLayerId, setEditingNameLayerId] = useState<IBaseLayer['id']>('');
+  const editingTextarea = useRef<HTMLTextAreaElement>(null);
   const handleClickLayerItem = useCallback(
     (e: React.MouseEvent<HTMLLIElement, MouseEvent>, id: IBaseLayer['id'], isSelected: boolean) => {
       // TODO:判断图层是否在人眼可视范围内，不在的话将图层移动至画布中间
@@ -44,6 +45,13 @@ const LayerScrollList = ({ layers }: LayerScrollListProps) => {
   const handleDoubleClickLayerItem = useCallback((id: IBaseLayer['id']) => {
     setEditingNameLayerId(id);
   }, []);
+
+  useEffect(() => {
+    if (editingNameLayerId && editingTextarea.current) {
+      editingTextarea.current.focus();
+      editingTextarea.current.select();
+    }
+  }, [editingNameLayerId]);
 
   const handleMouseEnter = useCallback(
     (id: IBaseLayer['id']) => {
@@ -107,6 +115,7 @@ const LayerScrollList = ({ layers }: LayerScrollListProps) => {
                   <div className={`${styles.layerItemName} ${isEditing ? styles.isEditing : ''}`}>
                     {isEditing ? (
                       <textarea
+                        ref={editingTextarea}
                         value={name}
                         onBlur={handleBlur}
                         onChange={(e) => {

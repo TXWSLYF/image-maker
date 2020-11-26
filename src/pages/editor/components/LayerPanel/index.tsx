@@ -1,42 +1,22 @@
-import React, { useCallback, useMemo } from 'react';
-import { ReactComponent as LeftOutlinedIcon } from 'src/assets/svg/leftOutlined.svg';
+import React, { useMemo } from 'react';
 import styles from './index.module.scss';
+import LayerPanelHeader, { LayerPanelHeaderProps } from './LayerPanelHeader';
 
-interface LayerPanelProps {
+interface LayerPanelProps extends LayerPanelHeaderProps {
+  layers: ILayer[];
   style?: React.CSSProperties;
-  visible: boolean;
-  onVisiblechange: (visible: boolean) => void;
 }
 
-const LayerPanel = ({ style, visible, onVisiblechange }: LayerPanelProps) => {
-  const handleToggleVisible = useCallback(() => {
-    onVisiblechange(!visible);
-  }, [onVisiblechange, visible]);
-
+const LayerPanel = ({ style, visible, onVisiblechange, layers }: LayerPanelProps) => {
   return useMemo(() => {
     return (
       <div style={style} className={styles.layerPanel}>
         <div className={styles.layerPanelWrapper}>
-          <header className={styles.header}>
-            <div className={styles.headerLeft}>
-              <p>图层</p>
-            </div>
-            <div className={styles.headerRight}>
-              <div
-                onClick={handleToggleVisible}
-                className={styles.svgIcon}
-                style={{
-                  transform: visible ? 'rotate(-90deg)' : 'rotate(90deg)',
-                }}
-              >
-                <LeftOutlinedIcon />
-              </div>
-            </div>
-          </header>
+          <LayerPanelHeader visible={visible} onVisiblechange={onVisiblechange} />
         </div>
       </div>
     );
-  }, [handleToggleVisible, style, visible]);
+  }, [onVisiblechange, style, visible]);
 };
 
 export default LayerPanel;

@@ -22,6 +22,7 @@ import {
 import { guid } from 'src/utils/util';
 import { R2D } from 'src/common/constants';
 import HoverContainer from './components/HoverContainer';
+import EchoContainer from './components/EchoContainer';
 import styles from './index.module.scss';
 
 interface ISingleResizerStyle {
@@ -269,6 +270,7 @@ function FakeCanvas() {
     >
       {curContainerRender(curLayerIds, layersById, singleResizerStyle)}
       <HoverContainer />
+      <EchoContainer />
       {selectionHandlerRender(curLayerIds, layersById, singleResizerStyle, editorCanvasCoordinate, dispatch)}
     </div>
   );

@@ -1,0 +1,11 @@
+.echoContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  .echoItem {
+    position: absolute;
+    border: 1px solid #1e98ea;
+    background-color: rgba(41, 141, 248, 0.3);
+  }
+}

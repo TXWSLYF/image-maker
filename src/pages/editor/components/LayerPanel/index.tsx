@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import styles from './index.module.scss';
 import LayerPanelHeader, { LayerPanelHeaderProps } from './LayerPanelHeader';
+import LayerScrollList, { LayerScrollListProps } from './LayerScrollList';
+import styles from './index.module.scss';
 
-interface LayerPanelProps extends LayerPanelHeaderProps {
-  layers: ILayer[];
+interface LayerPanelProps extends LayerPanelHeaderProps, LayerScrollListProps {
   style?: React.CSSProperties;
 }
 
@@ -13,10 +13,11 @@ const LayerPanel = ({ style, visible, onVisiblechange, layers }: LayerPanelProps
       <div style={style} className={styles.layerPanel}>
         <div className={styles.layerPanelWrapper}>
           <LayerPanelHeader visible={visible} onVisiblechange={onVisiblechange} />
+          <LayerScrollList layers={layers} />
         </div>
       </div>
     );
-  }, [onVisiblechange, style, visible]);
+  }, [layers, onVisiblechange, style, visible]);
 };
 
 export default LayerPanel;

@@ -21,8 +21,8 @@ import {
   setRotateCenterCoordinate,
 } from 'src/features/editor/editorSlice';
 import { guid } from 'src/utils/util';
-import styles from './index.module.scss';
 import { R2D } from 'src/common/constants';
+import styles from './index.module.scss';
 
 interface ISingleResizerStyle {
   width: number;

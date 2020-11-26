@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurLayerIds,
   selectEditorCanvasCoordinate,
-  selectHoverLayerId,
   setDragZoomDirection,
   setDragZoomId,
   setDragZoomStartLayersPosition,
@@ -22,6 +21,7 @@ import {
 } from 'src/features/editor/editorSlice';
 import { guid } from 'src/utils/util';
 import { R2D } from 'src/common/constants';
+import HoverContainer from './components/HoverContainer';
 import styles from './index.module.scss';
 
 interface ISingleResizerStyle {
@@ -53,30 +53,6 @@ function curContainerRender(
           ></div>
         );
       })}
-    </div>
-  );
-}
-
-function hoverContainerRender(
-  hoverLayerId: string,
-  curLayerIds: string[],
-  layersById: IProjectState['data']['layersById'],
-) {
-  if (!hoverLayerId) return null;
-  if (curLayerIds.findIndex((layerId) => layerId === hoverLayerId) !== -1) return null;
-
-  const { width, height, x, y, rotation } = layersById[hoverLayerId].properties;
-
-  return (
-    <div className={styles.hoverContainer}>
-      <div
-        className={styles.hoverItem}
-        style={{
-          width,
-          height,
-          transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`,
-        }}
-      ></div>
     </div>
   );
 }
@@ -262,7 +238,6 @@ function FakeCanvas() {
   const canvas = useSelector(selectCanvas);
   const { byId: layersById } = useSelector(selectLayers);
   const curLayerIds = useSelector(selectCurLayerIds);
-  const hoverLayerId = useSelector(selectHoverLayerId);
   const editorCanvasCoordinate = useSelector(selectEditorCanvasCoordinate);
 
   let singleResizerStyle = undefined;
@@ -293,7 +268,7 @@ function FakeCanvas() {
       }}
     >
       {curContainerRender(curLayerIds, layersById, singleResizerStyle)}
-      {hoverContainerRender(hoverLayerId, curLayerIds, layersById)}
+      <HoverContainer />
       {selectionHandlerRender(curLayerIds, layersById, singleResizerStyle, editorCanvasCoordinate, dispatch)}
     </div>
   );

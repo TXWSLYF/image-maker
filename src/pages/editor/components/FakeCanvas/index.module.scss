@@ -14,17 +14,6 @@
     }
   }
 
-  .hoverContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    .hoverItem {
-      position: absolute;
-      border: 2px solid #4af;
-    }
-  }
-
   .selectionHandler {
     box-sizing: border-box;
     position: absolute;

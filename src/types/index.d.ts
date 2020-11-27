@@ -81,6 +81,8 @@ interface IProjectState {
     canvas: {
       width: number;
       height: number;
+      // 缩放比例
+      scale: number;
     };
 
     // 图片数据

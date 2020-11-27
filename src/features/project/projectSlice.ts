@@ -12,6 +12,7 @@ const initialState: IProjectState = {
     canvas: {
       width: 600,
       height: 800,
+      scale: 1,
     },
 
     // 图片数据
@@ -49,8 +50,23 @@ export const projectSlice = createSlice({
     /**
      * @description 设置画布大小
      */
-    setCanvasSize: (state, action: PayloadAction<Partial<IProjectState['data']['canvas']>>) => {
-      state.data.canvas = { ...state.data.canvas, ...action.payload };
+    setCanvasSize: (state, action: PayloadAction<Partial<Omit<IProjectState['data']['canvas'], 'scale'>>>) => {
+      const { width, height } = action.payload;
+
+      if (width !== undefined) {
+        state.data.canvas.width = width;
+      }
+
+      if (height !== undefined) {
+        state.data.canvas.height = height;
+      }
+    },
+
+    /**
+     * @description 设置画布缩放比例
+     */
+    setCanvasScale: (state, action: PayloadAction<IProjectState['data']['canvas']['scale']>) => {
+      state.data.canvas.scale = action.payload;
     },
 
     /**
@@ -244,6 +260,7 @@ export const {
   setImgLayerProperties,
   deletePages,
   setLayersName,
+  setCanvasScale,
 } = projectSlice.actions;
 
 export const selectProject = (state: RootState) => state.project.present;
@@ -265,6 +282,7 @@ export const selectLayers = (state: RootState) => {
   };
 };
 export const selectCanvas = (state: RootState) => state.project.present.data.canvas;
+export const selectCanvasScale = (state: RootState) => state.project.present.data.canvas.scale;
 export const selectProjectPastLength = (state: RootState) => state.project.past.length;
 export const selectProjectFutureLength = (state: RootState) => state.project.future.length;
 export const selectPageAllIds = (state: RootState) => state.project.present.data.imageAllIds;

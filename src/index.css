@@ -1,9 +1,17 @@
 @import '~antd/dist/antd.css';
 
+.ant-tooltip {
+  padding: 0;
+}
+
+.ant-tooltip-arrow {
+  display: none !important;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, 'SF UI Text', 'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'WenQuanYi Zen Hei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;

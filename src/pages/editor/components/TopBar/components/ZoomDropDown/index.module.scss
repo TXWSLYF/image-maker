@@ -1,0 +1,58 @@
+.zoomDropDown {
+  font-size: 12px;
+
+  .inputNumWrapper {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .divider {
+    margin: 4px 0px;
+    border-top: 1px solid rgb(237, 237, 237);
+  }
+
+  .zoomItem {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 32px;
+    padding: 0px 16px 0px 30px;
+    color: rgb(65, 80, 88);
+    transition: all 0.2s ease-out 0s;
+
+    &:hover {
+      background: rgb(247, 247, 247);
+
+      .zoomText {
+        color: rgb(41, 141, 248);
+      }
+    }
+  }
+
+  .zoomText {
+    margin: 0;
+    padding: 0;
+  }
+
+  .kdbSize {
+    white-space: nowrap;
+    margin-left: auto;
+
+    kbd {
+      color: rgb(141, 158, 167);
+      display: inline-block;
+      font-family: inherit;
+      text-align: center;
+      min-width: 12px;
+      margin-right: 2px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}

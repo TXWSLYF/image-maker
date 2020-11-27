@@ -95,6 +95,7 @@ const PageListItemLi = ({ text, isActive, onClick, onDelete }: PageListItemLiPro
             placement="rightTop"
             overlayInnerStyle={overlayInnerStyle}
             onVisibleChange={handleVisibleChange}
+            align={{ offset: [-5, 0] }}
           >
             <div
               className={styles.actions}

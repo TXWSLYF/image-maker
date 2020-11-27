@@ -79,7 +79,7 @@ const BasicWidgets = () => {
         </ul>
 
         <div className={styles.navFooter}>
-          <Tooltip placement="right" title={toolTipTitle} mouseEnterDelay={0} mouseLeaveDelay={0}>
+          <Tooltip placement="right" title={toolTipTitle} align={{ offset: [5, 0] }}>
             <div className={styles.iconWrapper} onClick={handleSetIsLeftPanelVisible}>
               <DobuleLeftSvg style={{ transform: `rotate(${rotateDeg}deg)` }} />
             </div>

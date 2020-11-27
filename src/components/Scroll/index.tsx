@@ -66,11 +66,12 @@ const Scroll = (props: ScrollProps) => {
 
   const handleScale = useCallback(
     (e: WheelEvent) => {
-      const { deltaY } = e;
-      if (deltaY === 0) return;
+      const { deltaY, deltaX } = e;
+      const delta = deltaX + deltaY;
+      if (delta === 0) return;
 
       // 最大放大比例 4，不能小于 0.2，精确到小数点后两位
-      const newScale = Number(Math.max(Math.min(scale + scaleSpeed * (deltaY > 0 ? 1 : -1), 4), 0.2).toFixed(2));
+      const newScale = Number(Math.max(Math.min(scale + scaleSpeed * (delta > 0 ? -1 : 1), 4), 0.2).toFixed(2));
       handleScaleChange(newScale);
     },
     [handleScaleChange, scale, scaleSpeed],
@@ -82,6 +83,9 @@ const Scroll = (props: ScrollProps) => {
   useEffect(() => {
     const { current } = ref;
     const handleWheel = (e: WheelEvent) => {
+      e.stopPropagation();
+      e.preventDefault();
+
       const { deltaX, deltaY, ctrlKey, metaKey } = e;
 
       if (ctrlKey || metaKey) {
@@ -95,9 +99,6 @@ const Scroll = (props: ScrollProps) => {
       handleWheelX({
         offset: deltaX > sensitivity ? wheelSpeed * deltaX : deltaX < -sensitivity ? wheelSpeed * deltaX : 0,
       });
-
-      e.stopPropagation();
-      e.preventDefault();
     };
     current?.addEventListener('wheel', handleWheel);
 

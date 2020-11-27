@@ -8,8 +8,10 @@ export interface ScrollProps {
   scrollHeight: number;
   scrollTop: number;
   scrollLeft: number;
+  scale: number;
   handleWheelY: (data: { offset?: number; newScrollTop?: number }) => void;
   handleWheelX: (data: { offset?: number; newScrollLeft?: number }) => void;
+  handleScaleChange: (scale: number) => void;
   onMouseDown: () => void;
   onResize: (size: { width: number; height: number }) => void;
   children: React.ReactNode;
@@ -18,10 +20,13 @@ export interface ScrollProps {
 
 const Scroll = (props: ScrollProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { onMouseDown, onResize, handleWheelX, handleWheelY, scrollLeft, scrollTop } = props;
+  const { onMouseDown, onResize, handleWheelX, handleWheelY, scrollLeft, scrollTop, scale, handleScaleChange } = props;
 
   // 滚动速率
   const [wheelSpeed] = useState(1);
+
+  // 缩放速率
+  const [scaleSpeed] = useState(0.1);
 
   // 识别灵敏度
   const [sensitivity] = useState(1);
@@ -59,13 +64,30 @@ const Scroll = (props: ScrollProps) => {
     }
   }, [onResize]);
 
+  const handleScale = useCallback(
+    (e: WheelEvent) => {
+      const { deltaY } = e;
+      if (deltaY === 0) return;
+
+      // 最大放大比例 4，不能小于 0.2，精确到小数点后两位
+      const newScale = Number(Math.max(Math.min(scale + scaleSpeed * (deltaY > 0 ? 1 : -1), 4), 0.2).toFixed(2));
+      handleScaleChange(newScale);
+    },
+    [handleScaleChange, scale, scaleSpeed],
+  );
+
   /**
    * @description 窗口滚动相关逻辑
    */
   useEffect(() => {
     const { current } = ref;
     const handleWheel = (e: WheelEvent) => {
-      const { deltaX, deltaY } = e;
+      const { deltaX, deltaY, ctrlKey, metaKey } = e;
+
+      if (ctrlKey || metaKey) {
+        handleScale(e);
+        return;
+      }
 
       handleWheelY({
         offset: deltaY > sensitivity ? wheelSpeed * deltaY : deltaY < -sensitivity ? wheelSpeed * deltaY : 0,
@@ -82,7 +104,7 @@ const Scroll = (props: ScrollProps) => {
     return () => {
       current?.removeEventListener('wheel', handleWheel);
     };
-  }, [handleWheelY, handleWheelX, wheelSpeed, sensitivity]);
+  }, [handleWheelY, handleWheelX, wheelSpeed, sensitivity, handleScale]);
 
   /**
    * @description 拖拽移动相关逻辑
@@ -133,14 +155,14 @@ const Scroll = (props: ScrollProps) => {
       >
         <div
           style={{
-            transform: `translate(${-scrollLeft}px, ${-scrollTop}px) scale(1)`,
+            transform: `translate(${-scrollLeft}px, ${-scrollTop}px) scale(${scale})`,
           }}
         >
           {props.children}
         </div>
       </div>
     );
-  }, [props.style, props.children, isDraging, isSpacePressed, handleDragMouseDown, scrollLeft, scrollTop]);
+  }, [isDraging, isSpacePressed, props.style, props.children, handleDragMouseDown, scrollLeft, scrollTop, scale]);
 };
 
 export default Scroll;

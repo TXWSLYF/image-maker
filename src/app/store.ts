@@ -6,6 +6,7 @@ import projectReducer, {
   setLayersColor,
   setLayersRotation,
   setLayersBaseProperties,
+  setCanvasScale,
 } from 'src/features/project/projectSlice';
 import editorReducer from 'src/features/editor/editorSlice';
 
@@ -13,7 +14,7 @@ export const store = configureStore({
   reducer: {
     editor: editorReducer,
     project: undoable(projectReducer, {
-      filter: excludeAction(initProject.type),
+      filter: excludeAction([initProject.type, setCanvasScale.type]),
       groupBy: function (action) {
         if (action.type === setLayersCoordinate.type) {
           return setLayersCoordinate.type + action.payload.dragId;

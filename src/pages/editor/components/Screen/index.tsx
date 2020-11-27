@@ -13,6 +13,7 @@ import {
   selectScrollTop,
   selectScrollLeft,
 } from 'src/features/editor/editorSlice';
+import { selectCanvasScale, setCanvasScale } from 'src/features/project/projectSlice';
 import EditorArea from '../EditorArea';
 
 const style: React.CSSProperties = {
@@ -30,6 +31,7 @@ const Screen = () => {
   const scrollWidth = useSelector(selectScrollWidth);
   const scrollTop = useSelector(selectScrollTop);
   const scrollLeft = useSelector(selectScrollLeft);
+  const scale = useSelector(selectCanvasScale);
 
   const onMouseDown = useCallback(() => {
     dispatch(setCurLayers([]));
@@ -55,6 +57,13 @@ const Screen = () => {
     [dispatch],
   );
 
+  const handleScaleChange = useCallback(
+    (scale: number) => {
+      dispatch(setCanvasScale(scale));
+    },
+    [dispatch],
+  );
+
   return useMemo(() => {
     return (
       <Scroll
@@ -67,11 +76,24 @@ const Screen = () => {
         onResize={onScrollResize}
         handleWheelX={handleWheelX}
         handleWheelY={handleWheelY}
+        scale={scale}
+        handleScaleChange={handleScaleChange}
       >
         <EditorArea />
       </Scroll>
     );
-  }, [handleWheelX, handleWheelY, onMouseDown, onScrollResize, scrollHeight, scrollLeft, scrollTop, scrollWidth]);
+  }, [
+    handleScaleChange,
+    handleWheelX,
+    handleWheelY,
+    onMouseDown,
+    onScrollResize,
+    scale,
+    scrollHeight,
+    scrollLeft,
+    scrollTop,
+    scrollWidth,
+  ]);
 };
 
 export default Screen;

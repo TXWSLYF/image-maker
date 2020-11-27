@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { difference } from 'lodash';
+import { difference, merge } from 'lodash';
 import { AppThunk, RootState } from 'src/app/store';
 import projectApi from 'src/api/project';
 import { guid } from 'src/utils/util';
@@ -37,7 +37,8 @@ export const projectSlice = createSlice({
 
       state.id = id;
       state.name = name;
-      state.data = data;
+      // fix: 新增 canvas.scale 属性失效问题，因为远程数据没有 scale
+      state.data = merge(state.data, data);
     },
 
     /**

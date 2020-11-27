@@ -26,7 +26,7 @@ const Scroll = (props: ScrollProps) => {
   const [wheelSpeed] = useState(1);
 
   // 缩放速率
-  const [scaleSpeed] = useState(0.1);
+  const [scaleSpeed] = useState(0.05);
 
   // 识别灵敏度
   const [sensitivity] = useState(1);
@@ -68,10 +68,10 @@ const Scroll = (props: ScrollProps) => {
     (e: WheelEvent) => {
       const { deltaY, deltaX } = e;
       const delta = deltaX + deltaY;
+
       if (delta === 0) return;
 
-      // 最大放大比例 4，不能小于 0.2，精确到小数点后两位
-      const newScale = Number(Math.max(Math.min(scale + scaleSpeed * (delta > 0 ? -1 : 1), 4), 0.2).toFixed(2));
+      const newScale = scale + scaleSpeed * (delta > 0 ? -1 : 1);
       handleScaleChange(newScale);
     },
     [handleScaleChange, scale, scaleSpeed],

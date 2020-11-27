@@ -4,13 +4,15 @@ import styles from './index.module.scss';
 
 interface TopBarIconProps {
   text: string;
-  iconElement: React.ReactElement;
+  SvgComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  svgStyle?: React.CSSProperties;
   style?: React.CSSProperties;
   onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   showDropDownArrow?: boolean;
   disabled?: boolean;
 }
 
+const svgDefaultStyle: React.CSSProperties = { width: 16, height: 16, marginTop: -2 };
 const dropDownArrowStyle: React.CSSProperties = {
   position: 'absolute',
   top: 14,
@@ -20,19 +22,29 @@ const dropDownArrowStyle: React.CSSProperties = {
 };
 
 const TopBarIcon = (props: TopBarIconProps) => {
-  const { text, iconElement, style, showDropDownArrow = false, disabled = false, onClick } = props;
+  const {
+    text,
+    SvgComponent,
+    svgStyle = svgDefaultStyle,
+    style,
+    showDropDownArrow = false,
+    disabled = false,
+    onClick,
+  } = props;
 
   return useMemo(() => {
     return (
       <div className={`${styles.topBarIcon} ${disabled ? styles.disabled : ''}`} style={style} onClick={onClick}>
-        <div className={styles.topBarIconWrapper}>{iconElement}</div>
+        <div className={styles.topBarIconWrapper}>
+          <SvgComponent style={svgStyle} />
+        </div>
 
         {showDropDownArrow ? <DropDownArrow style={dropDownArrowStyle} /> : null}
 
         <span className={styles.tip}>{text}</span>
       </div>
     );
-  }, [disabled, iconElement, onClick, showDropDownArrow, style, text]);
+  }, [disabled, onClick, showDropDownArrow, style, svgStyle, text]);
 };
 
 export default TopBarIcon;

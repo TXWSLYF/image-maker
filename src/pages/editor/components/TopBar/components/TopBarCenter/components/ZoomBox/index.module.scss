@@ -1,0 +1,60 @@
+.zoomBox {
+  height: 100%;
+  width: 76px;
+  margin-left: 8px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease-out 0s;
+
+  &:hover {
+    background: rgb(242, 242, 242);
+
+    .zoomBoxContent {
+      display: block;
+    }
+
+    .zoomBoxText {
+      p {
+        color: rgb(41, 141, 248);
+      }
+    }
+  }
+
+  .zoomBoxContent {
+    display: none;
+    position: absolute;
+    top: 100%;
+  }
+
+  &Text {
+    display: flex;
+    align-items: center;
+    line-height: 16px;
+    height: 16px;
+    font-size: 14px;
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+
+    svg {
+      width: 6px;
+      height: 4px;
+      margin-left: 8px;
+      fill: currentColor;
+    }
+  }
+
+  &Tip {
+    margin-top: 9px;
+    color: rgb(65, 80, 88);
+    height: 12px;
+    line-height: 12px;
+    font-size: 12px;
+  }
+}

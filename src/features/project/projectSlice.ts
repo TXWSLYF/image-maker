@@ -67,7 +67,13 @@ export const projectSlice = createSlice({
      * @description 设置画布缩放比例
      */
     setCanvasScale: (state, action: PayloadAction<IProjectState['data']['canvas']['scale']>) => {
-      state.data.canvas.scale = action.payload;
+      // 最大放大比例 400%，最小缩小比例 20%
+      const MAX_CANVAS_SCALE = 4;
+      const MIN_CANVAS_SCALE = 0.2;
+
+      const newCanvasScale = Number(Math.min(Math.max(MIN_CANVAS_SCALE, action.payload), MAX_CANVAS_SCALE).toFixed(2));
+
+      state.data.canvas.scale = newCanvasScale;
     },
 
     /**

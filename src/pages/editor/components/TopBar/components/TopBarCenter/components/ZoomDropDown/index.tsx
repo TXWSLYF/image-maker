@@ -1,3 +1,4 @@
+import { Input } from 'antd';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NumericInput from 'src/components/NumericInput';
@@ -6,15 +7,20 @@ import styles from './index.module.scss';
 
 const numericInputStyle = { width: 124 };
 
-const ZoomDropDown = () => {
+const ZoomDropDown = ({ inputRef }: { inputRef: React.RefObject<Input> }) => {
   const dispatch = useDispatch();
   const canvasScale = useSelector(selectCanvasScale);
   const canvasScalePercentage = Number((canvasScale * 100).toFixed(0));
   const handlePressEnter = useCallback(
     (value: string) => {
       dispatch(setCanvasScale(Number(value) / 100));
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.select();
+        }
+      });
     },
-    [dispatch],
+    [dispatch, inputRef],
   );
 
   return useMemo(() => {
@@ -22,6 +28,7 @@ const ZoomDropDown = () => {
       <div className={styles.zoomDropDown}>
         <div className={styles.inputNumWrapper}>
           <NumericInput
+            inputRef={inputRef}
             value={canvasScalePercentage}
             style={numericInputStyle}
             onPressEnter={handlePressEnter}
@@ -74,7 +81,7 @@ const ZoomDropDown = () => {
         </div>
       </div>
     );
-  }, [canvasScalePercentage, handlePressEnter]);
+  }, [canvasScalePercentage, handlePressEnter, inputRef]);
 };
 
 export default ZoomDropDown;

@@ -7,12 +7,13 @@ export interface NumericInputProps {
   onChange?: (value: string) => void;
   onPressEnter?: (value: string) => void;
   suffix?: React.ReactNode;
+  inputRef?: React.RefObject<Input>;
 }
 
 /**
  * @description 数字输入框
  */
-const NumericInput = ({ value, style, onChange, onPressEnter, suffix }: NumericInputProps) => {
+const NumericInput = ({ value, style, onChange, onPressEnter, suffix, inputRef }: NumericInputProps) => {
   const [innerValue, setInnerValue] = useState('');
 
   useEffect(() => {
@@ -41,9 +42,16 @@ const NumericInput = ({ value, style, onChange, onPressEnter, suffix }: NumericI
 
   return useMemo(() => {
     return (
-      <Input value={innerValue} style={style} onChange={handleChange} onPressEnter={handlePressEnter} suffix={suffix} />
+      <Input
+        value={innerValue}
+        style={style}
+        onChange={handleChange}
+        onPressEnter={handlePressEnter}
+        suffix={suffix}
+        ref={inputRef}
+      />
     );
-  }, [handleChange, handlePressEnter, innerValue, style, suffix]);
+  }, [handleChange, handlePressEnter, innerValue, inputRef, style, suffix]);
 };
 
 export default NumericInput;

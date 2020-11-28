@@ -3,6 +3,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NumericInput from 'src/components/NumericInput';
 import { selectCanvasScale, setCanvasScale } from 'src/features/project/projectSlice';
+import { ReactComponent as CheckOutlinedIcon } from 'src/assets/svg/checkOutlined.svg';
 import styles from './index.module.scss';
 
 const numericInputStyle = { width: 124 };
@@ -23,6 +24,21 @@ const ZoomDropDown = ({ inputRef }: { inputRef: React.RefObject<Input> }) => {
     [dispatch, inputRef],
   );
 
+  const handleClickZoom = useCallback(() => {
+    dispatch(setCanvasScale(canvasScale + 0.2));
+  }, [canvasScale, dispatch]);
+
+  const handleClickMini = useCallback(() => {
+    dispatch(setCanvasScale(canvasScale - 0.2));
+  }, [canvasScale, dispatch]);
+
+  const handleSetCanvasScale = useCallback(
+    (value: number) => {
+      dispatch(setCanvasScale(value));
+    },
+    [dispatch],
+  );
+
   return useMemo(() => {
     return (
       <div className={styles.zoomDropDown}>
@@ -36,14 +52,14 @@ const ZoomDropDown = ({ inputRef }: { inputRef: React.RefObject<Input> }) => {
           />
         </div>
         <div className={styles.divider} />
-        <div className={styles.zoomItem}>
+        <div className={styles.zoomItem} onClick={handleClickZoom}>
           <p className={styles.zoomText}>放大</p>
           <div className={styles.kdbSize}>
             <kbd>⌘</kbd>
             <kbd>+</kbd>
           </div>
         </div>
-        <div className={styles.zoomItem}>
+        <div className={styles.zoomItem} onClick={handleClickMini}>
           <p className={styles.zoomText}>缩小</p>
           <div className={styles.kdbSize}>
             <kbd>⌘</kbd>
@@ -51,18 +67,42 @@ const ZoomDropDown = ({ inputRef }: { inputRef: React.RefObject<Input> }) => {
           </div>
         </div>
         <div className={styles.divider} />
-        <div className={styles.zoomItem}>
-          <p className={styles.zoomText}>50%</p>
+        <div
+          className={styles.zoomItem}
+          onClick={() => {
+            handleSetCanvasScale(0.5);
+          }}
+        >
+          <p className={styles.zoomText}>
+            50%
+            {canvasScale === 0.5 ? <CheckOutlinedIcon /> : null}
+          </p>
         </div>
-        <div className={styles.zoomItem}>
-          <p className={styles.zoomText}>100%</p>
+        <div
+          className={styles.zoomItem}
+          onClick={() => {
+            handleSetCanvasScale(1);
+          }}
+        >
+          <p className={styles.zoomText}>
+            100%
+            {canvasScale === 1 ? <CheckOutlinedIcon /> : null}
+          </p>
           <div className={styles.kdbSize}>
             <kbd>⌘</kbd>
             <kbd>0</kbd>
           </div>
         </div>
-        <div className={styles.zoomItem}>
-          <p className={styles.zoomText}>200%</p>
+        <div
+          className={styles.zoomItem}
+          onClick={() => {
+            handleSetCanvasScale(2);
+          }}
+        >
+          <p className={styles.zoomText}>
+            200%
+            {canvasScale === 2 ? <CheckOutlinedIcon /> : null}
+          </p>
         </div>
         <div className={styles.divider} />
         <div className={styles.zoomItem}>
@@ -81,7 +121,15 @@ const ZoomDropDown = ({ inputRef }: { inputRef: React.RefObject<Input> }) => {
         </div>
       </div>
     );
-  }, [canvasScalePercentage, handlePressEnter, inputRef]);
+  }, [
+    canvasScale,
+    canvasScalePercentage,
+    handleClickMini,
+    handleClickZoom,
+    handlePressEnter,
+    handleSetCanvasScale,
+    inputRef,
+  ]);
 };
 
 export default ZoomDropDown;

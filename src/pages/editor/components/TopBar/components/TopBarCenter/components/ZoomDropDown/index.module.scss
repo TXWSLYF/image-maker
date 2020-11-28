@@ -39,6 +39,16 @@
   .zoomText {
     margin: 0;
     padding: 0;
+    position: relative;
+
+    svg {
+      position: absolute;
+      left: -22px;
+      top: 3px;
+      fill: currentColor;
+      width: 12px;
+      height: 12px;
+    }
   }
 
   .kdbSize {

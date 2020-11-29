@@ -1,5 +1,5 @@
 import { Input } from 'antd';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NumericInput from 'src/components/NumericInput';
 import { selectCanvasScale, setCanvasScale } from 'src/features/project/projectSlice';
@@ -38,6 +38,47 @@ const ZoomDropDown = ({ inputRef }: { inputRef: React.RefObject<Input> }) => {
     },
     [dispatch],
   );
+
+  /**
+   * @description 快捷键
+   */
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const { metaKey, key } = e;
+      if (metaKey) {
+        switch (key) {
+          case '=': {
+            dispatch(setCanvasScale(canvasScale + 0.2));
+            e.preventDefault();
+
+            break;
+          }
+
+          case '-': {
+            dispatch(setCanvasScale(canvasScale - 0.2));
+            e.preventDefault();
+            break;
+          }
+
+          case '0': {
+            dispatch(setCanvasScale(1));
+            e.preventDefault();
+            break;
+          }
+
+          default: {
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handler);
+
+    return () => {
+      window.removeEventListener('keydown', handler);
+    };
+  }, [canvasScale, dispatch]);
 
   return useMemo(() => {
     return (

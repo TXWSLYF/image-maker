@@ -1,7 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from 'redux-undo';
-import { useHotkeys } from 'react-hotkeys-hook';
 import { message } from 'antd';
 import { saveProject, selectProjectFutureLength, selectProjectPastLength } from 'src/features/project/projectSlice';
 import { setCurLayers } from 'src/features/editor/editorSlice';
@@ -33,15 +32,6 @@ const TopBarCenter = () => {
     message.success('保存成功');
   }, [dispatch]);
 
-  const handleSaveProjectHotkey = useCallback(
-    (event: KeyboardEvent) => {
-      dispatch(saveProject());
-      message.success('保存成功');
-      event.preventDefault();
-    },
-    [dispatch],
-  );
-
   const isUndoDisabled = projectPastLength === 0;
   const isRedoDisabled = projectFutureLength === 0;
 
@@ -58,12 +48,44 @@ const TopBarCenter = () => {
   /**
    * @description 快捷键逻辑
    */
-  // 保存快捷键
-  useHotkeys('ctrl+s, command+s', handleSaveProjectHotkey);
-  // 撤销快捷键
-  useHotkeys('ctrl+z, command+z', handleUndo, {}, [handleUndo]);
-  // 重做快捷键
-  useHotkeys('ctrl+shift+z, command+shift+z', handleRedo, {}, [handleRedo]);
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const { metaKey, ctrlKey, shiftKey, key } = e;
+
+      if (metaKey || ctrlKey) {
+        switch (key) {
+          // 保存快捷键
+          case 's': {
+            dispatch(saveProject());
+            message.success('保存成功');
+            e.preventDefault();
+            break;
+          }
+
+          case 'z': {
+            if (shiftKey) {
+              // 重做快捷键
+              handleRedo();
+            } else {
+              // 撤销快捷键
+              handleUndo();
+            }
+            break;
+          }
+
+          default: {
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handler);
+
+    return () => {
+      window.removeEventListener('keydown', handler);
+    };
+  }, [dispatch, handleRedo, handleUndo]);
 
   return useMemo(() => {
     return (

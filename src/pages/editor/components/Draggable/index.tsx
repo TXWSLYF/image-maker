@@ -24,6 +24,7 @@ import {
   selectDragZoomStartMouseCoordinate,
   selectDragZoomStartLayersPosition,
 } from 'src/features/editor/editorSlice';
+import { selectCanvasScale } from 'src/features/project/projectBasicSlice';
 import transfromAngle from 'src/utils/transformAngle';
 import { R2D } from 'src/common/constants';
 import styles from './index.module.scss';
@@ -36,6 +37,8 @@ import PropertyPanel from '../PropertyPanel';
 
 function Draggeble() {
   const dispatch = useDispatch();
+
+  const canvasScale = useSelector(selectCanvasScale);
 
   // 拖拽相关数据
   const isDraging = useSelector(selectIsDraging);
@@ -72,8 +75,10 @@ function Draggeble() {
         // 处理拖拽逻辑
         if (isDraging) {
           const { x, y } = dragStartMouseCoordinate;
-          const offsetX = clientX - x;
-          const offsetY = clientY - y;
+
+          // 需要将画布放大比例考虑进来
+          const offsetX = (clientX - x) / canvasScale;
+          const offsetY = (clientY - y) / canvasScale;
 
           dispatch(
             setLayersCoordinate({

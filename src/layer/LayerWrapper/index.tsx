@@ -12,7 +12,7 @@ import {
   selectCurLayerIds,
 } from 'src/features/editor/editorSlice';
 import { guid } from 'src/utils/util';
-import { selectLayers } from 'src/features/project/projectSlice';
+import { selectLayers } from 'src/features/project/projectUndoableSlice';
 
 /**
  * @description HOC，所有图层的 wrapper

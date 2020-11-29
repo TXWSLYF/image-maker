@@ -69,7 +69,15 @@ interface IImgLayer extends IBaseLayer<IImgProperties> {
 type ILayer = ITextLayer | IImgLayer;
 type IProperties = IBaseProperties | ITextProperties | IImgProperties;
 
-interface IProjectState {
+interface IProjectBasicState {
+  // 画布相关
+  canvas: {
+    // 缩放比例
+    scale: number;
+  };
+}
+
+interface IProjectUndoableState {
   // 项目 id
   id: number;
 
@@ -81,8 +89,6 @@ interface IProjectState {
     canvas: {
       width: number;
       height: number;
-      // 缩放比例
-      scale: number;
     };
 
     // 图片数据

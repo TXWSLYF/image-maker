@@ -12,7 +12,7 @@ import {
   setScrollLeft,
   setScrollTop,
 } from 'src/features/editor/editorSlice';
-import { selectCanvas } from 'src/features/project/projectSlice';
+import { selectCanvas } from 'src/features/project/projectUndoableSlice';
 import styles from './index.module.scss';
 
 const { devicePixelRatio } = window; // 设备像素比

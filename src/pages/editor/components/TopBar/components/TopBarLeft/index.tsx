@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToggle } from 'react-use';
 import { Input } from 'antd';
-import { selectProjectName, setProjectName } from 'src/features/project/projectSlice';
+import { selectProjectName, setProjectName } from 'src/features/project/projectUndoableSlice';
 import { ReactComponent as LeftOutlined } from 'src/assets/svg/leftOutlined.svg';
 import styles from './index.module.scss';
 

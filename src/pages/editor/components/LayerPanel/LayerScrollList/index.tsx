@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectCurLayerIds, setCurLayers, setEchoLayerId } from 'src/features/editor/editorSlice';
 import { ReactComponent as TextIcon } from 'src/assets/svg/text.svg';
 import { ReactComponent as PictureIcon } from 'src/assets/svg/picture.svg';
-import { setLayersName } from 'src/features/project/projectSlice';
+import { setLayersName } from 'src/features/project/projectUndoableSlice';
 import styles from './index.module.scss';
 
 export interface LayerScrollListProps {

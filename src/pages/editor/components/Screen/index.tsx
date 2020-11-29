@@ -13,7 +13,7 @@ import {
   selectScrollTop,
   selectScrollLeft,
 } from 'src/features/editor/editorSlice';
-import { selectCanvasScale, setCanvasScale } from 'src/features/project/projectSlice';
+import { selectCanvasScale, setCanvasScale } from 'src/features/project/projectBasicSlice';
 import EditorArea from '../EditorArea';
 
 const style: React.CSSProperties = {

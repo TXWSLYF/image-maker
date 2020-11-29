@@ -1,7 +1,7 @@
 import React from 'react';
 import { InputNumber, Collapse } from 'antd';
 import { useDispatch } from 'react-redux';
-import { setLayersProperties } from 'src/features/project/projectSlice';
+import { setLayersProperties } from 'src/features/project/projectUndoableSlice';
 import transfromAngle from 'src/utils/transformAngle';
 import styles from './index.module.scss';
 import PropertyRow from '../PropertyRow';

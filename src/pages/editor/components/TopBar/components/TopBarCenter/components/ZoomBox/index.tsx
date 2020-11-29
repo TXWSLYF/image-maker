@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Input } from 'antd';
-import { selectCanvasScale } from 'src/features/project/projectSlice';
+import { selectCanvasScale } from 'src/features/project/projectBasicSlice';
 import { ReactComponent as DropDownArrowIcon } from 'src/assets/svg/dropDownArrow.svg';
 import ZoomDropDown from '../ZoomDropDown';
 import styles from './index.module.scss';

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { difference } from 'lodash';
 import { message } from 'antd';
-import { deletePages, selectImages, selectPageAllIds } from 'src/features/project/projectSlice';
+import { deletePages, selectImages, selectPageAllIds } from 'src/features/project/projectUndoableSlice';
 import { selectCurImageId, setCurImage, setCurLayers } from 'src/features/editor/editorSlice';
 import PageListHeader from './components/PageListHeader';
 import PageListItemLi from './components/PageListItemLi';

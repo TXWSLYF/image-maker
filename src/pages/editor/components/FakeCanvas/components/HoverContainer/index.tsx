@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCurLayerIds, selectHoverLayerId } from 'src/features/editor/editorSlice';
-import { selectLayers } from 'src/features/project/projectSlice';
+import { selectLayers } from 'src/features/project/projectUndoableSlice';
 import styles from './index.module.scss';
 
 const HoverContainer = () => {

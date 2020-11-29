@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { Collapse, Input } from 'antd';
 import { Dispatch } from '@reduxjs/toolkit';
-import { setImgLayerProperties } from 'src/features/project/projectSlice';
+import { setImgLayerProperties } from 'src/features/project/projectUndoableSlice';
 
 const { Panel } = Collapse;
 const style1: React.CSSProperties = { display: 'flex', alignItems: 'center' };

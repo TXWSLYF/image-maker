@@ -273,8 +273,8 @@ export const {
 
 export const selectCurImageId = (state: RootState) => state.editor.curImageId;
 export const selectCurImageLayers = (state: RootState) =>
-  state.project.present.data.imagesById[state.editor.curImageId].layers.map(
-    (layerId) => state.project.present.data.layersById[layerId],
+  state.project.undoable.present.data.imagesById[state.editor.curImageId].layers.map(
+    (layerId) => state.project.undoable.present.data.layersById[layerId],
   );
 export const selectCurLayerIds = (state: RootState) => state.editor.curLayerIds;
 export const selectHoverLayerId = (state: RootState) => state.editor.hoverLayerId;

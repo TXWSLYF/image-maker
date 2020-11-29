@@ -8,7 +8,7 @@ import {
   setDragStartLayersCoordinate,
   setDragId,
 } from 'src/features/editor/editorSlice';
-import { selectLayers } from 'src/features/project/projectSlice';
+import { selectLayers } from 'src/features/project/projectUndoableSlice';
 import { guid } from 'src/utils/util';
 import { D2R } from 'src/common/constants';
 

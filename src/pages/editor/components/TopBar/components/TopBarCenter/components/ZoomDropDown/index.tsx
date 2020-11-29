@@ -2,7 +2,7 @@ import { Input } from 'antd';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NumericInput from 'src/components/NumericInput';
-import { selectCanvasScale, setCanvasScale } from 'src/features/project/projectSlice';
+import { selectCanvasScale, setCanvasScale } from 'src/features/project/projectBasicSlice';
 import { ReactComponent as CheckOutlinedIcon } from 'src/assets/svg/checkOutlined.svg';
 import styles from './index.module.scss';
 

@@ -4,7 +4,7 @@ import PropertyRow from '../PropertyRow';
 import './index.scss';
 import ChromeColorPicker from 'src/components/ChromeColorPicker';
 import { useDispatch } from 'react-redux';
-import { setLayersColor } from 'src/features/project/projectSlice';
+import { setLayersColor } from 'src/features/project/projectUndoableSlice';
 
 const { Panel } = Collapse;
 

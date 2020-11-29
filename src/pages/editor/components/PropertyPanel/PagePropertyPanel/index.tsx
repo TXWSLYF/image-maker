@@ -1,7 +1,7 @@
 import React from 'react';
 import { Collapse, InputNumber } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCanvas, setCanvasSize } from 'src/features/project/projectSlice';
+import { selectCanvas, setCanvasSize } from 'src/features/project/projectUndoableSlice';
 import PropertyRow from '../PropertyRow';
 import styles from './index.module.scss';
 

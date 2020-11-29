@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { difference, merge } from 'lodash';
-import { AppThunk, RootState } from 'src/app/store';
-import projectApi from 'src/api/project';
+import { RootState } from 'src/app/store';
 import { guid } from 'src/utils/util';
+import { PREFIX } from '.';
 
-const initialState: IProjectState = {
+const initialState: IProjectUndoableState = {
   id: 0,
   name: 'image-maker',
   data: {
@@ -12,7 +12,6 @@ const initialState: IProjectState = {
     canvas: {
       width: 600,
       height: 800,
-      scale: 1,
     },
 
     // 图片数据
@@ -25,14 +24,14 @@ const initialState: IProjectState = {
   },
 };
 
-export const projectSlice = createSlice({
-  name: 'project',
+export const projectUndoableSlice = createSlice({
+  name: `${PREFIX}/undoable`,
   initialState,
   reducers: {
     /**
      * @description 初始化项目
      */
-    initProject: (state, action: PayloadAction<IProjectState>) => {
+    initProjectUndoable: (state, action: PayloadAction<IProjectUndoableState>) => {
       const { id, name, data } = action.payload;
 
       state.id = id;
@@ -51,7 +50,7 @@ export const projectSlice = createSlice({
     /**
      * @description 设置画布大小
      */
-    setCanvasSize: (state, action: PayloadAction<Partial<Omit<IProjectState['data']['canvas'], 'scale'>>>) => {
+    setCanvasSize: (state, action: PayloadAction<Partial<Omit<IProjectUndoableState['data']['canvas'], 'scale'>>>) => {
       const { width, height } = action.payload;
 
       if (width !== undefined) {
@@ -61,19 +60,6 @@ export const projectSlice = createSlice({
       if (height !== undefined) {
         state.data.canvas.height = height;
       }
-    },
-
-    /**
-     * @description 设置画布缩放比例
-     */
-    setCanvasScale: (state, action: PayloadAction<IProjectState['data']['canvas']['scale']>) => {
-      // 最大放大比例 400%，最小缩小比例 20%
-      const MAX_CANVAS_SCALE = 4;
-      const MIN_CANVAS_SCALE = 0.2;
-
-      const newCanvasScale = Number(Math.min(Math.max(MIN_CANVAS_SCALE, action.payload), MAX_CANVAS_SCALE).toFixed(2));
-
-      state.data.canvas.scale = newCanvasScale;
     },
 
     /**
@@ -253,7 +239,7 @@ export const projectSlice = createSlice({
 });
 
 export const {
-  initProject,
+  initProjectUndoable,
   setProjectName,
   setCanvasSize,
   addPage,
@@ -267,13 +253,12 @@ export const {
   setImgLayerProperties,
   deletePages,
   setLayersName,
-  setCanvasScale,
-} = projectSlice.actions;
+} = projectUndoableSlice.actions;
 
-export const selectProject = (state: RootState) => state.project.present;
-export const selectProjectName = (state: RootState) => state.project.present.name;
+export const selectProject = (state: RootState) => state.project.undoable.present;
+export const selectProjectName = (state: RootState) => state.project.undoable.present.name;
 export const selectImages = (state: RootState) => {
-  const { imagesById, imageAllIds } = state.project.present.data;
+  const { imagesById, imageAllIds } = state.project.undoable.present.data;
 
   return {
     byId: imagesById,
@@ -281,25 +266,17 @@ export const selectImages = (state: RootState) => {
   };
 };
 export const selectLayers = (state: RootState) => {
-  const { layersById, layerAllIds } = state.project.present.data;
+  const { layersById, layerAllIds } = state.project.undoable.present.data;
 
   return {
     byId: layersById,
     allIds: layerAllIds,
   };
 };
-export const selectCanvas = (state: RootState) => state.project.present.data.canvas;
-export const selectCanvasScale = (state: RootState) => state.project.present.data.canvas.scale;
-export const selectProjectPastLength = (state: RootState) => state.project.past.length;
-export const selectProjectFutureLength = (state: RootState) => state.project.future.length;
-export const selectPageAllIds = (state: RootState) => state.project.present.data.imageAllIds;
+export const selectCanvas = (state: RootState) => state.project.undoable.present.data.canvas;
+export const selectProjectPastLength = (state: RootState) => state.project.undoable.past.length;
+export const selectProjectFutureLength = (state: RootState) => state.project.undoable.future.length;
+export const selectPageAllIds = (state: RootState) => state.project.undoable.present.data.imageAllIds;
 
-/**
- * @description 保存项目
- */
-export const saveProject = (): AppThunk => async (dispatch, getState) => {
-  const { id, name, data } = getState().project.present;
-  await projectApi.update({ id, name, data: JSON.stringify(data) });
-};
-
-export default projectSlice.reducer;
+const projectUndoableReducer = projectUndoableSlice.reducer;
+export default projectUndoableReducer;

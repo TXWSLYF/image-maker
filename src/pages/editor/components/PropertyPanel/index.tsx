@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import styles from './index.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurLayerIds, setPropertyPanelWidth } from 'src/features/editor/editorSlice';
-import { selectLayers } from 'src/features/project/projectSlice';
+import { selectLayers } from 'src/features/project/projectUndoableSlice';
 import PagePropertyPanel from './PagePropertyPanel';
 import BasePropertyPanel from './BasePropertyPanel';
 import TextPropertyPanel from './TextPropertyPanel';

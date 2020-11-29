@@ -7,7 +7,7 @@ import {
   setBasicWidgetsPanelWidth,
   setIsLeftPanelVisible,
 } from 'src/features/editor/editorSlice';
-import { addLayer } from 'src/features/project/projectSlice';
+import { addLayer } from 'src/features/project/projectUndoableSlice';
 import { imgLayer, textLayer } from 'src/layer';
 import { ReactComponent as TextSvg } from 'src/assets/svg/text.svg';
 import { ReactComponent as PictureSvg } from 'src/assets/svg/picture.svg';

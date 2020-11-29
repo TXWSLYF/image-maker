@@ -10,7 +10,7 @@ import {
   setDragZoomStartMouseCoordinate,
   setIsDragZooming,
 } from 'src/features/editor/editorSlice';
-import { selectCanvas, selectLayers } from 'src/features/project/projectSlice';
+import { selectCanvas, selectLayers } from 'src/features/project/projectUndoableSlice';
 import calcMiniEnclosingRect, { calcRectCenter } from 'src/utils/calcMiniEnclosingRect';
 import {
   setIsRotating,
@@ -33,7 +33,7 @@ interface ISingleResizerStyle {
 
 function curContainerRender(
   curLayerIds: string[],
-  layersById: IProjectState['data']['layersById'],
+  layersById: IProjectUndoableState['data']['layersById'],
   singleResizerStyle: ISingleResizerStyle,
 ) {
   return (
@@ -60,7 +60,7 @@ function curContainerRender(
 
 function selectionHandlerRender(
   curLayerIds: string[],
-  layersById: IProjectState['data']['layersById'],
+  layersById: IProjectUndoableState['data']['layersById'],
   singleResizerStyle: ISingleResizerStyle,
   editorCanvasCoordinate: ICoordinate,
   dispatch: Dispatch,

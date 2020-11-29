@@ -1,6 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLayersBaseProperties, setLayersCoordinate, setLayersRotation } from 'src/features/project/projectSlice';
+import {
+  setLayersBaseProperties,
+  setLayersCoordinate,
+  setLayersRotation,
+} from 'src/features/project/projectUndoableSlice';
 import {
   setIsDraging,
   setIsRotating,

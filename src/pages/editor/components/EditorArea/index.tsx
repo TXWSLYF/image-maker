@@ -1,6 +1,6 @@
 import React, { useCallback, useLayoutEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteLayers, selectCanvas, selectImages, selectLayers } from 'src/features/project/projectSlice';
+import { deleteLayers, selectCanvas, selectImages, selectLayers } from 'src/features/project/projectUndoableSlice';
 import {
   selectCurImageId,
   selectCurLayerIds,

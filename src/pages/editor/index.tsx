@@ -2,7 +2,8 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Spin } from 'antd';
-import { initProject } from 'src/features/project/projectSlice';
+import { initProjectBasic } from 'src/features/project/projectBasicSlice';
+import { initProjectUndoable } from 'src/features/project/projectUndoableSlice';
 import { setCurImage } from 'src/features/editor/editorSlice';
 import useRequest from 'src/common/hooks/useRequest';
 import projectApi from 'src/api/project';
@@ -28,15 +29,21 @@ function EditorPage() {
         </div>
       );
 
-    const { id, name, data: data1 } = data.data.data;
-    const initProjectData: IProjectState = { id, name, data: JSON.parse(data1) };
+    const { id, name, data: projectDataJSON } = data.data.data;
+    const projectData: {
+      basic: IProjectBasicState;
+      undoable: IProjectUndoableState['data'];
+    } = JSON.parse(projectDataJSON);
+
+    const initProjectUndoableData: IProjectUndoableState = { id, name, data: projectData.undoable };
 
     const {
       data: { imageAllIds },
-    } = initProjectData;
+    } = initProjectUndoableData;
 
     // 初始化 project 数据
-    dispatch(initProject(initProjectData));
+    dispatch(initProjectBasic(projectData.basic));
+    dispatch(initProjectUndoable(initProjectUndoableData));
 
     // 设置当前选中图片
     dispatch(setCurImage(imageAllIds[0]));

@@ -154,16 +154,10 @@ const Scroll = (props: ScrollProps) => {
         style={props.style}
         onMouseDown={handleDragMouseDown}
       >
-        <div
-          style={{
-            transform: `translate(${-scrollLeft}px, ${-scrollTop}px) scale(${scale})`,
-          }}
-        >
-          {props.children}
-        </div>
+        {props.children}
       </div>
     );
-  }, [isDraging, isSpacePressed, props.style, props.children, handleDragMouseDown, scrollLeft, scrollTop, scale]);
+  }, [isDraging, isSpacePressed, props.style, props.children, handleDragMouseDown]);
 };
 
 export default Scroll;

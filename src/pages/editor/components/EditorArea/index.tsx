@@ -9,7 +9,6 @@ import {
   setHoverLayerId,
 } from 'src/features/editor/editorSlice';
 import { Layer } from 'src/layer';
-import FakeCanvas from '../FakeCanvas';
 import styles from './index.module.scss';
 
 function EditorArea() {
@@ -70,7 +69,6 @@ function EditorArea() {
           ? images.byId[curImageId].layers.map((id) => <Layer layer={layers.byId[id]} key={id} />)
           : null}
       </div>
-      <FakeCanvas />
     </div>
   );
 }

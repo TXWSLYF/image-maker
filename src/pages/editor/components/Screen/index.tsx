@@ -15,14 +15,21 @@ import {
 } from 'src/features/editor/editorSlice';
 import { selectCanvasScale, setCanvasScale } from 'src/features/project/projectBasicSlice';
 import EditorArea from '../EditorArea';
+import FakeCanvas from '../FakeCanvas';
 
-const style: React.CSSProperties = {
+const style1: React.CSSProperties = {
   position: 'fixed',
   top: 52,
   left: 0,
   right: 0,
   bottom: 0,
   background: '#f1f3f7',
+};
+
+const style2: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 };
 
 const Screen = () => {
@@ -64,6 +71,12 @@ const Screen = () => {
     [dispatch],
   );
 
+  const style3: React.CSSProperties = useMemo(() => {
+    return {
+      transform: `translate(${-scrollLeft}px, ${-scrollTop}px) scale(${scale})`,
+    };
+  }, [scale, scrollLeft, scrollTop]);
+
   return useMemo(() => {
     return (
       <Scroll
@@ -71,7 +84,7 @@ const Screen = () => {
         scrollHeight={scrollHeight}
         scrollTop={scrollTop}
         scrollLeft={scrollLeft}
-        style={style}
+        style={style1}
         onMouseDown={onMouseDown}
         onResize={onScrollResize}
         handleWheelX={handleWheelX}
@@ -79,7 +92,12 @@ const Screen = () => {
         scale={scale}
         handleScaleChange={handleScaleChange}
       >
-        <EditorArea />
+        <div style={style2}>
+          <div style={style3}>
+            <EditorArea />
+          </div>
+          <FakeCanvas />
+        </div>
       </Scroll>
     );
   }, [
@@ -93,6 +111,7 @@ const Screen = () => {
     scrollLeft,
     scrollTop,
     scrollWidth,
+    style3,
   ]);
 };
 

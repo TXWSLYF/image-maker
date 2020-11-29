@@ -1,0 +1,11 @@
+.selectedContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  .itemSelectBorder,
+  .itemTotalBorder {
+    position: absolute;
+    border: 1px solid #4af;
+  }
+}

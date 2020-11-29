@@ -1,17 +1,20 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { selectEchoLayerId } from 'src/features/editor/editorSlice';
+import { selectCanvasScale } from 'src/features/project/projectBasicSlice';
 import { selectLayers } from 'src/features/project/projectUndoableSlice';
+import scaleRect from 'src/utils/scaleRect';
 import styles from './index.module.scss';
 
 const EchoContainer = () => {
   const echoLayerId = useSelector(selectEchoLayerId);
   const { byId } = useSelector(selectLayers);
+  const canvasScale = useSelector(selectCanvasScale);
 
   return useMemo(() => {
     if (!echoLayerId) return null;
 
-    const { width, height, x, y, rotation } = byId[echoLayerId].properties;
+    const { width, height, x, y, rotation } = scaleRect(byId[echoLayerId].properties, canvasScale);
 
     return (
       <div className={styles.echoContainer}>
@@ -25,7 +28,7 @@ const EchoContainer = () => {
         ></div>
       </div>
     );
-  }, [byId, echoLayerId]);
+  }, [byId, canvasScale, echoLayerId]);
 };
 
 export default EchoContainer;

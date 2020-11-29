@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurLayerIds,
   selectEditorCanvasCoordinate,
+  selectScrollLeft,
+  selectScrollTop,
   setDragZoomDirection,
   setDragZoomId,
   setDragZoomStartLayersPosition,
@@ -19,43 +21,19 @@ import {
   setRotateStartLayersRotation,
   setRotateCenterCoordinate,
 } from 'src/features/editor/editorSlice';
+import { selectCanvasScale } from 'src/features/project/projectBasicSlice';
 import { guid } from 'src/utils/util';
 import { R2D } from 'src/common/constants';
 import HoverContainer from './components/HoverContainer';
 import EchoContainer from './components/EchoContainer';
+import SelectedContainer from './components/SelectedContainer';
 import styles from './index.module.scss';
+import scaleRect from 'src/utils/scaleRect';
 
-interface ISingleResizerStyle {
+export interface ISingleResizerStyle {
   width: number;
   height: number;
   transform: string;
-}
-
-function curContainerRender(
-  curLayerIds: string[],
-  layersById: IProjectUndoableState['data']['layersById'],
-  singleResizerStyle: ISingleResizerStyle,
-) {
-  return (
-    <div className={styles.curContainer}>
-      {curLayerIds.length > 1 ? <div className={styles.itemTotalBorder} style={singleResizerStyle}></div> : null}
-      {curLayerIds.map((curLayerId) => {
-        const { width, height, x, y, rotation } = layersById[curLayerId].properties;
-
-        return (
-          <div
-            key={curLayerId}
-            className={styles.itemSelectBorder}
-            style={{
-              width,
-              height,
-              transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`,
-            }}
-          ></div>
-        );
-      })}
-    </div>
-  );
 }
 
 function selectionHandlerRender(
@@ -240,10 +218,13 @@ function FakeCanvas() {
   const { byId: layersById } = useSelector(selectLayers);
   const curLayerIds = useSelector(selectCurLayerIds);
   const editorCanvasCoordinate = useSelector(selectEditorCanvasCoordinate);
+  const scrollTop = useSelector(selectScrollTop);
+  const scrollLeft = useSelector(selectScrollLeft);
+  const canvasScale = useSelector(selectCanvasScale);
 
   let singleResizerStyle = undefined;
   if (curLayerIds.length === 1) {
-    const { width, height, x, y, rotation } = layersById[curLayerIds[0]].properties;
+    const { width, height, x, y, rotation } = scaleRect(layersById[curLayerIds[0]].properties, canvasScale);
     singleResizerStyle = {
       width,
       height,
@@ -251,7 +232,7 @@ function FakeCanvas() {
     };
   } else {
     const { width, height, x, y, rotation } = calcMiniEnclosingRect(
-      curLayerIds.map((layerId) => layersById[layerId].properties),
+      curLayerIds.map((layerId) => scaleRect(layersById[layerId].properties, canvasScale)),
     );
     singleResizerStyle = {
       width,
@@ -264,11 +245,12 @@ function FakeCanvas() {
     <div
       className={styles.fakeCanvas}
       style={{
-        width: canvas.width,
-        height: canvas.height,
+        width: canvas.width * canvasScale,
+        height: canvas.height * canvasScale,
+        transform: `translate(${-scrollLeft}px, ${-scrollTop}px) `,
       }}
     >
-      {curContainerRender(curLayerIds, layersById, singleResizerStyle)}
+      <SelectedContainer singleResizerStyle={singleResizerStyle} />
       <HoverContainer />
       <EchoContainer />
       {selectionHandlerRender(curLayerIds, layersById, singleResizerStyle, editorCanvasCoordinate, dispatch)}

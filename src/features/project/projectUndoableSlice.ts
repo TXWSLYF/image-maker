@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { difference, merge } from 'lodash';
 import { RootState } from 'src/app/store';
 import { guid } from 'src/utils/util';
-import { PREFIX } from '.';
 
 const initialState: IProjectUndoableState = {
   id: 0,
@@ -25,7 +24,7 @@ const initialState: IProjectUndoableState = {
 };
 
 export const projectUndoableSlice = createSlice({
-  name: `${PREFIX}/undoable`,
+  name: `project/undoable`,
   initialState,
   reducers: {
     /**

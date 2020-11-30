@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { merge } from 'lodash';
 import { RootState } from 'src/app/store';
-import { PREFIX } from '.';
 
 const initialState: IProjectBasicState = {
   canvas: {
@@ -10,7 +9,7 @@ const initialState: IProjectBasicState = {
 };
 
 export const projectBasicSlice = createSlice({
-  name: `${PREFIX}/basic`,
+  name: `project/basic`,
   initialState,
   reducers: {
     initProjectBasic(state, action: PayloadAction<IProjectBasicState>) {

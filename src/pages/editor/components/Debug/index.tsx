@@ -5,7 +5,6 @@ import { selectRotateCenterCoordinate } from 'src/features/editor/editorSlice';
 
 const Debug = () => {
   const debug = useSearchParam('debug');
-  console.log(debug);
   const rotateCenterCoordinate = useSelector(selectRotateCenterCoordinate);
 
   return useMemo(() => {

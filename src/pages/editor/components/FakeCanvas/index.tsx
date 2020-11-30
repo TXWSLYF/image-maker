@@ -42,6 +42,10 @@ function selectionHandlerRender(
   singleResizerStyle: ISingleResizerStyle,
   editorCanvasCoordinate: ICoordinate,
   dispatch: Dispatch,
+  canvasScale: number,
+  scrollLeft: number,
+  scrollTop: number,
+  canvas: IProjectUndoableState['data']['canvas'],
 ) {
   if (!curLayerIds.length) return null;
 
@@ -107,10 +111,12 @@ function selectionHandlerRender(
             dispatch(setRotateId(guid()));
 
             // 记录旋转中心点坐标
-            const rectCenterCoordinate = calcRectCenter(layersById[curLayerIds[0]].properties);
+            const rectCenterCoordinate = calcRectCenter(scaleRect(layersById[curLayerIds[0]].properties, canvasScale));
             const rotateCenterCoordinate = {
-              x: rectCenterCoordinate.x + editorCanvasCoordinate.x,
-              y: rectCenterCoordinate.y + editorCanvasCoordinate.y,
+              x:
+                rectCenterCoordinate.x + editorCanvasCoordinate.x - scrollLeft - ((canvasScale - 1) * canvas.width) / 2,
+              y:
+                rectCenterCoordinate.y + editorCanvasCoordinate.y - scrollTop - ((canvasScale - 1) * canvas.height) / 2,
             };
             dispatch(setRotateCenterCoordinate(rotateCenterCoordinate));
 
@@ -253,7 +259,17 @@ function FakeCanvas() {
       <SelectedContainer singleResizerStyle={singleResizerStyle} />
       <HoverContainer />
       <EchoContainer />
-      {selectionHandlerRender(curLayerIds, layersById, singleResizerStyle, editorCanvasCoordinate, dispatch)}
+      {selectionHandlerRender(
+        curLayerIds,
+        layersById,
+        singleResizerStyle,
+        editorCanvasCoordinate,
+        dispatch,
+        canvasScale,
+        scrollLeft,
+        scrollTop,
+        canvas,
+      )}
     </div>
   );
 }

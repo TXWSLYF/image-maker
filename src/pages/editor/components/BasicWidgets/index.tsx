@@ -87,7 +87,7 @@ const BasicWidgets = () => {
         </div>
       </div>
     );
-  }, [handleAddLayer, handleSetIsLeftPanelVisible, toolTipTitle, rotateDeg]);
+  }, [toolTipTitle, handleSetIsLeftPanelVisible, rotateDeg, handleAddLayer]);
 };
 
 export default BasicWidgets;

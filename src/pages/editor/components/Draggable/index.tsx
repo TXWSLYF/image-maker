@@ -149,10 +149,10 @@ function Draggeble() {
                   changeWidth = moveX;
                 }
 
-                x = x + changeX;
-                y = y + changeY;
-                width = width + changeWidth;
-                height = height + changeHeight;
+                x = x + changeX / canvasScale;
+                y = y + changeY / canvasScale;
+                width = width + changeWidth / canvasScale;
+                height = height + changeHeight / canvasScale;
 
                 return {
                   id: position.id,

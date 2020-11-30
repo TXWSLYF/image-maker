@@ -23,12 +23,12 @@ import {
 } from 'src/features/editor/editorSlice';
 import { selectCanvasScale } from 'src/features/project/projectBasicSlice';
 import { guid } from 'src/utils/util';
+import scaleRect from 'src/utils/scaleRect';
 import { R2D } from 'src/common/constants';
 import HoverContainer from './components/HoverContainer';
 import EchoContainer from './components/EchoContainer';
 import SelectedContainer from './components/SelectedContainer';
 import styles from './index.module.scss';
-import scaleRect from 'src/utils/scaleRect';
 
 export interface ISingleResizerStyle {
   width: number;

@@ -9,6 +9,7 @@ import useRequest from 'src/common/hooks/useRequest';
 import projectApi from 'src/api/project';
 import styles from './index.module.scss';
 import Draggable from './components/Draggable';
+import Debug from './components/Debug';
 
 function EditorPage() {
   const dispatch = useDispatch();
@@ -51,7 +52,12 @@ function EditorPage() {
     return <Draggable />;
   }
 
-  return <div className={styles.editorPage}>{renderChild()}</div>;
+  return (
+    <div className={styles.editorPage}>
+      {renderChild()}
+      <Debug />
+    </div>
+  );
 }
 
 export default EditorPage;

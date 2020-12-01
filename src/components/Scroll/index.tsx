@@ -12,7 +12,9 @@ export interface ScrollProps {
   handleWheelY: (data: { offset?: number; newScrollTop?: number }) => void;
   handleWheelX: (data: { offset?: number; newScrollLeft?: number }) => void;
   handleScaleChange: (scale: number) => void;
-  onMouseDown: () => void;
+  onMouseDown: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onMouseMove: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onMouseUp: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   onResize: (size: { width: number; height: number }) => void;
   children: React.ReactNode;
   style: React.CSSProperties;
@@ -20,7 +22,18 @@ export interface ScrollProps {
 
 const Scroll = (props: ScrollProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { onMouseDown, onResize, handleWheelX, handleWheelY, scrollLeft, scrollTop, scale, handleScaleChange } = props;
+  const {
+    onMouseDown,
+    onMouseMove,
+    onMouseUp,
+    onResize,
+    handleWheelX,
+    handleWheelY,
+    scrollLeft,
+    scrollTop,
+    scale,
+    handleScaleChange,
+  } = props;
 
   // 滚动速率
   const [wheelSpeed] = useState(1);
@@ -107,12 +120,25 @@ const Scroll = (props: ScrollProps) => {
     };
   }, [handleWheelY, handleWheelX, wheelSpeed, sensitivity, handleScale]);
 
+  const handleMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      onMouseMove(event);
+    },
+    [onMouseMove],
+  );
+  const handleMouseUp = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      onMouseUp(event);
+    },
+    [onMouseUp],
+  );
+
   /**
    * @description 拖拽移动相关逻辑
    */
   const handleDragMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      onMouseDown();
+      onMouseDown(e);
 
       if (isSpacePressed) {
         const { clientX, clientY } = e;
@@ -153,11 +179,13 @@ const Scroll = (props: ScrollProps) => {
         ref={ref}
         style={props.style}
         onMouseDown={handleDragMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
       >
         {props.children}
       </div>
     );
-  }, [isDraging, isSpacePressed, props.style, props.children, handleDragMouseDown]);
+  }, [isDraging, isSpacePressed, props.style, props.children, handleDragMouseDown, handleMouseMove, handleMouseUp]);
 };
 
 export default Scroll;

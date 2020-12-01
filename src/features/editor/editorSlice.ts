@@ -15,6 +15,7 @@ const initialState: IEditorState = {
   screenHeight: 0,
   basicWidgetsPanelWidth: 0,
   propertyPanelWidth: 0,
+  topBarHeight: 0,
 
   /**
    * @description 左侧面板属性
@@ -50,6 +51,13 @@ const initialState: IEditorState = {
   dragZoomStartMouseCoordinate: { x: 0, y: 0 },
   dragZoomDirection: [],
   dragZoomStartLayersPosition: [],
+
+  /**
+   * @description 拖拽范围选择相关属性
+   */
+  isRangeSelecting: false,
+  rangeSelectionStartCoordinate: { x: 0, y: 0 },
+  rangeSelectionCurrentCoordinate: { x: 0, y: 0 },
 };
 
 export const editorSlice = createSlice({
@@ -233,6 +241,22 @@ export const editorSlice = createSlice({
     setPropertyPanelWidth: (state, action: PayloadAction<number>) => {
       state.propertyPanelWidth = action.payload;
     },
+    setTopBarHeight: (state, action: PayloadAction<IEditorState['topBarHeight']>) => {
+      state.topBarHeight = action.payload;
+    },
+
+    /**
+     * @description 拖拽范围选择相关属性
+     */
+    setIsRangeSelecting(state, action: PayloadAction<IEditorState['isRangeSelecting']>) {
+      state.isRangeSelecting = action.payload;
+    },
+    setRangeSelectionStartCoordinate(state, action: PayloadAction<IEditorState['rangeSelectionStartCoordinate']>) {
+      state.rangeSelectionStartCoordinate = action.payload;
+    },
+    setRangeSelectionCurrentCoordinate(state, action: PayloadAction<IEditorState['rangeSelectionCurrentCoordinate']>) {
+      state.rangeSelectionCurrentCoordinate = action.payload;
+    },
   },
 });
 
@@ -269,9 +293,19 @@ export const {
   setScreenWidth,
   setBasicWidgetsPanelWidth,
   setPropertyPanelWidth,
+  setTopBarHeight,
+
+  /**
+   * @description 拖拽范围选择相关属性
+   */
+  setIsRangeSelecting,
+  setRangeSelectionStartCoordinate,
+  setRangeSelectionCurrentCoordinate,
 } = editorSlice.actions;
 
 export const selectCurImageId = (state: RootState) => state.editor.curImageId;
+export const selectCurImageLayerIds = (state: RootState) =>
+  state.project.undoable.present.data.imagesById[state.editor.curImageId].layers;
 export const selectCurImageLayers = (state: RootState) =>
   state.project.undoable.present.data.imagesById[state.editor.curImageId].layers.map(
     (layerId) => state.project.undoable.present.data.layersById[layerId],
@@ -313,5 +347,13 @@ export const selectScreenHeight = (state: RootState) => state.editor.screenHeigh
 export const selectScreenWidth = (state: RootState) => state.editor.screenWidth;
 export const selectBasicWidgetsPanelWidth = (state: RootState) => state.editor.basicWidgetsPanelWidth;
 export const selectPropertyPanelWidth = (state: RootState) => state.editor.propertyPanelWidth;
+export const selectTopBarHeight = (state: RootState) => state.editor.topBarHeight;
+
+/**
+ * @description 拖拽范围选择相关属性
+ */
+export const selectIsRangeSelecting = (state: RootState) => state.editor.isRangeSelecting;
+export const selectRangeSelectionStartCoordinate = (state: RootState) => state.editor.rangeSelectionStartCoordinate;
+export const selectRangeSelectionCurrentCoordinate = (state: RootState) => state.editor.rangeSelectionCurrentCoordinate;
 
 export default editorSlice.reducer;

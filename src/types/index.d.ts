@@ -197,6 +197,15 @@ interface IEditorState {
   // 基础组件面板宽度
   basicWidgetsPanelWidth: number;
   propertyPanelWidth: number;
+
+  topBarHeight: number;
+
+  /**
+   * @description 拖拽范围选择相关属性
+   */
+  isRangeSelecting: boolean;
+  rangeSelectionStartCoordinate: ICoordinate;
+  rangeSelectionCurrentCoordinate: ICoordinate;
 }
 
 // 二维坐标系坐标点

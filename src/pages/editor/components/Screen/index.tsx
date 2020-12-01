@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useKeyPress } from 'react-use';
 import Scroll from 'src/components/Scroll';
 import {
   setCurLayers,
@@ -12,10 +13,24 @@ import {
   setScreenWidth,
   selectScrollTop,
   selectScrollLeft,
+  setIsRangeSelecting,
+  setRangeSelectionStartCoordinate,
+  setRangeSelectionCurrentCoordinate,
+  selectRangeSelectionStartCoordinate,
+  selectCurImageLayerIds,
+  selectScreenWidth,
+  selectScreenHeight,
+  selectTopBarHeight,
+  selectIsRangeSelecting,
 } from 'src/features/editor/editorSlice';
 import { selectCanvasScale, setCanvasScale } from 'src/features/project/projectBasicSlice';
+import { selectCanvas, selectLayers } from 'src/features/project/projectUndoableSlice';
+import calcMiniEnclosingRect from 'src/utils/calcMiniEnclosingRect';
+import rectCollide from 'src/utils/rectCollide';
+import scaleRect from 'src/utils/scaleRect';
 import EditorArea from '../EditorArea';
 import FakeCanvas from '../FakeCanvas';
+import RangeSelection from '../RangeSelection';
 
 const style1: React.CSSProperties = {
   position: 'fixed',
@@ -39,10 +54,85 @@ const Screen = () => {
   const scrollTop = useSelector(selectScrollTop);
   const scrollLeft = useSelector(selectScrollLeft);
   const scale = useSelector(selectCanvasScale);
+  const curImageLayerIds = useSelector(selectCurImageLayerIds);
+  const { byId: layersById } = useSelector(selectLayers);
+  const rangeSelectionStartCoordinate = useSelector(selectRangeSelectionStartCoordinate);
+  const canvasScale = useSelector(selectCanvasScale);
+  const canvas = useSelector(selectCanvas);
+  const screenWidth = useSelector(selectScreenWidth);
+  const screenHeight = useSelector(selectScreenHeight);
+  const topBarHeight = useSelector(selectTopBarHeight);
+  const isRangeSelecting = useSelector(selectIsRangeSelecting);
 
-  const onMouseDown = useCallback(() => {
-    dispatch(setCurLayers([]));
-  }, [dispatch]);
+  // 拖拽移动相关数据
+  const [isSpacePressed] = useKeyPress((e: KeyboardEvent) => {
+    return e.code === 'Space';
+  });
+
+  const onMouseDown = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (isSpacePressed) return;
+
+      const { clientX, clientY } = event;
+      dispatch(setIsRangeSelecting(true));
+      dispatch(setRangeSelectionStartCoordinate({ x: clientX, y: clientY }));
+      dispatch(setRangeSelectionCurrentCoordinate({ x: clientX, y: clientY }));
+      dispatch(setCurLayers([]));
+    },
+    [dispatch, isSpacePressed],
+  );
+
+  const onMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (!isRangeSelecting) return;
+
+      const { clientX: currentX, clientY: currentY } = event;
+      const { x: startX, y: startY } = rangeSelectionStartCoordinate;
+
+      const rangeSelection: IRect = {
+        x: Math.min(startX, currentX),
+        y: Math.min(startY, currentY),
+        width: Math.abs(startX - currentX),
+        height: Math.abs(startY - currentY),
+        rotation: 0,
+      };
+
+      const curLayerIds = curImageLayerIds.filter((layerId) => {
+        const { x, y, width, height } = calcMiniEnclosingRect([scaleRect(layersById[layerId].properties, canvasScale)]);
+
+        const layerClientX = screenWidth / 2 - (canvas.width * canvasScale) / 2 + x + scrollLeft;
+        const layerClientY = screenHeight / 2 - (canvas.height * canvasScale) / 2 + y + scrollTop + topBarHeight;
+
+        return rectCollide(rangeSelection, { x: layerClientX, y: layerClientY, width, height, rotation: 0 });
+      });
+
+      dispatch(setCurLayers(curLayerIds));
+      dispatch(setRangeSelectionCurrentCoordinate({ x: currentX, y: currentY }));
+    },
+    [
+      canvas.height,
+      canvas.width,
+      canvasScale,
+      curImageLayerIds,
+      dispatch,
+      isRangeSelecting,
+      layersById,
+      rangeSelectionStartCoordinate,
+      screenHeight,
+      screenWidth,
+      scrollLeft,
+      scrollTop,
+      topBarHeight,
+    ],
+  );
+
+  const onMouseUp = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      dispatch(setIsRangeSelecting(false));
+    },
+    [dispatch],
+  );
+
   const onScrollResize = useCallback(
     ({ width, height }: { width: number; height: number }) => {
       dispatch(setScreenHeight(height));
@@ -86,6 +176,8 @@ const Screen = () => {
         scrollLeft={scrollLeft}
         style={style1}
         onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
         onResize={onScrollResize}
         handleWheelX={handleWheelX}
         handleWheelY={handleWheelY}
@@ -98,6 +190,7 @@ const Screen = () => {
           </div>
           <FakeCanvas />
         </div>
+        <RangeSelection />
       </Scroll>
     );
   }, [
@@ -105,6 +198,8 @@ const Screen = () => {
     handleWheelX,
     handleWheelY,
     onMouseDown,
+    onMouseMove,
+    onMouseUp,
     onScrollResize,
     scale,
     scrollHeight,

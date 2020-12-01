@@ -100,8 +100,8 @@ const Screen = () => {
       const curLayerIds = curImageLayerIds.filter((layerId) => {
         const { x, y, width, height } = calcMiniEnclosingRect([scaleRect(layersById[layerId].properties, canvasScale)]);
 
-        const layerClientX = screenWidth / 2 - (canvas.width * canvasScale) / 2 + x + scrollLeft;
-        const layerClientY = screenHeight / 2 - (canvas.height * canvasScale) / 2 + y + scrollTop + topBarHeight;
+        const layerClientX = screenWidth / 2 - (canvas.width * canvasScale) / 2 + x - scrollLeft;
+        const layerClientY = screenHeight / 2 - (canvas.height * canvasScale) / 2 + y - scrollTop + topBarHeight;
 
         return rectCollide(rangeSelection, { x: layerClientX, y: layerClientY, width, height, rotation: 0 });
       });

@@ -46,6 +46,7 @@ function selectionHandlerRender(
   scrollLeft: number,
   scrollTop: number,
   canvas: IProjectUndoableState['data']['canvas'],
+  miniEnclosingRect: IRect,
 ) {
   if (!curLayerIds.length) return null;
 
@@ -111,7 +112,7 @@ function selectionHandlerRender(
             dispatch(setRotateId(guid()));
 
             // 记录旋转中心点坐标
-            const rectCenterCoordinate = calcRectCenter(scaleRect(layersById[curLayerIds[0]].properties, canvasScale));
+            const rectCenterCoordinate = calcRectCenter(miniEnclosingRect);
             const rotateCenterCoordinate = {
               x:
                 rectCenterCoordinate.x + editorCanvasCoordinate.x - scrollLeft - ((canvasScale - 1) * canvas.width) / 2,
@@ -229,8 +230,16 @@ function FakeCanvas() {
   const canvasScale = useSelector(selectCanvasScale);
 
   let singleResizerStyle = undefined;
+  let miniEnclosingRect = undefined;
   if (curLayerIds.length === 1) {
     const { width, height, x, y, rotation } = scaleRect(layersById[curLayerIds[0]].properties, canvasScale);
+    miniEnclosingRect = {
+      width,
+      height,
+      x,
+      y,
+      rotation,
+    };
     singleResizerStyle = {
       width,
       height,
@@ -240,6 +249,13 @@ function FakeCanvas() {
     const { width, height, x, y, rotation } = calcMiniEnclosingRect(
       curLayerIds.map((layerId) => scaleRect(layersById[layerId].properties, canvasScale)),
     );
+    miniEnclosingRect = {
+      width,
+      height,
+      x,
+      y,
+      rotation,
+    };
     singleResizerStyle = {
       width,
       height,
@@ -269,6 +285,7 @@ function FakeCanvas() {
         scrollLeft,
         scrollTop,
         canvas,
+        miniEnclosingRect,
       )}
     </div>
   );

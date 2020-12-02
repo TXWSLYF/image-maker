@@ -6182,6 +6182,11 @@ hosted-git-info@^3.0.6:
   dependencies:
     lru-cache "^6.0.0"
 
+hotkeys-js@3.8.1:
+  version "3.8.1"
+  resolved "http://192.168.14.11:8888/hotkeys-js/-/hotkeys-js-3.8.1.tgz#fa7051f73bf1dc92a8b8d580a40b247f91966376"
+  integrity sha512-YlhVQtyG9f1b7GhtzdhR0Pl+cImD1ZrKI6zYUa7QLd0zuThiL7RzZ+ANJyy7z+kmcCpNYBf5PjBa3CjiQ5PFpw==
+
 hpack.js@^2.1.6:
   version "2.1.6"
   resolved "https://registry.npm.taobao.org/hpack.js/download/hpack.js-2.1.6.tgz#87774c0949e513f42e84575b3c45681fade2a0b2"
@@ -10707,6 +10712,13 @@ react-error-overlay@^6.0.7:
   version "6.0.8"
   resolved "https://registry.npm.taobao.org/react-error-overlay/download/react-error-overlay-6.0.8.tgz?cache=0&sync_timestamp=1603464686088&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-error-overlay%2Fdownload%2Freact-error-overlay-6.0.8.tgz#474ed11d04fc6bda3af643447d85e9127ed6b5de"
   integrity sha1-R07RHQT8a9o69kNEfYXpEn7Wtd4=
+
+react-hotkeys-hook@^2.4.0:
+  version "2.4.0"
+  resolved "http://192.168.14.11:8888/react-hotkeys-hook/-/react-hotkeys-hook-2.4.0.tgz#becf941641bab04c8095917b5876ad8ed53b0dc6"
+  integrity sha1-vs+UFkG6sEyAlZF7WHatjtU7DcY=
+  dependencies:
+    hotkeys-js "3.8.1"
 
 react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"

@@ -1,5 +1,6 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useLayoutEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { deleteLayers, selectCanvas, selectImages, selectLayers } from 'src/features/project/projectUndoableSlice';
 import {
   selectCurImageId,
@@ -20,27 +21,28 @@ function EditorArea() {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== 'Backspace') return;
-      if (curLayerIds.length === 0) return;
+  const handleKeyDown = useCallback(() => {
+    if (curLayerIds.length === 0) return;
 
-      // 重置 hoverLayerId
-      dispatch(setHoverLayerId(''));
+    // 重置 hoverLayerId
+    dispatch(setHoverLayerId(''));
 
-      // 重置当前选中图层 id
-      dispatch(setCurLayers([]));
+    // 重置当前选中图层 id
+    dispatch(setCurLayers([]));
 
-      // 删除当前选中图层数据
-      dispatch(deleteLayers(curLayerIds));
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    // 删除当前选中图层数据
+    dispatch(deleteLayers(curLayerIds));
   }, [curLayerIds, dispatch]);
+
+  // fixed: 使用 useHotkeys 可以过滤掉输入框中按下的 backspace 事件
+  useHotkeys(
+    'backspace',
+    () => {
+      handleKeyDown();
+    },
+    {},
+    [handleKeyDown],
+  );
 
   useLayoutEffect(() => {
     const updateEditorCanvasCoordinate = () => {

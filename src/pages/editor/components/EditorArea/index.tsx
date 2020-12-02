@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteLayers, selectCanvas, selectImages, selectLayers } from 'src/features/project/projectUndoableSlice';
 import {
@@ -20,9 +20,10 @@ function EditorArea() {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== 'Backspace') return;
+      if (curLayerIds.length === 0) return;
 
       // 重置 hoverLayerId
       dispatch(setHoverLayerId(''));
@@ -32,9 +33,14 @@ function EditorArea() {
 
       // 删除当前选中图层数据
       dispatch(deleteLayers(curLayerIds));
-    },
-    [dispatch, curLayerIds],
-  );
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [curLayerIds, dispatch]);
 
   useLayoutEffect(() => {
     const updateEditorCanvasCoordinate = () => {
@@ -56,9 +62,6 @@ function EditorArea() {
       <div
         id="editorCanvas"
         ref={ref}
-        // 很关键的属性，不设置不能触发 onKeyDown 事件
-        tabIndex={-1}
-        onKeyDown={handleKeyDown}
         className={styles.canvas}
         style={{
           width: canvas.width,

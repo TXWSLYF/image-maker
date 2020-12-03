@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import TextLayer from '../TextLayer/index';
 import ImageLayer from '../ImageLayer/index';
+import GroupLayer from '../GroupLayer/index';
 
-function Layer(props: { layer: ILayer }) {
-  if (props.layer.type === 'TEXT') {
-    return <TextLayer layer={props.layer} />;
-  } else if (props.layer.type === 'IMG') {
-    return <ImageLayer layer={props.layer} />;
-  } else {
-    return null;
-  }
+interface LayerProps {
+  layer: ILayer;
 }
+
+const Layer = ({ layer }: LayerProps) => {
+  return useMemo(() => {
+    switch (layer.type) {
+      case 'TEXT': {
+        return <TextLayer layer={layer} />;
+      }
+
+      case 'IMG': {
+        return <ImageLayer layer={layer} />;
+      }
+
+      case 'GROUP': {
+        return <GroupLayer layer={layer} />;
+      }
+
+      default: {
+        return null;
+      }
+    }
+  }, [layer]);
+};
 
 export default Layer;

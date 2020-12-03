@@ -36,6 +36,11 @@ interface IImgProperties extends IBaseProperties {
   src: string;
 }
 
+// 组合组件 properties
+interface IGroupProperties extends IBaseProperties {
+  children: IBaseLayer['id'][];
+}
+
 // 基础图层
 interface IBaseLayer<T = IBaseProperties> {
   // id
@@ -44,7 +49,7 @@ interface IBaseLayer<T = IBaseProperties> {
   name: string;
 
   // 图层类型
-  type: 'TEXT' | 'IMG';
+  type: 'TEXT' | 'IMG' | 'GROUP';
 
   // 是否可编辑
   editable: boolean;
@@ -54,6 +59,9 @@ interface IBaseLayer<T = IBaseProperties> {
 
   // 图层属性
   properties: T;
+
+  // 父图层 id
+  parent?: IBaseLayer['id'];
 }
 
 // 文字图层
@@ -66,8 +74,13 @@ interface IImgLayer extends IBaseLayer<IImgProperties> {
   type: 'IMG';
 }
 
-type ILayer = ITextLayer | IImgLayer;
-type IProperties = IBaseProperties | ITextProperties | IImgProperties;
+// 组合图层
+interface IGroupLayer extends IBaseLayer<IGroupProperties> {
+  type: 'GROUP';
+}
+
+type ILayer = ITextLayer | IImgLayer | IGroupLayer;
+type IProperties = IBaseProperties | ITextProperties | IImgProperties | IGroupProperties;
 
 interface IProjectBasicState {
   // 画布相关

@@ -3,8 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from 'redux-undo';
 import { message } from 'antd';
 import { saveProject } from 'src/features/project';
-import { selectProjectFutureLength, selectProjectPastLength } from 'src/features/project/projectUndoableSlice';
-import { setCurLayers } from 'src/features/editor/editorSlice';
+import {
+  addGroupLayer,
+  selectProjectFutureLength,
+  selectProjectPastLength,
+} from 'src/features/project/projectUndoableSlice';
+import { selectCurImageId, selectCurLayerIds, setCurLayers } from 'src/features/editor/editorSlice';
 import { ReactComponent as CloudUploadOutlined } from 'src/assets/svg/cloudUploadOutlined.svg';
 import { ReactComponent as Rollback } from 'src/assets/svg/rollback.svg';
 import { ReactComponent as Redo } from 'src/assets/svg/redo.svg';
@@ -27,14 +31,17 @@ const TopBarCenter = () => {
   const dispatch = useDispatch();
   const projectPastLength = useSelector(selectProjectPastLength);
   const projectFutureLength = useSelector(selectProjectFutureLength);
-
-  const handleClickSave = useCallback(async () => {
-    await dispatch(saveProject());
-    message.success('保存成功');
-  }, [dispatch]);
+  const curImageId = useSelector(selectCurImageId);
+  const curLayerIds = useSelector(selectCurLayerIds);
 
   const isUndoDisabled = projectPastLength === 0;
   const isRedoDisabled = projectFutureLength === 0;
+
+  const handleClickSave = useCallback(async () => {
+    // TODO:异步
+    await dispatch(saveProject());
+    message.success('保存成功');
+  }, [dispatch]);
 
   const handleUndo = useCallback(() => {
     dispatch(setCurLayers([]));
@@ -45,6 +52,18 @@ const TopBarCenter = () => {
     dispatch(setCurLayers([]));
     dispatch(ActionCreators.redo());
   }, [dispatch]);
+
+  /**
+   * @description 组合组件
+   */
+  const handleClickGroup = useCallback(() => {
+    dispatch(
+      addGroupLayer({
+        imageId: curImageId,
+        layerIds: curLayerIds,
+      }),
+    );
+  }, [curImageId, curLayerIds, dispatch]);
 
   /**
    * @description 快捷键逻辑
@@ -107,7 +126,7 @@ const TopBarCenter = () => {
         <div style={style3}>
           <TopBarIcon text="对齐" SvgComponent={Duiqi} showDropDownArrow={true} />
           <TopBarIcon text="图层" SvgComponent={Layer} showDropDownArrow={true} />
-          <TopBarIcon text="组合" SvgComponent={Group} />
+          <TopBarIcon text="组合" SvgComponent={Group} onClick={handleClickGroup} />
           <TopBarIcon text="打散" SvgComponent={UnGroup} />
           <TopBarIcon text="锁定" SvgComponent={Lock} />
         </div>
@@ -118,7 +137,7 @@ const TopBarCenter = () => {
         </div>
       </div>
     );
-  }, [isUndoDisabled, isRedoDisabled, handleUndo, handleClickSave, handleRedo]);
+  }, [handleClickSave, handleUndo, isUndoDisabled, handleRedo, isRedoDisabled, handleClickGroup]);
 };
 
 export default TopBarCenter;

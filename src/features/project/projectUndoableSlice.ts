@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { difference, merge } from 'lodash';
 import { RootState } from 'src/app/store';
+import { groupLayer } from 'src/layer';
+import calcMiniEnclosingRect from 'src/utils/calcMiniEnclosingRect';
 import { guid } from 'src/utils/util';
 
 const initialState: IProjectUndoableState = {
@@ -82,6 +84,27 @@ export const projectUndoableSlice = createSlice({
 
       state.data.layersById[id] = { ...layer, id };
       state.data.layerAllIds.push(id);
+      state.data.imagesById[imageId].layers.push(id);
+    },
+
+    /**
+     * @description 添加组合图层 TODO: 考虑 parent
+     */
+    addGroupLayer: (state, action: PayloadAction<{ imageId: string; layerIds: IBaseLayer['id'][] }>) => {
+      const { imageId, layerIds } = action.payload;
+      const childrenLayers = layerIds.map((layerId) => state.data.layersById[layerId]);
+      const id = guid();
+      const groupLayerData = groupLayer(id);
+
+      const groupLayerRect = calcMiniEnclosingRect(childrenLayers.map((i) => i.properties));
+      groupLayerData.properties = { ...groupLayerData.properties, ...groupLayerRect };
+      groupLayerData.properties.children = layerIds;
+      childrenLayers.forEach((layer) => (layer.parent = id));
+
+      state.data.layerAllIds.push(id);
+      state.data.layersById[id] = groupLayerData;
+
+      state.data.imagesById[imageId].layers = difference(state.data.imagesById[imageId].layers, layerIds);
       state.data.imagesById[imageId].layers.push(id);
     },
 
@@ -243,6 +266,7 @@ export const {
   setCanvasSize,
   addPage,
   addLayer,
+  addGroupLayer,
   setLayersCoordinate,
   setLayersProperties,
   setLayersColor,

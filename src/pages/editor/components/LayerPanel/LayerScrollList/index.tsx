@@ -20,6 +20,8 @@ const layerIconMap: Record<
 > = {
   TEXT: TextIcon,
   IMG: PictureIcon,
+  // TODO: 替换图标
+  GROUP: PictureIcon,
 };
 
 const LayerScrollList = ({ layers }: LayerScrollListProps) => {

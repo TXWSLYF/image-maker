@@ -1,7 +1,8 @@
 import React from 'react';
-import { Collapse, InputNumber } from 'antd';
+import { Collapse } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCanvas, setCanvasSize } from 'src/features/project/projectUndoableSlice';
+import NumericInputNumber from 'src/components/NumericInputNumber';
 import PropertyRow from '../PropertyRow';
 import styles from './index.module.scss';
 
@@ -18,13 +19,20 @@ function PagePropertyPanel() {
           <PropertyRow
             leftLabelText="宽度"
             leftChild={
-              <InputNumber
+              <NumericInputNumber
                 style={{ width: 70 }}
                 value={canvas.width}
-                onChange={(value) => {
+                onPressEnter={(value) => {
                   dispatch(
                     setCanvasSize({
-                      width: Number(value),
+                      width: value,
+                    }),
+                  );
+                }}
+                onBlur={(value) => {
+                  dispatch(
+                    setCanvasSize({
+                      width: value,
                     }),
                   );
                 }}
@@ -32,11 +40,14 @@ function PagePropertyPanel() {
             }
             rightLabelText="高度"
             rightChild={
-              <InputNumber
+              <NumericInputNumber
                 style={{ width: 70 }}
                 value={canvas.height}
-                onChange={(value) => {
-                  dispatch(setCanvasSize({ height: Number(value) }));
+                onPressEnter={(value) => {
+                  dispatch(setCanvasSize({ height: value }));
+                }}
+                onBlur={(value) => {
+                  dispatch(setCanvasSize({ height: value }));
                 }}
               />
             }

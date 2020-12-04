@@ -31,8 +31,8 @@ function EditorArea() {
     dispatch(setCurLayers([]));
 
     // 删除当前选中图层数据
-    dispatch(deleteLayers(curLayerIds));
-  }, [curLayerIds, dispatch]);
+    dispatch(deleteLayers({ layerIds: curLayerIds, pageId: curImageId }));
+  }, [curImageId, curLayerIds, dispatch]);
 
   // fixed: 使用 useHotkeys 可以过滤掉输入框中按下的 backspace 事件
   useHotkeys(

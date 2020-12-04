@@ -11,6 +11,7 @@ const textLayer = (): ITextLayer => ({
     height: 20,
     opacity: 1,
     rotation: 0,
+    children: [],
 
     text: '双击编辑文本',
     fontSize: 20,

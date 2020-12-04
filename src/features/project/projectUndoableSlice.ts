@@ -232,18 +232,23 @@ export const projectUndoableSlice = createSlice({
     /**
      * @description 删除图层
      */
-    deleteLayers(state, action: PayloadAction<IBaseLayer['id'][]>) {
-      const { payload } = action;
-      let { imagesById, imageAllIds, layersById } = state.data;
+    deleteLayers(
+      state,
+      {
+        payload: { layerIds, pageId },
+      }: PayloadAction<{
+        pageId: IPage['id'];
+        layerIds: IBaseLayer['id'][];
+      }>,
+    ) {
+      let { imagesById, layersById } = state.data;
 
-      // 删除所有 image 中要删除的 layer
-      imageAllIds.forEach((imageId) => {
-        imagesById[imageId].layers = imagesById[imageId].layers.filter((layer) => !payload.includes(layer));
-      });
+      // 删除页面中图层引用
+      imagesById[pageId].layers = difference(imagesById[pageId].layers, layerIds);
 
-      // 删除所有 layer
-      state.data.layerAllIds = state.data.layerAllIds.filter((layerId) => !payload.includes(layerId));
-      payload.forEach((layerId) => {
+      // 删除图层数据 TODO: 删除子图层
+      state.data.layerAllIds = state.data.layerAllIds.filter((layerId) => !layerIds.includes(layerId));
+      layerIds.forEach((layerId) => {
         delete layersById[layerId];
       });
     },

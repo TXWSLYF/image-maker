@@ -90,21 +90,48 @@ export const projectUndoableSlice = createSlice({
     /**
      * @description 添加组合图层 TODO: 考虑 parent
      */
-    addGroupLayer: (state, action: PayloadAction<{ imageId: string; layerIds: IBaseLayer['id'][] }>) => {
-      const { imageId, layerIds } = action.payload;
+    addGroupLayer: (
+      state,
+      {
+        payload: { imageId, layerIds, id },
+      }: PayloadAction<{
+        imageId: string;
+        layerIds: IBaseLayer['id'][];
+        id: string;
+      }>,
+    ) => {
+      // 子图层
       const childrenLayers = layerIds.map((layerId) => state.data.layersById[layerId]);
-      const id = guid();
+
+      // 生成 groupLayer 初始数据
       const groupLayerData = groupLayer(id);
 
+      // 计算 groupLayer 位置
       const groupLayerRect = calcMiniEnclosingRect(childrenLayers.map((i) => i.properties));
-      groupLayerData.properties = { ...groupLayerData.properties, ...groupLayerRect };
-      groupLayerData.properties.children = layerIds;
-      childrenLayers.forEach((layer) => (layer.parent = id));
 
+      // 调整 groupLayer 位置
+      groupLayerData.properties = { ...groupLayerData.properties, ...groupLayerRect };
+
+      // 添加 groupLayer children
+      groupLayerData.properties.children = layerIds;
+
+      childrenLayers.forEach((layer) => {
+        // 设置子图层 parent
+        layer.parent = id;
+
+        // 重置子图层坐标为相对于父图层的坐标
+        layer.properties.x = layer.properties.x - groupLayerRect.x;
+        layer.properties.y = layer.properties.y - groupLayerRect.y;
+      });
+
+      // 将 groupLayer 添加到图层数据当中
       state.data.layerAllIds.push(id);
       state.data.layersById[id] = groupLayerData;
 
+      // 将子图层从当前页面中删除
       state.data.imagesById[imageId].layers = difference(state.data.imagesById[imageId].layers, layerIds);
+
+      // 将组合图层添加到当前页面中
       state.data.imagesById[imageId].layers.push(id);
     },
 

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectEchoLayerId } from 'src/features/editor/editorSlice';
 import { selectCanvasScale } from 'src/features/project/projectBasicSlice';
 import { selectLayers } from 'src/features/project/projectUndoableSlice';
+import getLayerRect from 'src/utils/getLayerRect';
 import scaleRect from 'src/utils/scaleRect';
 import styles from './index.module.scss';
 
@@ -14,7 +15,7 @@ const EchoContainer = () => {
   return useMemo(() => {
     if (!echoLayerId) return null;
 
-    const { width, height, x, y, rotation } = scaleRect(byId[echoLayerId].properties, canvasScale);
+    const { width, height, x, y, rotation } = scaleRect(getLayerRect(echoLayerId, byId), canvasScale);
 
     return (
       <div className={styles.echoContainer}>

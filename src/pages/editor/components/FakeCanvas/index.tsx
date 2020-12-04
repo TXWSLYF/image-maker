@@ -1,5 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurLayerIds,
@@ -24,6 +24,7 @@ import {
 import { selectCanvasScale } from 'src/features/project/projectBasicSlice';
 import { guid } from 'src/utils/util';
 import scaleRect from 'src/utils/scaleRect';
+import getLayerRect from 'src/utils/getLayerRect';
 import { R2D } from 'src/common/constants';
 import HoverContainer from './components/HoverContainer';
 import EchoContainer from './components/EchoContainer';
@@ -232,7 +233,7 @@ function FakeCanvas() {
   let singleResizerStyle = undefined;
   let miniEnclosingRect = undefined;
   if (curLayerIds.length === 1) {
-    const { width, height, x, y, rotation } = scaleRect(layersById[curLayerIds[0]].properties, canvasScale);
+    const { width, height, x, y, rotation } = scaleRect(getLayerRect(curLayerIds[0], layersById), canvasScale);
     miniEnclosingRect = {
       width,
       height,
@@ -247,7 +248,7 @@ function FakeCanvas() {
     };
   } else {
     const { width, height, x, y, rotation } = calcMiniEnclosingRect(
-      curLayerIds.map((layerId) => scaleRect(layersById[layerId].properties, canvasScale)),
+      curLayerIds.map((layerId) => scaleRect(getLayerRect(layerId, layersById), canvasScale)),
     );
     miniEnclosingRect = {
       width,
@@ -263,15 +264,15 @@ function FakeCanvas() {
     };
   }
 
+  const style = useMemo(() => {
+    return {
+      width: canvas.width * canvasScale,
+      height: canvas.height * canvasScale,
+    };
+  }, [canvas.height, canvas.width, canvasScale]);
+
   return (
-    <div
-      className={styles.fakeCanvas}
-      style={{
-        width: canvas.width * canvasScale,
-        height: canvas.height * canvasScale,
-        transform: `translate(${-scrollLeft}px, ${-scrollTop}px) `,
-      }}
-    >
+    <div className={styles.fakeCanvas} style={style}>
       <SelectedContainer singleResizerStyle={singleResizerStyle} />
       <HoverContainer />
       <EchoContainer />

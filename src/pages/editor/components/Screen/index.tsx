@@ -41,12 +41,6 @@ const style1: React.CSSProperties = {
   background: '#f1f3f7',
 };
 
-const style2: React.CSSProperties = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-};
-
 const Screen = () => {
   const dispatch = useDispatch();
   const scrollHeight = useSelector(selectScrollHeight);
@@ -161,11 +155,20 @@ const Screen = () => {
     [dispatch],
   );
 
+  const style2: React.CSSProperties = useMemo(() => {
+    return {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      transform: `translate(${-scrollLeft}px, ${-scrollTop}px) `,
+    };
+  }, [scrollLeft, scrollTop]);
+
   const style3: React.CSSProperties = useMemo(() => {
     return {
-      transform: `translate(${-scrollLeft}px, ${-scrollTop}px) scale(${scale})`,
+      transform: `scale(${scale})`,
     };
-  }, [scale, scrollLeft, scrollTop]);
+  }, [scale]);
 
   return useMemo(() => {
     return (
@@ -206,6 +209,7 @@ const Screen = () => {
     scrollLeft,
     scrollTop,
     scrollWidth,
+    style2,
     style3,
   ]);
 };

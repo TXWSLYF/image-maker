@@ -8,7 +8,8 @@ import {
   selectProjectFutureLength,
   selectProjectPastLength,
 } from 'src/features/project/projectUndoableSlice';
-import { selectCurImageId, selectCurLayerIds, setCurLayers } from 'src/features/editor/editorSlice';
+import { selectCurImageId, selectCurLayerIds, setCurLayers, setHoverLayerId } from 'src/features/editor/editorSlice';
+import { guid } from 'src/utils/util';
 import { ReactComponent as CloudUploadOutlined } from 'src/assets/svg/cloudUploadOutlined.svg';
 import { ReactComponent as Rollback } from 'src/assets/svg/rollback.svg';
 import { ReactComponent as Redo } from 'src/assets/svg/redo.svg';
@@ -45,11 +46,13 @@ const TopBarCenter = () => {
 
   const handleUndo = useCallback(() => {
     dispatch(setCurLayers([]));
+    dispatch(setHoverLayerId(''));
     dispatch(ActionCreators.undo());
   }, [dispatch]);
 
   const handleRedo = useCallback(() => {
     dispatch(setCurLayers([]));
+    dispatch(setHoverLayerId(''));
     dispatch(ActionCreators.redo());
   }, [dispatch]);
 
@@ -57,12 +60,15 @@ const TopBarCenter = () => {
    * @description 组合组件
    */
   const handleClickGroup = useCallback(() => {
+    const id = guid();
     dispatch(
       addGroupLayer({
         imageId: curImageId,
         layerIds: curLayerIds,
+        id,
       }),
     );
+    dispatch(setCurLayers(id));
   }, [curImageId, curLayerIds, dispatch]);
 
   /**
@@ -93,6 +99,17 @@ const TopBarCenter = () => {
             break;
           }
 
+          case 'g': {
+            if (shiftKey) {
+              // 打散快捷键
+            } else {
+              // 组合快捷键
+              handleClickGroup();
+              e.preventDefault();
+            }
+            break;
+          }
+
           default: {
             break;
           }
@@ -105,7 +122,7 @@ const TopBarCenter = () => {
     return () => {
       window.removeEventListener('keydown', handler);
     };
-  }, [dispatch, handleRedo, handleUndo]);
+  }, [dispatch, handleClickGroup, handleRedo, handleUndo]);
 
   return useMemo(() => {
     return (

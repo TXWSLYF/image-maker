@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectCurLayerIds, selectHoverLayerId } from 'src/features/editor/editorSlice';
 import { selectCanvasScale } from 'src/features/project/projectBasicSlice';
 import { selectLayers } from 'src/features/project/projectUndoableSlice';
+import getLayerRect from 'src/utils/getLayerRect';
 import scaleRect from 'src/utils/scaleRect';
 import styles from './index.module.scss';
 
@@ -16,7 +17,7 @@ const HoverContainer = () => {
     if (!hoverLayerId) return null;
     if (curLayerIds.findIndex((layerId) => layerId === hoverLayerId) !== -1) return null;
 
-    const { width, height, x, y, rotation } = scaleRect(byId[hoverLayerId].properties, canvasScale);
+    const { width, height, x, y, rotation } = scaleRect(getLayerRect(hoverLayerId, byId), canvasScale);
 
     return (
       <div className={styles.hoverContainer}>

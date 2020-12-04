@@ -90,6 +90,21 @@ interface IProjectBasicState {
   };
 }
 
+interface IPage {
+  // 页面 id
+  id: string;
+
+  // 页面名称
+  name: string;
+
+  // 页面包含的图层 id
+  layers: string[];
+}
+
+interface ILayersById {
+  [key: string]: ILayer;
+}
+
 interface IProjectUndoableState {
   // 项目 id
   id: number;
@@ -106,23 +121,12 @@ interface IProjectUndoableState {
 
     // 图片数据
     imagesById: {
-      [key: string]: {
-        // 图片 id
-        id: string;
-
-        // 图片名称
-        name: string;
-
-        // 图片包含的图层 id
-        layers: string[];
-      };
+      [key: string]: IPage;
     };
     imageAllIds: string[];
 
     // 图层数据
-    layersById: {
-      [key: string]: ILayer;
-    };
+    layersById: ILayersById;
     layerAllIds: string[];
   };
 }

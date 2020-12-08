@@ -18,8 +18,6 @@ interface IBaseProperties {
   // 旋转角度
   rotation: number;
 
-  children: IBaseLayer['id'][];
-
   // zIndex?: number;
 }
 
@@ -36,6 +34,15 @@ interface ITextProperties extends IBaseProperties {
 // 图片组件 properties
 interface IImgProperties extends IBaseProperties {
   src: string;
+}
+
+// 组合图层 properties
+interface IGroupProperties extends IBaseProperties {
+  // 子图层 id
+  children: IBaseLayer['id'][];
+
+  // 是否展开，在左侧图层列表中会用到
+  isExpanded: boolean;
 }
 
 // 基础图层
@@ -72,12 +79,12 @@ interface IImgLayer extends IBaseLayer<IImgProperties> {
 }
 
 // 组合图层
-interface IGroupLayer extends IBaseLayer {
+interface IGroupLayer extends IBaseLayer<IGroupProperties> {
   type: 'GROUP';
 }
 
 type ILayer = ITextLayer | IImgLayer | IGroupLayer;
-type IProperties = IBaseProperties | ITextProperties | IImgProperties;
+type IProperties = IBaseProperties | ITextProperties | IImgProperties | IGroupProperties;
 
 interface IProjectBasicState {
   // 画布相关

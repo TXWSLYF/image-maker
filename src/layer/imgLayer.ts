@@ -1,5 +1,5 @@
-const imgLayer = (): IImgLayer => ({
-  id: 'INIT',
+const imgLayer = (id: IBaseLayer['id']): IImgLayer => ({
+  id,
   name: '图片',
   type: 'IMG',
   editable: true,
@@ -11,7 +11,6 @@ const imgLayer = (): IImgLayer => ({
     height: 100,
     opacity: 1,
     rotation: 0,
-    children: [],
 
     src: 'http://static.xhxly.cn/1fcdaef0-5a23-11ea-82db-91c6358ad7fc.png',
   },

@@ -9,6 +9,7 @@ import {
 } from 'src/features/editor/editorSlice';
 import { addLayer } from 'src/features/project/projectUndoableSlice';
 import { imgLayer, textLayer } from 'src/layer';
+import { guid } from 'src/utils/util';
 import { ReactComponent as TextSvg } from 'src/assets/svg/text.svg';
 import { ReactComponent as PictureSvg } from 'src/assets/svg/picture.svg';
 import { ReactComponent as DobuleLeftSvg } from 'src/assets/svg/dobuleLeft.svg';
@@ -44,8 +45,9 @@ const BasicWidgets = () => {
 
   // 添加图层
   const handleAddLayer = useCallback(
-    (initialClass) => {
-      dispatch(addLayer({ imageId: curImageId, layer: initialClass() }));
+    (initialClass: ((id: string) => ITextLayer) | ((id: string) => IImgLayer)) => {
+      const id = guid();
+      dispatch(addLayer({ imageId: curImageId, layer: initialClass(id) }));
     },
     [dispatch, curImageId],
   );

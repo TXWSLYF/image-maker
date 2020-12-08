@@ -1,48 +1,19 @@
-import { difference } from 'lodash';
-import treeWalker, { ITree } from './treeWalker';
+import { difference, merge } from 'lodash';
+import { groupLayer, imgLayer } from 'src/layer';
+import treeWalker from './treeWalker';
 
 test('treeWalker', () => {
-  const tree: ITree = {
-    '1': {
-      id: '1',
-      properties: { children: ['5', '2', '6'] },
-    },
-    '2': {
-      id: '2',
-      properties: { children: ['3'] },
-    },
-    '3': {
-      id: '3',
-      properties: {},
-    },
-    '4': {
-      id: '4',
-      properties: {},
-    },
-    '5': {
-      id: '5',
-      properties: { children: ['10', '9', '4'] },
-    },
-    '6': {
-      id: '6',
-      properties: { children: ['7', '8'] },
-    },
-    '7': {
-      id: '7',
-      properties: {},
-    },
-    '8': {
-      id: '8',
-      properties: {},
-    },
-    '9': {
-      id: '9',
-      properties: {},
-    },
-    '10': {
-      id: '10',
-      properties: {},
-    },
+  const tree: ILayersById = {
+    '1': merge(groupLayer('1'), { properties: { children: ['5', '2', '6'] } }),
+    '2': merge(groupLayer('2'), { properties: { children: ['3'] } }),
+    '3': imgLayer('3'),
+    '4': imgLayer('4'),
+    '5': merge(groupLayer('5'), { properties: { children: ['10', '9', '4'] } }),
+    '6': merge(groupLayer('6'), { properties: { children: ['7', '8'] } }),
+    '7': imgLayer('7'),
+    '8': imgLayer('8'),
+    '9': imgLayer('9'),
+    '10': imgLayer('10'),
   };
 
   const arr1: string[] = [];

@@ -80,9 +80,9 @@ export const projectUndoableSlice = createSlice({
      */
     addLayer: (state, action: PayloadAction<{ imageId: string; layer: ILayer }>) => {
       const { imageId, layer } = action.payload;
-      const id = guid();
+      const { id } = layer;
 
-      state.data.layersById[id] = { ...layer, id };
+      state.data.layersById[id] = layer;
       state.data.layerAllIds.push(id);
       state.data.imagesById[imageId].layers.push(id);
     },

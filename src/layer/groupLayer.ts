@@ -13,6 +13,7 @@ const groupLayer = (id: IBaseLayer['id']): IGroupLayer => ({
     rotation: 0,
 
     children: [],
+    isExpanded: false,
   },
 });
 

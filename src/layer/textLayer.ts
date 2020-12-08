@@ -1,5 +1,5 @@
-const textLayer = (): ITextLayer => ({
-  id: 'INIT',
+const textLayer = (id: IBaseLayer['id']): ITextLayer => ({
+  id,
   name: '双击编辑文本',
   type: 'TEXT',
   editable: true,
@@ -11,7 +11,6 @@ const textLayer = (): ITextLayer => ({
     height: 20,
     opacity: 1,
     rotation: 0,
-    children: [],
 
     text: '双击编辑文本',
     fontSize: 20,

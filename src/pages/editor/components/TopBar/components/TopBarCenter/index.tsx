@@ -5,6 +5,7 @@ import { message } from 'antd';
 import { saveProject } from 'src/features/project';
 import {
   addGroupLayer,
+  selectLayers,
   selectProjectFutureLength,
   selectProjectPastLength,
 } from 'src/features/project/projectUndoableSlice';
@@ -28,12 +29,38 @@ const style1: React.CSSProperties = { marginRight: 6 };
 const style2: React.CSSProperties = { width: 18, height: 16 };
 const style3: React.CSSProperties = { display: 'flex' };
 
+/**
+ * @description 判断图层是否拥有共同的父图层
+ */
+const isSameParent = (layerIds: IBaseLayer['id'][], layersById: ILayersById): boolean => {
+  let curParent: IBaseLayer['parent'] = undefined;
+
+  for (let i = 0; i < layerIds.length; i++) {
+    const id = layerIds[i];
+    const { parent } = layersById[id];
+
+    // 如果图层不存在父组件，说明肯定不是同一个父组件
+    if (!parent) {
+      return false;
+    }
+
+    if (i !== 0 && curParent !== parent) {
+      return false;
+    }
+
+    curParent = parent;
+  }
+
+  return true;
+};
+
 const TopBarCenter = () => {
   const dispatch = useDispatch();
   const projectPastLength = useSelector(selectProjectPastLength);
   const projectFutureLength = useSelector(selectProjectFutureLength);
   const curImageId = useSelector(selectCurImageId);
   const curLayerIds = useSelector(selectCurLayerIds);
+  const { byId: layersById } = useSelector(selectLayers);
 
   const isUndoDisabled = projectPastLength === 0;
   const isRedoDisabled = projectFutureLength === 0;
@@ -60,6 +87,15 @@ const TopBarCenter = () => {
    * @description 组合组件
    */
   const handleClickGroup = useCallback(() => {
+    /**
+     * @description 需要直接返回的边界情况
+     */
+    // 1. 如果当前选中图层数量小于等于 1，直接返回
+    if (curLayerIds.length <= 1) return;
+
+    // 2. 如果当前选中图层的父图层是同一个图层，直接返回
+    if (isSameParent(curLayerIds, layersById)) return;
+
     const id = guid();
     dispatch(
       addGroupLayer({
@@ -69,7 +105,7 @@ const TopBarCenter = () => {
       }),
     );
     dispatch(setCurLayers(id));
-  }, [curImageId, curLayerIds, dispatch]);
+  }, [curImageId, curLayerIds, layersById, dispatch]);
 
   /**
    * @description 快捷键逻辑

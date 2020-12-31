@@ -246,9 +246,19 @@ export const projectUndoableSlice = createSlice({
       // 删除页面中图层引用
       imagesById[pageId].layers = difference(imagesById[pageId].layers, layerIds);
 
-      // 删除图层数据 TODO: 删除子图层
-      state.data.layerAllIds = state.data.layerAllIds.filter((layerId) => !layerIds.includes(layerId));
+      // 删除图层数据
       layerIds.forEach((layerId) => {
+        const layer = layersById[layerId];
+
+        // 组合组件需要删除子组件
+        if (layer.type === 'GROUP') {
+          layer.properties.children.forEach((childLayerId) => {
+            state.data.layerAllIds = state.data.layerAllIds.filter((layerId) => layerId !== childLayerId);
+            delete layersById[childLayerId];
+          });
+        }
+
+        state.data.layerAllIds = state.data.layerAllIds.filter((layerId1) => layerId1 !== layerId);
         delete layersById[layerId];
       });
     },

@@ -5,6 +5,7 @@ import { message } from 'antd';
 import { saveProject } from 'src/features/project';
 import {
   addGroupLayer,
+  unGroupLayers,
   selectLayers,
   selectProjectFutureLength,
   selectProjectPastLength,
@@ -108,6 +109,25 @@ const TopBarCenter = () => {
   }, [curImageId, curLayerIds, layersById, dispatch]);
 
   /**
+   * @description 打散快捷键
+   */
+  const handleClickUnGroup = useCallback(() => {
+    dispatch(unGroupLayers({ imageId: curImageId, layerIds: curLayerIds }));
+    dispatch(setCurLayers([]));
+  }, [curImageId, curLayerIds, dispatch]);
+
+  /**
+   * @description 打散按钮 disabled 状态
+   */
+  const unGroupBtnDisabled = useMemo(() => {
+    return !curLayerIds.some((layerId) => {
+      const layer = layersById[layerId];
+
+      return layer.type === 'GROUP';
+    });
+  }, [curLayerIds, layersById]);
+
+  /**
    * @description 快捷键逻辑
    */
   useEffect(() => {
@@ -180,7 +200,7 @@ const TopBarCenter = () => {
           <TopBarIcon text="对齐" SvgComponent={Duiqi} showDropDownArrow={true} />
           <TopBarIcon text="图层" SvgComponent={Layer} showDropDownArrow={true} />
           <TopBarIcon text="组合" SvgComponent={Group} onClick={handleClickGroup} />
-          <TopBarIcon text="打散" SvgComponent={UnGroup} />
+          <TopBarIcon text="打散" SvgComponent={UnGroup} onClick={handleClickUnGroup} disabled={unGroupBtnDisabled} />
           <TopBarIcon text="锁定" SvgComponent={Lock} />
         </div>
 
@@ -190,7 +210,16 @@ const TopBarCenter = () => {
         </div>
       </div>
     );
-  }, [handleClickSave, handleUndo, isUndoDisabled, handleRedo, isRedoDisabled, handleClickGroup]);
+  }, [
+    handleClickSave,
+    handleUndo,
+    isUndoDisabled,
+    handleRedo,
+    isRedoDisabled,
+    handleClickGroup,
+    handleClickUnGroup,
+    unGroupBtnDisabled,
+  ]);
 };
 
 export default TopBarCenter;

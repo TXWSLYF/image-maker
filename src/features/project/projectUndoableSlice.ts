@@ -136,6 +136,58 @@ export const projectUndoableSlice = createSlice({
     },
 
     /**
+     * @description 打散组合图层
+     */
+    unGroupLayers: (
+      state,
+      {
+        payload: { imageId, layerIds },
+      }: PayloadAction<{
+        imageId: string;
+        layerIds: IBaseLayer['id'][];
+      }>,
+    ) => {
+      const { imagesById, layerAllIds, layersById } = state.data;
+
+      // 按照数组索引排序
+      const orderedLayerIds = layerIds.sort((id1, id2) => {
+        return layerAllIds.findIndex((id) => id === id1) - layerAllIds.findIndex((id) => id === id2);
+      });
+
+      // 过滤出组合图层 id
+      const groupLayerIds = orderedLayerIds.filter((layerId) => layersById[layerId].type === 'GROUP');
+
+      // 获取图片数据
+      const image = imagesById[imageId];
+
+      // 剔除组合图层 id
+      image.layers = image.layers.filter((layerId) => !groupLayerIds.find((id) => id === layerId));
+
+      // 组合图层子图层添加到 image 中
+      orderedLayerIds.forEach((layerId) => {
+        const layer = layersById[layerId];
+
+        if (layer.type === 'GROUP') {
+          layer.properties.children.forEach((layerId) => {
+            // 删除子图层对应的父图层索引
+            delete layersById[layerId].parent;
+
+            // 将子图层添加到当前图片中
+            image.layers.push(layerId);
+          });
+        }
+      });
+
+      // 删除组合图层数据
+      groupLayerIds.forEach((layerId) => {
+        delete layersById[layerId];
+      });
+
+      // 删除组合图层 id
+      state.data.layerAllIds = state.data.layerAllIds.filter((layerId) => !groupLayerIds.find((id) => id === layerId));
+    },
+
+    /**
      * @description 设置图层坐标
      */
     setLayersCoordinate: (
@@ -309,6 +361,7 @@ export const {
   addPage,
   addLayer,
   addGroupLayer,
+  unGroupLayers,
   setLayersCoordinate,
   setLayersProperties,
   setLayersColor,

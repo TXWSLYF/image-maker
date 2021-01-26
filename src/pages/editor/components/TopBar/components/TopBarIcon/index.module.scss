@@ -39,6 +39,10 @@
     pointer-events: none;
     color: rgb(200, 205, 208);
 
+    .tip {
+      color: rgb(200, 205, 208);
+    }
+
     &::after {
       content: '';
       position: absolute;

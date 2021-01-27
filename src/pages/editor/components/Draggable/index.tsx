@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectLayers,
   setLayersBaseProperties,
   setLayersCoordinate,
   setLayersRotation,
@@ -37,6 +38,7 @@ import PropertyPanel from '../PropertyPanel';
 
 function Draggeble() {
   const dispatch = useDispatch();
+  const { byId: layersById } = useSelector(selectLayers);
 
   const canvasScale = useSelector(selectCanvasScale);
 
@@ -85,6 +87,19 @@ function Draggeble() {
               dragId,
               idWithCoordinate: dragStartLayersCoordinate.map((idWithCoordinate) => {
                 const { id, x, y } = idWithCoordinate;
+                const parentLayerId = layersById[id].parent;
+
+                // 对于子图层，需要考虑父图层的旋转角度
+                if (parentLayerId) {
+                  const { rotation } = layersById[parentLayerId].properties;
+                  const newOffsetX =
+                    offsetX * Math.cos((rotation / 180) * Math.PI) + offsetY * Math.sin((rotation / 180) * Math.PI);
+                  const newOffsetY =
+                    -offsetX * Math.sin((rotation / 180) * Math.PI) + offsetY * Math.cos((rotation / 180) * Math.PI);
+
+                  return { id, x: x + newOffsetX, y: y + newOffsetY };
+                }
+
                 return { id, x: x + offsetX, y: y + offsetY };
               }),
             }),

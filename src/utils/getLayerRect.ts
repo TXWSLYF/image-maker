@@ -1,5 +1,6 @@
 import { calcRectCenter } from './calcMiniEnclosingRect';
 import calcRotatePoint from './calcRotatePoint';
+import transfromAngle from './transformAngle';
 
 /**
  * @description 计算图层实际位置
@@ -40,7 +41,7 @@ const getLayerRect = (layerId: IBaseLayer['id'], layersById: ILayersById): IRect
     y,
     width,
     height,
-    rotation,
+    rotation: transfromAngle(rotation),
   };
 };
 

@@ -3,6 +3,7 @@ import { difference, merge } from 'lodash';
 import { RootState } from 'src/app/store';
 import { groupLayer } from 'src/layer';
 import calcMiniEnclosingRect from 'src/utils/calcMiniEnclosingRect';
+import getLayerRect from 'src/utils/getLayerRect';
 import { guid } from 'src/utils/util';
 
 const initialState: IProjectUndoableState = {
@@ -169,6 +170,10 @@ export const projectUndoableSlice = createSlice({
 
         if (layer.type === 'GROUP') {
           layer.properties.children.forEach((layerId) => {
+            // 计算打散之后的子组件的实际位置
+            const layerRect = getLayerRect(layerId, layersById);
+            layersById[layerId].properties = merge(layersById[layerId].properties, layerRect);
+
             // 删除子图层对应的父图层索引
             delete layersById[layerId].parent;
 

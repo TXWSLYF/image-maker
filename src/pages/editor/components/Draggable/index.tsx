@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  resetGroupLayersRect,
   selectLayers,
   setLayersBaseProperties,
   setLayersCoordinate,
@@ -11,8 +10,6 @@ import {
   setIsDraging,
   setIsRotating,
   selectIsDraging,
-  selectDragStartMouseCoordinate,
-  selectDragStartLayersCoordinate,
   selectDragId,
   selectIsRotating,
   selectRotateId,
@@ -25,6 +22,7 @@ import {
   selectDragZoomDirection,
   selectDragZoomStartMouseCoordinate,
   selectDragZoomStartLayersPosition,
+  selectCurLayerIds,
 } from 'src/features/editor/editorSlice';
 import { selectCanvasScale } from 'src/features/project/projectBasicSlice';
 import transfromAngle from 'src/utils/transformAngle';
@@ -39,15 +37,14 @@ import PropertyPanel from '../PropertyPanel';
 
 function Draggeble() {
   const dispatch = useDispatch();
-  const { byId: layersById } = useSelector(selectLayers);
 
+  const { byId: layersById } = useSelector(selectLayers);
+  const curLayerIds = useSelector(selectCurLayerIds);
   const canvasScale = useSelector(selectCanvasScale);
 
   // 拖拽相关数据
   const isDraging = useSelector(selectIsDraging);
   const dragId = useSelector(selectDragId);
-  const dragStartMouseCoordinate = useSelector(selectDragStartMouseCoordinate);
-  const dragStartLayersCoordinate = useSelector(selectDragStartLayersCoordinate);
 
   // 旋转相关数据
   const isRotating = useSelector(selectIsRotating);
@@ -73,30 +70,27 @@ function Draggeble() {
     <div
       className={styles.editorPageWrapper}
       onMouseMove={(e) => {
-        const { clientX, clientY } = e;
-
-        // 需要重新计算位置的组合图层的 id
-        const needResetGroupLayerIds: ILayer['id'][] = [];
-        let resetGroupLayersRectActionId = '';
+        const { clientX, clientY, movementX, movementY } = e;
 
         // 处理拖拽逻辑
         if (isDraging) {
-          const { x, y } = dragStartMouseCoordinate;
-
           // 需要将画布放大比例考虑进来
-          const offsetX = (clientX - x) / canvasScale;
-          const offsetY = (clientY - y) / canvasScale;
+          const offsetX = movementX / canvasScale;
+          const offsetY = movementY / canvasScale;
 
           dispatch(
             setLayersCoordinate({
               dragId,
-              idWithCoordinate: dragStartLayersCoordinate.map((idWithCoordinate) => {
-                const { id, x, y } = idWithCoordinate;
-                const parentLayerId = layersById[id].parent;
+              idWithCoordinate: curLayerIds.map((id) => {
+                const {
+                  properties: { x, y },
+                  parent,
+                } = layersById[id];
 
                 // 对于子图层，需要考虑父图层的旋转角度
-                if (parentLayerId) {
-                  const { rotation } = layersById[parentLayerId].properties;
+                if (parent) {
+                  const { rotation } = layersById[parent].properties;
+
                   const newOffsetX =
                     offsetX * Math.cos((rotation / 180) * Math.PI) + offsetY * Math.sin((rotation / 180) * Math.PI);
                   const newOffsetY =
@@ -109,12 +103,6 @@ function Draggeble() {
               }),
             }),
           );
-
-          dragStartLayersCoordinate.forEach(({ id }) => {
-            const { parent } = layersById[id];
-            if (parent && !needResetGroupLayerIds.find((id) => id === parent)) needResetGroupLayerIds.push(parent);
-          });
-          resetGroupLayersRectActionId = dragId;
         }
 
         // 处理旋转逻辑
@@ -133,12 +121,6 @@ function Draggeble() {
               }),
             }),
           );
-
-          rotateStartLayersRotation.forEach(({ id }) => {
-            const { parent } = layersById[id];
-            if (parent && !needResetGroupLayerIds.find((id) => id === parent)) needResetGroupLayerIds.push(parent);
-          });
-          resetGroupLayersRectActionId = rotateId;
         }
 
         // 处理拖拽缩放逻辑
@@ -199,21 +181,7 @@ function Draggeble() {
               }),
             }),
           );
-
-          dragZoomStartLayersPosition.forEach(({ id }) => {
-            const { parent } = layersById[id];
-            if (parent && !needResetGroupLayerIds.find((id) => id === parent)) needResetGroupLayerIds.push(parent);
-          });
-          resetGroupLayersRectActionId = dragZoomId;
         }
-
-        // 重置需要计算位置的组合图层的位置信息
-        dispatch(
-          resetGroupLayersRect({
-            actionId: resetGroupLayersRectActionId,
-            layerIds: needResetGroupLayerIds,
-          }),
-        );
       }}
       onMouseUp={() => {
         // 取消拖拽状态

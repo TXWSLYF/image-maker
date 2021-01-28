@@ -32,11 +32,6 @@ const initialState: IEditorState = {
   // 拖拽相关参数
   isDraging: false,
   dragId: '',
-  dragStartMouseCoordinate: {
-    x: 0,
-    y: 0,
-  },
-  dragStartLayersCoordinate: [],
 
   // 旋转相关参数
   isRotating: false,
@@ -133,12 +128,6 @@ export const editorSlice = createSlice({
     },
     setDragId: (state, action: PayloadAction<string>) => {
       state.dragId = action.payload;
-    },
-    setDragStartMouseCoordinate: (state, action: PayloadAction<ICoordinate>) => {
-      state.dragStartMouseCoordinate = action.payload;
-    },
-    setDragStartLayersCoordinate: (state, action: PayloadAction<IEditorState['dragStartLayersCoordinate']>) => {
-      state.dragStartLayersCoordinate = action.payload;
     },
 
     /**
@@ -272,8 +261,6 @@ export const {
 
   setIsDraging,
   setDragId,
-  setDragStartMouseCoordinate,
-  setDragStartLayersCoordinate,
 
   setIsRotating,
   setRotateId,
@@ -323,8 +310,6 @@ export const selectLeftPanelWidth = (state: RootState) => state.editor.leftPanel
 
 export const selectIsDraging = (state: RootState) => state.editor.isDraging;
 export const selectDragId = (state: RootState) => state.editor.dragId;
-export const selectDragStartMouseCoordinate = (state: RootState) => state.editor.dragStartMouseCoordinate;
-export const selectDragStartLayersCoordinate = (state: RootState) => state.editor.dragStartLayersCoordinate;
 
 export const selectIsRotating = (state: RootState) => state.editor.isRotating;
 export const selectRotateId = (state: RootState) => state.editor.rotateId;

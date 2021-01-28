@@ -160,12 +160,6 @@ interface IEditorState {
   // 唯一标识一次拖拽过程的 id
   dragId: string;
 
-  // 拖拽开始点鼠标坐标
-  dragStartMouseCoordinate: ICoordinate;
-
-  // 拖拽开始点被拖动图层初始坐标
-  dragStartLayersCoordinate: IIdWithCoordinate[];
-
   // 是否处于旋转状态
   isRotating: boolean;
 

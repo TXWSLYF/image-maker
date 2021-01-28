@@ -193,6 +193,38 @@ export const projectUndoableSlice = createSlice({
     },
 
     /**
+     * @description 重新计算组合图层的位置信息
+     */
+    resetGroupLayersRect(
+      state,
+      {
+        payload: { layerIds },
+      }: PayloadAction<{
+        actionId: string;
+        layerIds: ILayer['id'][];
+      }>,
+    ) {
+      const {
+        data: { layersById },
+      } = state;
+
+      layerIds.forEach((layerId) => {
+        const layer = layersById[layerId];
+
+        if (layer.type === 'GROUP') {
+          // TODO: 需要保持组合图层的旋转角度不变
+          const groupLayerRect = calcMiniEnclosingRect(
+            layer.properties.children.map((i) => {
+              return getLayerRect(i, layersById);
+            }),
+          );
+
+          layer.properties = { ...layer.properties, ...groupLayerRect };
+        }
+      });
+    },
+
+    /**
      * @description 设置图层坐标
      */
     setLayersCoordinate: (
@@ -367,6 +399,7 @@ export const {
   addLayer,
   addGroupLayer,
   unGroupLayers,
+  resetGroupLayersRect,
   setLayersCoordinate,
   setLayersProperties,
   setLayersColor,

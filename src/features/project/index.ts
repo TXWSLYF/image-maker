@@ -5,6 +5,7 @@ import { AppThunk } from 'src/app/store';
 import projectBasicReducer from './projectBasicSlice';
 import projectUndoableReducer, {
   initProjectUndoable,
+  resetGroupLayersRect,
   setLayersBaseProperties,
   setLayersColor,
   setLayersCoordinate,
@@ -52,6 +53,10 @@ const projectReducer = combineReducers({
       }
 
       if (action.type === setLayersBaseProperties.type && action.payload.actionId) {
+        return action.type + action.payload.actionId;
+      }
+
+      if (action.type === resetGroupLayersRect.type && action.payload.actionId) {
         return action.type + action.payload.actionId;
       }
 

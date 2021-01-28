@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  resetGroupLayersRect,
   selectLayers,
   setLayersBaseProperties,
   setLayersCoordinate,
@@ -74,6 +75,10 @@ function Draggeble() {
       onMouseMove={(e) => {
         const { clientX, clientY } = e;
 
+        // 需要重新计算位置的组合图层的 id
+        const needResetGroupLayerIds: ILayer['id'][] = [];
+        let resetGroupLayersRectActionId = '';
+
         // 处理拖拽逻辑
         if (isDraging) {
           const { x, y } = dragStartMouseCoordinate;
@@ -104,6 +109,12 @@ function Draggeble() {
               }),
             }),
           );
+
+          dragStartLayersCoordinate.forEach(({ id }) => {
+            const { parent } = layersById[id];
+            if (parent && !needResetGroupLayerIds.find((id) => id === parent)) needResetGroupLayerIds.push(parent);
+          });
+          resetGroupLayersRectActionId = dragId;
         }
 
         // 处理旋转逻辑
@@ -122,6 +133,12 @@ function Draggeble() {
               }),
             }),
           );
+
+          rotateStartLayersRotation.forEach(({ id }) => {
+            const { parent } = layersById[id];
+            if (parent && !needResetGroupLayerIds.find((id) => id === parent)) needResetGroupLayerIds.push(parent);
+          });
+          resetGroupLayersRectActionId = rotateId;
         }
 
         // 处理拖拽缩放逻辑
@@ -182,7 +199,21 @@ function Draggeble() {
               }),
             }),
           );
+
+          dragZoomStartLayersPosition.forEach(({ id }) => {
+            const { parent } = layersById[id];
+            if (parent && !needResetGroupLayerIds.find((id) => id === parent)) needResetGroupLayerIds.push(parent);
+          });
+          resetGroupLayersRectActionId = dragZoomId;
         }
+
+        // 重置需要计算位置的组合图层的位置信息
+        dispatch(
+          resetGroupLayersRect({
+            actionId: resetGroupLayersRectActionId,
+            layerIds: needResetGroupLayerIds,
+          }),
+        );
       }}
       onMouseUp={() => {
         // 取消拖拽状态

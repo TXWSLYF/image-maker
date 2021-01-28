@@ -193,53 +193,61 @@ export const projectUndoableSlice = createSlice({
     },
 
     /**
-     * @description 重新计算组合图层的位置信息
+     * @description 设置图层坐标
      */
-    resetGroupLayersRect(
+    setLayersCoordinate: (
       state,
       {
-        payload: { layerIds },
+        payload: { idWithCoordinate },
       }: PayloadAction<{
-        actionId: string;
-        layerIds: ILayer['id'][];
+        dragId: string;
+        idWithCoordinate: ({ id: string } & ICoordinate)[];
       }>,
-    ) {
+    ) => {
       const {
         data: { layersById },
       } = state;
 
-      layerIds.forEach((layerId) => {
+      // 保存需要重新计算位置的组合图层 id
+      const needResetGroupLayerIds: ILayer['id'][] = [];
+
+      idWithCoordinate.forEach((coordinateWithId) => {
+        const { id, x, y } = coordinateWithId;
+        const { properties, parent } = layersById[id];
+
+        // 图层有父图层 & 父图层还没有被添加到数组当中
+        if (parent && !needResetGroupLayerIds.find((id) => id === parent)) needResetGroupLayerIds.push(parent);
+
+        properties.x = x;
+        properties.y = y;
+      });
+
+      needResetGroupLayerIds.forEach((layerId) => {
         const layer = layersById[layerId];
 
         if (layer.type === 'GROUP') {
-          // TODO: 需要保持组合图层的旋转角度不变
+          // 计算新的父图层位置信息
           const groupLayerRect = calcMiniEnclosingRect(
             layer.properties.children.map((i) => {
               return getLayerRect(i, layersById);
             }),
           );
 
+          // 计算新旧父图层之间的相对位移
+          const changeX = groupLayerRect.x - layer.properties.x;
+          const changeY = groupLayerRect.y - layer.properties.y;
+
+          // 将相对位移应用到所有的子图层，这样才能保证子图层相对于屏幕位置不变
+          layer.properties.children.forEach((childLayerId) => {
+            const { properties } = layersById[childLayerId];
+
+            properties.x -= changeX;
+            properties.y -= changeY;
+          });
+
+          // TODO: 需要保证父图层旋转角度不变
           layer.properties = { ...layer.properties, ...groupLayerRect };
         }
-      });
-    },
-
-    /**
-     * @description 设置图层坐标
-     */
-    setLayersCoordinate: (
-      state,
-      action: PayloadAction<{
-        dragId: string;
-        idWithCoordinate: ({ id: string } & ICoordinate)[];
-      }>,
-    ) => {
-      action.payload.idWithCoordinate.forEach((coordinateWithId) => {
-        const { id, x, y } = coordinateWithId;
-        const { properties } = state.data.layersById[id];
-
-        properties.x = x;
-        properties.y = y;
       });
     },
 
@@ -399,7 +407,6 @@ export const {
   addLayer,
   addGroupLayer,
   unGroupLayers,
-  resetGroupLayersRect,
   setLayersCoordinate,
   setLayersProperties,
   setLayersColor,

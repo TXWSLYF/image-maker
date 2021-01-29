@@ -229,13 +229,13 @@ export const projectUndoableSlice = createSlice({
           // 计算新的父图层位置信息
           const groupLayerRect = calcMiniEnclosingRect(
             layer.properties.children.map((i) => {
-              return getLayerRect(i, layersById);
+              return layersById[i].properties;
             }),
           );
 
           // 计算新旧父图层之间的相对位移
-          const changeX = groupLayerRect.x - layer.properties.x;
-          const changeY = groupLayerRect.y - layer.properties.y;
+          const changeX = groupLayerRect.x;
+          const changeY = groupLayerRect.y;
 
           // 将相对位移应用到所有的子图层，这样才能保证子图层相对于屏幕位置不变
           layer.properties.children.forEach((childLayerId) => {
@@ -245,8 +245,14 @@ export const projectUndoableSlice = createSlice({
             properties.y -= changeY;
           });
 
-          // TODO: 需要保证父图层旋转角度不变
-          layer.properties = { ...layer.properties, ...groupLayerRect };
+          // TODO: 需要保证其余图层相对于页面位置不变
+          layer.properties = {
+            ...layer.properties,
+            x: layer.properties.x + changeX,
+            y: layer.properties.y + changeY,
+            width: groupLayerRect.width,
+            height: groupLayerRect.height,
+          };
         }
       });
     },

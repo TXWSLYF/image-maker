@@ -7,13 +7,13 @@ const textLayer = (id: IBaseLayer['id']): ITextLayer => ({
   properties: {
     x: 0,
     y: 0,
-    width: 100,
+    width: 84,
     height: 20,
     opacity: 1,
     rotation: 0,
 
     text: '双击编辑文本',
-    fontSize: 20,
+    fontSize: 14,
     fontFamily: 'sans-serif',
     textAlign: 'left',
     lineHeight: 20,

@@ -8,7 +8,7 @@ function TextLayer(props: { layer: ITextLayer }) {
 
   return (
     <LayerWrapper layer={props.layer}>
-      <div style={{ fontSize, fontFamily, lineHeight: `${fontSize}px`, color }}>{text}</div>
+      <span style={{ fontSize, fontFamily, lineHeight: `${fontSize}px`, color }}>{text}</span>
     </LayerWrapper>
   );
 }

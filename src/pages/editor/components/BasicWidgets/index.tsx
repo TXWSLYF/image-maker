@@ -21,6 +21,7 @@ const basicWidgets = [
     name: '文字',
     initialClass: textLayer,
     SvgComponent: TextSvg,
+    // TODO: 实现快捷键
     hotkey: 'T',
   },
   {

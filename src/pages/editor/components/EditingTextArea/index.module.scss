@@ -1,0 +1,23 @@
+.editingTextArea {
+  position: absolute;
+  pointer-events: none;
+}
+
+.richTextContainer {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 12px;
+  min-height: 12px;
+  z-index: 16;
+  overflow: visible;
+  cursor: text;
+  pointer-events: none;
+}
+
+.richTextEditor {
+  outline: none;
+  user-select: text;
+  pointer-events: auto;
+}

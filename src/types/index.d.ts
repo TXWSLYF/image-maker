@@ -221,6 +221,11 @@ interface IEditorState {
   isRangeSelecting: boolean;
   rangeSelectionStartCoordinate: ICoordinate;
   rangeSelectionCurrentCoordinate: ICoordinate;
+
+  /**
+   * @description 文本组件编辑态相关属性
+   */
+  editingTextLayerId: IBaseLayer['id']; // 当前编辑的文本组件 id
 }
 
 // 二维坐标系坐标点

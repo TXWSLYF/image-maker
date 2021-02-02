@@ -22,12 +22,14 @@ import {
   selectScreenHeight,
   selectTopBarHeight,
   selectIsRangeSelecting,
+  setEditingTextLayerId,
 } from 'src/features/editor/editorSlice';
 import { selectCanvasScale, setCanvasScale } from 'src/features/project/projectBasicSlice';
 import { selectCanvas, selectLayers } from 'src/features/project/projectUndoableSlice';
 import calcMiniEnclosingRect from 'src/utils/calcMiniEnclosingRect';
 import rectCollide from 'src/utils/rectCollide';
 import scaleRect from 'src/utils/scaleRect';
+import EditingTextArea from '../EditingTextArea';
 import EditorArea from '../EditorArea';
 import FakeCanvas from '../FakeCanvas';
 import RangeSelection from '../RangeSelection';
@@ -72,6 +74,7 @@ const Screen = () => {
       dispatch(setRangeSelectionStartCoordinate({ x: clientX, y: clientY }));
       dispatch(setRangeSelectionCurrentCoordinate({ x: clientX, y: clientY }));
       dispatch(setCurLayers([]));
+      dispatch(setEditingTextLayerId(''));
     },
     [dispatch, isSpacePressed],
   );
@@ -192,6 +195,7 @@ const Screen = () => {
             <EditorArea />
           </div>
           <FakeCanvas />
+          <EditingTextArea />
         </div>
         <RangeSelection />
       </Scroll>

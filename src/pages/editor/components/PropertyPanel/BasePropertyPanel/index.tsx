@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { setLayersProperties } from 'src/features/project/projectUndoableSlice';
+import { setLayerProperties } from 'src/features/project/projectUndoableSlice';
 import transfromAngle from 'src/utils/transformAngle';
 import NumericInputNumber from 'src/components/NumericInputNumber';
 import PropertyPanelHeader from '../components/PropertyPanelHeader';
@@ -18,7 +18,7 @@ const BasePropertyPanel = ({ properties, layerId }: BasePropertyPanelProps) => {
   const handleBasePropertyChange = useCallback(
     (layerId: IBaseLayer['id'], newProperties) => {
       dispatch(
-        setLayersProperties({
+        setLayerProperties({
           layerId,
           newProperties,
         }),

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import ChromeColorPicker from 'src/components/ChromeColorPicker';
 import NumericInputNumber from 'src/components/NumericInputNumber';
-import { setLayersColor, setLayersProperties } from 'src/features/project/projectUndoableSlice';
+import { setLayersColor, setLayerProperties } from 'src/features/project/projectUndoableSlice';
 import PropertyPanelHeader from '../components/PropertyPanelHeader';
 import PropertyRow from '../PropertyRow';
 import styles from './index.module.scss';
@@ -18,7 +18,7 @@ const TextPropertyPanel = ({ properties, layerId }: TextPropertyPanelProps) => {
   const handleBasePropertyChange = useCallback(
     (layerId: IBaseLayer['id'], newProperties) => {
       dispatch(
-        setLayersProperties({
+        setLayerProperties({
           layerId,
           newProperties,
         }),

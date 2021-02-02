@@ -276,12 +276,20 @@ export const projectUndoableSlice = createSlice({
     },
 
     /**
-     * @description 改变图层属性，TODO: newProperties 类型定义优化
+     * @description 改变图层属性
      */
-    setLayersProperties(state, action: PayloadAction<{ layerId: string; newProperties: any }>) {
+    setLayerProperties(
+      state,
+      action: PayloadAction<{
+        layerId: string;
+        newProperties: Partial<IBaseProperties & IImgProperties & ITextProperties>;
+      }>,
+    ) {
       const { layerId, newProperties } = action.payload;
 
       for (const key in newProperties) {
+        // TODO: 不是很好
+        // @ts-ignore
         state.data.layersById[layerId].properties[key as keyof ILayer['properties']] = newProperties[key];
       }
     },
@@ -414,7 +422,7 @@ export const {
   addGroupLayer,
   unGroupLayers,
   setLayersCoordinate,
-  setLayersProperties,
+  setLayerProperties,
   setLayersColor,
   setLayersRotation,
   setLayersBaseProperties,

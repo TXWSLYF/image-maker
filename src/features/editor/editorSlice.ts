@@ -53,6 +53,8 @@ const initialState: IEditorState = {
   isRangeSelecting: false,
   rangeSelectionStartCoordinate: { x: 0, y: 0 },
   rangeSelectionCurrentCoordinate: { x: 0, y: 0 },
+
+  editingTextLayerId: '',
 };
 
 export const editorSlice = createSlice({
@@ -246,6 +248,10 @@ export const editorSlice = createSlice({
     setRangeSelectionCurrentCoordinate(state, action: PayloadAction<IEditorState['rangeSelectionCurrentCoordinate']>) {
       state.rangeSelectionCurrentCoordinate = action.payload;
     },
+
+    setEditingTextLayerId(state, action: PayloadAction<IEditorState['editingTextLayerId']>) {
+      state.editingTextLayerId = action.payload;
+    },
   },
 });
 
@@ -288,6 +294,8 @@ export const {
   setIsRangeSelecting,
   setRangeSelectionStartCoordinate,
   setRangeSelectionCurrentCoordinate,
+
+  setEditingTextLayerId,
 } = editorSlice.actions;
 
 export const selectCurImageId = (state: RootState) => state.editor.curImageId;
@@ -340,5 +348,7 @@ export const selectTopBarHeight = (state: RootState) => state.editor.topBarHeigh
 export const selectIsRangeSelecting = (state: RootState) => state.editor.isRangeSelecting;
 export const selectRangeSelectionStartCoordinate = (state: RootState) => state.editor.rangeSelectionStartCoordinate;
 export const selectRangeSelectionCurrentCoordinate = (state: RootState) => state.editor.rangeSelectionCurrentCoordinate;
+
+export const selectEditingTextLayerId = (state: RootState) => state.editor.editingTextLayerId;
 
 export default editorSlice.reducer;

@@ -151,9 +151,6 @@ interface IEditorState {
   // 当前映现图层 id，当鼠标在图层列表中移入对应图层触发
   echoLayerId: string;
 
-  // 编辑区相对于页面的坐标
-  editorCanvasCoordinate: ICoordinate;
-
   // 是否处于拖拽状态
   isDraging: boolean;
 

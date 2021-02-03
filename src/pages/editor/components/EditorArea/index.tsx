@@ -1,14 +1,8 @@
-import React, { useCallback, useLayoutEffect, useRef } from 'react';
+import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { deleteLayers, selectCanvas, selectImages, selectLayers } from 'src/features/project/projectUndoableSlice';
-import {
-  selectCurImageId,
-  selectCurLayerIds,
-  setCurLayers,
-  setEditorCanvasCoordinate,
-  setHoverLayerId,
-} from 'src/features/editor/editorSlice';
+import { selectCurImageId, selectCurLayerIds, setCurLayers, setHoverLayerId } from 'src/features/editor/editorSlice';
 import { Layer } from 'src/layer';
 import styles from './index.module.scss';
 
@@ -19,7 +13,6 @@ function EditorArea() {
   const images = useSelector(selectImages);
   const layers = useSelector(selectLayers);
   const dispatch = useDispatch();
-  const ref = useRef<HTMLDivElement>(null);
 
   const handleKeyDown = useCallback(() => {
     if (curLayerIds.length === 0) return;
@@ -44,26 +37,10 @@ function EditorArea() {
     [handleKeyDown],
   );
 
-  useLayoutEffect(() => {
-    const updateEditorCanvasCoordinate = () => {
-      const { current } = ref;
-      if (current) {
-        const { x, y } = current.getBoundingClientRect();
-        dispatch(setEditorCanvasCoordinate({ x, y }));
-      }
-    };
-
-    window.addEventListener('resize', updateEditorCanvasCoordinate);
-    updateEditorCanvasCoordinate();
-
-    return () => window.removeEventListener('resize', updateEditorCanvasCoordinate);
-  }, [dispatch, ref, canvas]);
-
   return (
     <div className={styles.editorArea}>
       <div
         id="editorCanvas"
-        ref={ref}
         className={styles.canvas}
         style={{
           width: canvas.width,

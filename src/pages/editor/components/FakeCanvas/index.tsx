@@ -3,9 +3,11 @@ import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurLayerIds,
-  selectEditorCanvasCoordinate,
+  selectScreenHeight,
+  selectScreenWidth,
   selectScrollLeft,
   selectScrollTop,
+  selectTopBarHeight,
   setDragZoomDirection,
   setDragZoomId,
   setDragZoomStartLayersPosition,
@@ -37,18 +39,33 @@ export interface ISingleResizerStyle {
   transform: string;
 }
 
-function selectionHandlerRender(
-  curLayerIds: string[],
-  layersById: IProjectUndoableState['data']['layersById'],
-  singleResizerStyle: ISingleResizerStyle,
-  editorCanvasCoordinate: ICoordinate,
-  dispatch: Dispatch,
-  canvasScale: number,
-  scrollLeft: number,
-  scrollTop: number,
-  canvas: IProjectUndoableState['data']['canvas'],
-  miniEnclosingRect: IRect,
-) {
+function selectionHandlerRender({
+  curLayerIds,
+  layersById,
+  singleResizerStyle,
+  dispatch,
+  canvasScale,
+  scrollLeft,
+  scrollTop,
+  canvas,
+  miniEnclosingRect,
+  screenWidth,
+  screenHeight,
+  topBarHeight,
+}: {
+  curLayerIds: string[];
+  layersById: IProjectUndoableState['data']['layersById'];
+  singleResizerStyle: ISingleResizerStyle;
+  dispatch: Dispatch;
+  canvasScale: number;
+  scrollLeft: number;
+  scrollTop: number;
+  canvas: IProjectUndoableState['data']['canvas'];
+  miniEnclosingRect: IRect;
+  screenWidth: IEditorState['screenWidth'];
+  screenHeight: IEditorState['screenHeight'];
+  topBarHeight: IEditorState['topBarHeight'];
+}) {
   if (!curLayerIds.length) return null;
 
   const handleDragZoom = (
@@ -114,11 +131,11 @@ function selectionHandlerRender(
 
             // 记录旋转中心点坐标
             const rectCenterCoordinate = calcRectCenter(miniEnclosingRect);
+            const editorCanvasCoordinateX = (screenWidth - canvas.width * canvasScale) / 2;
+            const editorCanvasCoordinateY = (screenHeight - canvas.height * canvasScale) / 2 + topBarHeight;
             const rotateCenterCoordinate = {
-              x:
-                rectCenterCoordinate.x + editorCanvasCoordinate.x - scrollLeft - ((canvasScale - 1) * canvas.width) / 2,
-              y:
-                rectCenterCoordinate.y + editorCanvasCoordinate.y - scrollTop - ((canvasScale - 1) * canvas.height) / 2,
+              x: rectCenterCoordinate.x + editorCanvasCoordinateX - scrollLeft,
+              y: rectCenterCoordinate.y + editorCanvasCoordinateY - scrollTop,
             };
             dispatch(setRotateCenterCoordinate(rotateCenterCoordinate));
 
@@ -225,10 +242,12 @@ function FakeCanvas() {
   const canvas = useSelector(selectCanvas);
   const { byId: layersById } = useSelector(selectLayers);
   const curLayerIds = useSelector(selectCurLayerIds);
-  const editorCanvasCoordinate = useSelector(selectEditorCanvasCoordinate);
   const scrollTop = useSelector(selectScrollTop);
   const scrollLeft = useSelector(selectScrollLeft);
   const canvasScale = useSelector(selectCanvasScale);
+  const screenWidth = useSelector(selectScreenWidth);
+  const screenHeight = useSelector(selectScreenHeight);
+  const topBarHeight = useSelector(selectTopBarHeight);
 
   let singleResizerStyle = undefined;
   let miniEnclosingRect = undefined;
@@ -276,18 +295,20 @@ function FakeCanvas() {
       <SelectedContainer singleResizerStyle={singleResizerStyle} />
       <HoverContainer />
       <EchoContainer />
-      {selectionHandlerRender(
+      {selectionHandlerRender({
         curLayerIds,
         layersById,
         singleResizerStyle,
-        editorCanvasCoordinate,
         dispatch,
         canvasScale,
         scrollLeft,
         scrollTop,
         canvas,
         miniEnclosingRect,
-      )}
+        screenWidth,
+        screenHeight,
+        topBarHeight,
+      })}
     </div>
   );
 }

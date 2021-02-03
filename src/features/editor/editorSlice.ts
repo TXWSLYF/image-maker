@@ -23,12 +23,6 @@ const initialState: IEditorState = {
   isLeftPanelVisible: true,
   leftPanelWidth: 209,
 
-  // 编辑区相对于页面的坐标
-  editorCanvasCoordinate: {
-    x: 0,
-    y: 0,
-  },
-
   // 拖拽相关参数
   isDraging: false,
   dragId: '',
@@ -103,13 +97,6 @@ export const editorSlice = createSlice({
 
     setEchoLayerId: (state, action: PayloadAction<string>) => {
       state.echoLayerId = action.payload;
-    },
-
-    /**
-     * @description 设置编辑区相对于页面的坐标
-     */
-    setEditorCanvasCoordinate: (state, action: PayloadAction<ICoordinate>) => {
-      state.editorCanvasCoordinate = action.payload;
     },
 
     /**
@@ -259,7 +246,6 @@ export const {
   setCurImage,
   addCurLayers,
   setCurLayers,
-  setEditorCanvasCoordinate,
   setHoverLayerId,
   setEchoLayerId,
   setIsLeftPanelVisible,
@@ -308,7 +294,6 @@ export const selectCurImageLayers = (state: RootState) =>
 export const selectCurLayerIds = (state: RootState) => state.editor.curLayerIds;
 export const selectHoverLayerId = (state: RootState) => state.editor.hoverLayerId;
 export const selectEchoLayerId = (state: RootState) => state.editor.echoLayerId;
-export const selectEditorCanvasCoordinate = (state: RootState) => state.editor.editorCanvasCoordinate;
 
 /**
  * @description LeftPanel 相关属性

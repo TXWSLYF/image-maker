@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Tree } from 'antd';
+import MyInputNumber from 'src/components/MyInputNumber';
 
 const treeData = [
   {
@@ -25,6 +26,7 @@ const treeData = [
 function PlayPage() {
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
+  const [val] = useState(0);
 
   const onExpand = (expandedKeys: React.Key[]) => {
     console.log('onExpand', expandedKeys); // if not set autoExpandParent to false, if children expanded, parent can not collapse.
@@ -38,13 +40,21 @@ function PlayPage() {
   };
 
   return (
-    <Tree
-      onExpand={onExpand}
-      expandedKeys={expandedKeys}
-      onSelect={onSelect}
-      selectedKeys={selectedKeys}
-      treeData={treeData}
-    />
+    <div
+      style={{
+        marginLeft: 100,
+      }}
+    >
+      <Tree
+        onExpand={onExpand}
+        expandedKeys={expandedKeys}
+        onSelect={onSelect}
+        selectedKeys={selectedKeys}
+        treeData={treeData}
+      />
+
+      <MyInputNumber text="X" value={val} />
+    </div>
   );
 }
 

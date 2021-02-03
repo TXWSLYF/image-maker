@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
-import { Collapse, Input } from 'antd';
+import { Input } from 'antd';
 import { Dispatch } from '@reduxjs/toolkit';
 import { setImgLayerProperties } from 'src/features/project/projectUndoableSlice';
+import PropertyPanelHeader from '../PropertyPanelHeader';
 
-const { Panel } = Collapse;
 const style1: React.CSSProperties = { display: 'flex', alignItems: 'center' };
 const style2: React.CSSProperties = { width: 100 };
 
@@ -26,14 +26,11 @@ const ImgPropertyPanel = ({
   return useMemo(() => {
     return (
       <div>
-        <Collapse defaultActiveKey={['1']} expandIconPosition={'right'} style={{ border: 'none', background: '#fff' }}>
-          <Panel header="图片" key="1">
-            <div style={style1}>
-              <label style={style2}>图片地址：</label>
-              <Input value={properties.src} onChange={handleInput} />
-            </div>
-          </Panel>
-        </Collapse>
+        <PropertyPanelHeader text={'图片'} />
+        <div style={style1}>
+          <label style={style2}>图片地址：</label>
+          <Input value={properties.src} onChange={handleInput} />
+        </div>
       </div>
     );
   }, [handleInput, properties]);

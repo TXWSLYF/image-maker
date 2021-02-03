@@ -1,0 +1,30 @@
+.myInputNumber {
+  display: inline-block;
+  height: 22px;
+  position: relative;
+  box-sizing: border-box;
+  font-size: 11px;
+  line-height: 20px;
+  border: 1px solid #eaeaea;
+  transition: all 0.3s;
+
+  > input {
+    height: 20px;
+    border: none;
+    outline: none;
+  }
+
+  &Text {
+    display: inline-block;
+    width: 14px;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    font-size: 10px;
+    padding: 0 4px 0 0;
+  }
+}
+
+.myInputNumberFocus {
+  border: 1px solid #40a9ff;
+}

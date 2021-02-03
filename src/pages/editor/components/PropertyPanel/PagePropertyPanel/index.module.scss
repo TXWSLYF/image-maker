@@ -1,5 +1,11 @@
 .pagePropertyPanel {
   &Content {
-    padding: 0px 14px 10px;
+    padding: 0px 10px 10px 10px;
   }
+}
+
+.flexBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

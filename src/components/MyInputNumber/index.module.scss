@@ -1,0 +1,21 @@
+.myInputNumber {
+  display: inline-block;
+  height: 20px;
+  position: relative;
+  box-sizing: border-box;
+  font-size: 12px;
+  line-height: 20px;
+
+  > input {
+    height: 20px;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    outline-color: #40a9ff;
+  }
+
+  &Text {
+    position: absolute;
+    right: 4px;
+    transform: scale(0.8);
+  }
+}

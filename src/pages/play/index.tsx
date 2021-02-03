@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Tree } from 'antd';
+import MyInputNumber from 'src/components/MyInputNumber';
 
 const treeData = [
   {
@@ -38,13 +39,21 @@ function PlayPage() {
   };
 
   return (
-    <Tree
-      onExpand={onExpand}
-      expandedKeys={expandedKeys}
-      onSelect={onSelect}
-      selectedKeys={selectedKeys}
-      treeData={treeData}
-    />
+    <div
+      style={{
+        marginLeft: 100,
+      }}
+    >
+      <Tree
+        onExpand={onExpand}
+        expandedKeys={expandedKeys}
+        onSelect={onSelect}
+        selectedKeys={selectedKeys}
+        treeData={treeData}
+      />
+
+      <MyInputNumber text="X" />
+    </div>
   );
 }
 

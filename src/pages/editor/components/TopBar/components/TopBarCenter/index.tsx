@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from 'redux-undo';
 import { message } from 'antd';
+import html2canvas from 'html2canvas';
 import { saveProject } from 'src/features/project';
 import {
   addGroupLayer,
@@ -9,6 +10,8 @@ import {
   selectLayers,
   selectProjectFutureLength,
   selectProjectPastLength,
+  selectImages,
+  selectCanvas,
 } from 'src/features/project/projectUndoableSlice';
 import { selectCurImageId, selectCurLayerIds, setCurLayers, setHoverLayerId } from 'src/features/editor/editorSlice';
 import { guid } from 'src/utils/util';
@@ -62,6 +65,8 @@ const TopBarCenter = () => {
   const curImageId = useSelector(selectCurImageId);
   const curLayerIds = useSelector(selectCurLayerIds);
   const { byId: layersById } = useSelector(selectLayers);
+  const { byId: imagesById } = useSelector(selectImages);
+  const { width, height } = useSelector(selectCanvas);
 
   const isUndoDisabled = projectPastLength === 0;
   const isRedoDisabled = projectFutureLength === 0;
@@ -180,6 +185,28 @@ const TopBarCenter = () => {
     };
   }, [dispatch, handleClickGroup, handleRedo, handleUndo]);
 
+  // TODO: 一次导出所有图片
+  const handleClickDownload = useCallback(() => {
+    // TODO: id 名称保存到一个地方
+    const node = document.getElementById('editorCanvas');
+
+    if (!node) return;
+
+    html2canvas(node, {
+      // 允许图片跨域
+      useCORS: true,
+      allowTaint: true,
+      width,
+      height,
+    }).then((canvas) => {
+      const link = document.createElement('a');
+
+      link.download = `${imagesById[curImageId].name}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  }, [curImageId, height, imagesById, width]);
+
   return useMemo(() => {
     return (
       <div className={styles.topBarCenter}>
@@ -205,7 +232,7 @@ const TopBarCenter = () => {
         </div>
 
         <div style={style3}>
-          <TopBarIcon text="下载" SvgComponent={Download} />
+          <TopBarIcon text="下载" SvgComponent={Download} onClick={handleClickDownload} />
           <TopBarIcon text="分享" SvgComponent={Share} />
         </div>
       </div>
@@ -219,6 +246,7 @@ const TopBarCenter = () => {
     handleClickGroup,
     handleClickUnGroup,
     unGroupBtnDisabled,
+    handleClickDownload,
   ]);
 };
 

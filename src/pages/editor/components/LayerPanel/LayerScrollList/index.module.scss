@@ -12,7 +12,7 @@
       > div {
         &:hover {
           color: rgb(41, 141, 248);
-          background: rgb(247, 247, 247);
+          background: rgb(232, 232, 232);
         }
       }
 
@@ -26,7 +26,6 @@
         color: rgb(65, 80, 88);
         font-size: 12px;
         cursor: pointer;
-        background-color: rgb(255, 255, 255);
 
         &.active {
           background: rgb(242, 248, 255);

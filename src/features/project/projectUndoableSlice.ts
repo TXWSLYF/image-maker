@@ -410,6 +410,13 @@ export const projectUndoableSlice = createSlice({
         state.data.layersById[id].name = name;
       });
     },
+
+    setImageLayerIds(
+      state,
+      { payload: { imageId, layerIds } }: PayloadAction<{ imageId: string; layerIds: ILayer['id'][] }>,
+    ) {
+      state.data.imagesById[imageId].layers = layerIds;
+    },
   },
 });
 
@@ -430,6 +437,7 @@ export const {
   setImgLayerProperties,
   deletePages,
   setLayersName,
+  setImageLayerIds,
 } = projectUndoableSlice.actions;
 
 export const selectProject = (state: RootState) => state.project.undoable.present;
